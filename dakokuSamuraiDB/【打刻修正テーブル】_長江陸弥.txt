@@ -9,4 +9,4 @@ created_datetime timestamp NOT NULL,
 updated_datetime timestamp NOT NULL,
 created_users_id int  NOT NULL,
 updated_users_id int  NOT NULL
-);
+FOREIGN KEY stamp_id REFERENCES users(users_id));
