@@ -1,4 +1,4 @@
-CREATE TABLE stamp (
+CREATE TABLE IF NOT EXISTS stamp (
 stamp_id INT auto_increment PRIMARY KEY,
 user_id INT NOT NULL,
 stump_date DATE NOT NULL,
