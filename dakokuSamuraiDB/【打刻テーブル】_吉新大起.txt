@@ -6,4 +6,4 @@ workIn_raw TIME NOT NULL,
 workOut_raw TIME,
 workIn_re TIME NOT NULL,
 workOut_re TIME,
-FOREIGN KEY users_id REFERENCES users(users_id));
+FOREIGN KEY (users_id) REFERENCES users(users_id));
