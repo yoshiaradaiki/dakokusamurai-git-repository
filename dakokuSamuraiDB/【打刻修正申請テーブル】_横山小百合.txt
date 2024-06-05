@@ -7,8 +7,8 @@ status INT NOT NULL,
 reason VARCHAR(100),
 created_datetime TIMESTAMP NOT NULL,
 updated_datetime TIMESTAMP NOT NULL,
-created_user_id INT NOT NULL,
-updated_user_id INT NOT NULL,
+created_users_id INT NOT NULL,
+updated_users_id INT NOT NULL,
 FOREIGN KEY stamp_rev_id REFERENCES att_status(stamp_rev_id));
 )
 
