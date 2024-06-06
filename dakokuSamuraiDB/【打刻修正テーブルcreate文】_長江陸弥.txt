@@ -1,5 +1,5 @@
 CREATE TABLE   stamp_revision (
-stamp_rev_id INT  AUTO_INCREMENT PRIMARY KEY,
+stamp_rev_id INT AUTO_INCREMENT PRIMARY KEY,
 workIn_rev time NOT NULL,
 workOut_rev time NOT NULL,
 rest_time time NOT NULL,

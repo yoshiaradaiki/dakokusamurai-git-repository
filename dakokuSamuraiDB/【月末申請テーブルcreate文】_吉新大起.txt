@@ -8,4 +8,4 @@ created_datetime TIMESTAMP NOT NULL,
 updated_datetime TIMESTAMP NOT NULL,
 created_users_id INT NOT NULL,
 updated_users_id INT NOT NULL,
-FOREIGN KEY att_status_id REFERENCES att_status(att_status_id));
+FOREIGN KEY (att_status_id) REFERENCES att_status(att_status_id));
