@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS stamp (
+stamp_id INT auto_increment PRIMARY KEY,
+users_id INT NOT NULL,
+stump_date DATE NOT NULL,
+workIn_raw TIME NOT NULL,
+workOut_raw TIME,
+workIn_re TIME NOT NULL,
+workOut_re TIME,
+FOREIGN KEY (users_id) REFERENCES users(users_id));
