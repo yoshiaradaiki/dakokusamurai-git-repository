@@ -1,19 +1,12 @@
-
 CREATE TABLE stamp_correct_req (
-stamp_rev_req_id INT auto_increment PRIMARY KEY,
-stamp_rev_id INT NOT NULL,
-date_req TIMESTAMP NOT NULL,
-status INT NOT NULL,
-reason VARCHAR(100),
-created_datetime TIMESTAMP NOT NULL,
-updated_datetime TIMESTAMP NOT NULL,
-created_users_id INT NOT NULL,
-updated_users_id INT NOT NULL,
-FOREIGN KEY stamp_rev_id REFERENCES att_status(stamp_rev_id));
-)
-
-
-
-
-★FOREIGN KEY stamp_rev_id REFERENCES att_status(stamp_rev_id))
-打刻修正テーブルが作成されたら実行可能になる。
+ stamp_rev_req_id INT auto_increment PRIMARY KEY,
+ stamp_rev_id INT NOT NULL,
+ date_req TIMESTAMP NOT NULL,
+ status INT NOT NULL,
+ reason VARCHAR(100),
+ created_datetime TIMESTAMP NOT NULL,
+ updated_datetime TIMESTAMP NOT NULL,
+ created_users_id INT NOT NULL,
+ updated_users_id INT NOT NULL,
+FOREIGN KEY (stamp_rev_id) REFERENCES stamp_revision(stamp_rev_id)
+);

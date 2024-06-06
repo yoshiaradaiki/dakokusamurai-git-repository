@@ -1,12 +1,14 @@
-CREATE TABLE   stamp_revision (
-stamp_rev_id INT AUTO_INCREMENT PRIMARY KEY,
-workIn_rev time NOT NULL,
-workOut_rev time NOT NULL,
-rest_time time NOT NULL,
-work_status int NOT NULL,
-note varchar(50) NOT NULL,
-created_datetime timestamp NOT NULL,
-updated_datetime timestamp NOT NULL,
-created_users_id int  NOT NULL,
-updated_users_id int  NOT NULL
+CREATE TABLE IF NOT EXISTS stamp_revision (
+ stamp_rev_id INT AUTO_INCREMENT PRIMARY KEY,
+ stamp_id INT NOT NULL,
+ workIn_rev TIME NOT NULL,
+ workOut_rev TIME NOT NULL,
+ rest_time TIME NOT NULL,
+ work_status INT NOT NULL,
+ note VARCHAR(50) NOT NULL,
+ created_datetime TIMESTAMP NOT NULL,
+ updated_datetime TIMESTAMP NOT NULL,
+ created_users_id INT NOT NULL,
+ updated_users_id INT NOT NULL,
+FOREIGN KEY (stamp_id) REFERENCES stamp(stamp_id)
 );
