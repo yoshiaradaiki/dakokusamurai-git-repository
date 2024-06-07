@@ -2,9 +2,9 @@ CREATE TABLE IF NOT EXISTS stamp (
  stamp_id INT auto_increment PRIMARY KEY,
  users_id INT NOT NULL,
  stamp_date DATE NOT NULL,
- workIn_raw TIME NOT NULL,
+ workIn_raw TIME,
  workOut_raw TIME,
- workIn_re TIME NOT NULL,
+ workIn_re TIME,
  workOut_re TIME,
 FOREIGN KEY (users_id) REFERENCES users(users_id)
 );
