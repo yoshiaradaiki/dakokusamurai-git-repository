@@ -1,9 +1,10 @@
 // 担当者：鈴木
 // 作成日時：2024/6/12
-// 修正
+// 修正：20246/12　湯　フィールド、コンストラクタの追加
 package beans;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class RequestListBean implements Serializable {
@@ -16,8 +17,8 @@ public class RequestListBean implements Serializable {
 	//外部キー：打刻修正ID
 	private int stamp_rev_id;
 	//申請日時
-	private Date date_and_time;
-	//理由
+	private Timestamp date_and_time;
+	//差し戻しの理由
 	private String reason;
 	//0：差し戻し１：承認待ち２：承認済み３：キャンセル
 	private int status;
@@ -27,7 +28,7 @@ public class RequestListBean implements Serializable {
 	private String name;
 	//承認者
 	private String boss_name;
-	
+
 	private int created_users_id;
 	private int updated_users_id;
 
@@ -35,7 +36,7 @@ public class RequestListBean implements Serializable {
 	}
 
 	public RequestListBean(int month_req_id, int stamp_rev_req_id, int att_status_id, int stamp_rev_id,
-			Date date_and_time, String reason, int status, int content, String name, String boss_name,
+			Timestamp date_and_time, String reason, int status, int content, String name, String boss_name,
 			int created_users_id, int updated_users_id) {
 		super();
 		this.month_req_id = month_req_id;
@@ -50,6 +51,11 @@ public class RequestListBean implements Serializable {
 		this.boss_name = boss_name;
 		this.created_users_id = created_users_id;
 		this.updated_users_id = updated_users_id;
+	}
+
+	public RequestListBean(Timestamp date_and_time, int status) {
+		this.date_and_time = date_and_time;
+		this.status = status;
 	}
 
 	public int getAtt_status_id() {
@@ -72,7 +78,7 @@ public class RequestListBean implements Serializable {
 		return date_and_time;
 	}
 
-	public void setDate_and_time(Date date_and_time) {
+	public void setDate_and_time(Timestamp date_and_time) {
 		this.date_and_time = date_and_time;
 	}
 
@@ -139,6 +145,5 @@ public class RequestListBean implements Serializable {
 	public int getStamp_rev_req_id() {
 		return stamp_rev_req_id;
 	}
-
 
 }
