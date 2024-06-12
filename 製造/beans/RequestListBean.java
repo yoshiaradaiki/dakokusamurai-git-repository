@@ -1,5 +1,6 @@
 // 担当者：鈴木
 // 作成日時：2024/6/12
+// 修正
 package beans;
 
 import java.io.Serializable;
@@ -14,12 +15,19 @@ public class RequestListBean implements Serializable {
 	private int att_status_id;
 	//外部キー：打刻修正ID
 	private int stamp_rev_id;
+	//申請日時
 	private Date date_and_time;
+	//理由
 	private String reason;
+	//0：差し戻し１：承認待ち２：承認済み３：キャンセル
 	private int status;
+	//内容　0：変更申請 or１： 勤怠状況表提出 
 	private int content;
+	//申請者
 	private String name;
+	//承認者
 	private String boss_name;
+	
 	private int created_users_id;
 	private int updated_users_id;
 
