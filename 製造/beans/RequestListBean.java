@@ -14,6 +14,8 @@ public class RequestListBean implements Serializable {
 	private int content;
 	private String name;
 	private String boss_name;
+	private int created_users_id;
+	private int updated_users_id;
 
 	public RequestListBean() {
 	}
@@ -90,4 +92,21 @@ public class RequestListBean implements Serializable {
 		return request_id;
 	}
 
+	public int getCreated_users_id() {
+		return created_users_id;
+	}
+
+	public void setCreated_users_id(int created_users_id) {
+		this.created_users_id = created_users_id;
+	}
+
+	public int getUpdated_users_id() {
+		return updated_users_id;
+	}
+
+	public void setUpdated_users_id(int updated_users_id) {
+		this.updated_users_id = updated_users_id;
+	}
+
+	
 }
