@@ -10,7 +10,7 @@ import java.util.Date;
 public class StampBean implements Serializable {
 
 	public int stamp_id;
-	public String users_id;
+	public int users_id;
 	public Date stamp_date;
 	public Date workIn_raw;
 	public Date workOut_raw;
@@ -26,7 +26,7 @@ public class StampBean implements Serializable {
 
 
 	
-	public StampBean(int stamp_id, String users_id, Date stamp_date, Date workIn_raw, Date workOut_raw, Date workIn_re,
+	public StampBean(int stamp_id, int users_id, Date stamp_date, Date workIn_raw, Date workOut_raw, Date workIn_re,
 			Date workOut_re, int week, Date rest_time, Date real_work_time, String note) {
 		super();
 		this.stamp_id = stamp_id;
@@ -48,11 +48,11 @@ public class StampBean implements Serializable {
 		return stamp_id;
 	}
 
-	public String getUsers_id() {
+	public int getUsers_id() {
 		return users_id;
 	}
 
-	public void setUsers_id(String users_id) {
+	public void setUsers_id(int users_id) {
 		this.users_id = users_id;
 	}
 
