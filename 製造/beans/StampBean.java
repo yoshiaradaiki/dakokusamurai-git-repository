@@ -11,7 +11,7 @@ public class StampBean implements Serializable {
 
 	public int stamp_id;
 	public String users_id;
-	public Date stump_date;
+	public Date stamp_date;
 	public Date workIn_raw;
 	public Date workOut_raw;
 	public Date workIn_re;
@@ -26,12 +26,12 @@ public class StampBean implements Serializable {
 
 
 	
-	public StampBean(int stamp_id, String users_id, Date stump_date, Date workIn_raw, Date workOut_raw, Date workIn_re,
+	public StampBean(int stamp_id, String users_id, Date stamp_date, Date workIn_raw, Date workOut_raw, Date workIn_re,
 			Date workOut_re, int week, Date rest_time, Date real_work_time, String note) {
 		super();
 		this.stamp_id = stamp_id;
 		this.users_id = users_id;
-		this.stump_date = stump_date;
+		this.stamp_date = stamp_date;
 		this.workIn_raw = workIn_raw;
 		this.workOut_raw = workOut_raw;
 		this.workIn_re = workIn_re;
@@ -56,12 +56,12 @@ public class StampBean implements Serializable {
 		this.users_id = users_id;
 	}
 
-	public Date getStump_date() {
-		return stump_date;
+	public Date getStamp_date() {
+		return stamp_date;
 	}
 
-	public void setStump_date(Date stump_date) {
-		this.stump_date = stump_date;
+	public void setStamp_date(Date stamp_date) {
+		this.stamp_date = stamp_date;
 	}
 
 	public Date getWorkIn_raw() {
