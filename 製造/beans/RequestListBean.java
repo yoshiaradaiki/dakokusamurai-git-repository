@@ -20,16 +20,19 @@ public class RequestListBean implements Serializable {
 	public RequestListBean() {
 	}
 
-	public RequestListBean(int request_id, int request_foreign_id, Date date_and_time,
-			String reason, int status, int content, String name, String boss_name) {
+	public RequestListBean(int request_id, int att_status_id, Date date_and_time, String reason, int status,
+			int content, String name, String boss_name, int created_users_id, int updated_users_id) {
+		super();
 		this.request_id = request_id;
-		this.att_status_id = request_foreign_id;
+		this.att_status_id = att_status_id;
 		this.date_and_time = date_and_time;
 		this.reason = reason;
 		this.status = status;
 		this.content = content;
 		this.name = name;
 		this.boss_name = boss_name;
+		this.created_users_id = created_users_id;
+		this.updated_users_id = updated_users_id;
 	}
 
 	public int getAtt_status_id() {
@@ -108,5 +111,4 @@ public class RequestListBean implements Serializable {
 		this.updated_users_id = updated_users_id;
 	}
 
-	
 }
