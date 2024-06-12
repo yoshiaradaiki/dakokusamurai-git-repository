@@ -42,6 +42,10 @@ public class UserBean {
 	public String getLogin_id() {
 		return login_id;
 	}
+	public void setUsers_id(int users_id) {
+		this.users_id = users_id;
+	}
+
 	public void setLogin_id(String login_id) {
 		this.login_id = login_id;
 	}
