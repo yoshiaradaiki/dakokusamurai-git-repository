@@ -6,8 +6,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class RequestListBean implements Serializable {
-	private int request_id;
+	//月末申請テーブル主キー：月末申請ID
+	private int month_req_id;
+	//打刻修正申請テーブル主キー：打刻修正申請ID
+	private int stamp_rev_req_id;
+	//外部キー：勤怠状況表ID
 	private int att_status_id;
+	//外部キー：打刻修正ID
+	private int stamp_rev_id;
 	private Date date_and_time;
 	private String reason;
 	private int status;
@@ -20,11 +26,14 @@ public class RequestListBean implements Serializable {
 	public RequestListBean() {
 	}
 
-	public RequestListBean(int request_id, int att_status_id, Date date_and_time, String reason, int status,
-			int content, String name, String boss_name, int created_users_id, int updated_users_id) {
+	public RequestListBean(int month_req_id, int stamp_rev_req_id, int att_status_id, int stamp_rev_id,
+			Date date_and_time, String reason, int status, int content, String name, String boss_name,
+			int created_users_id, int updated_users_id) {
 		super();
-		this.request_id = request_id;
+		this.month_req_id = month_req_id;
+		this.stamp_rev_req_id = stamp_rev_req_id;
 		this.att_status_id = att_status_id;
+		this.stamp_rev_id = stamp_rev_id;
 		this.date_and_time = date_and_time;
 		this.reason = reason;
 		this.status = status;
@@ -41,6 +50,14 @@ public class RequestListBean implements Serializable {
 
 	public void setAtt_status_id(int att_status_id) {
 		this.att_status_id = att_status_id;
+	}
+
+	public int getStamp_rev_id() {
+		return stamp_rev_id;
+	}
+
+	public void setStamp_rev_id(int stamp_rev_id) {
+		this.stamp_rev_id = stamp_rev_id;
 	}
 
 	public Date getDate_and_time() {
@@ -91,10 +108,6 @@ public class RequestListBean implements Serializable {
 		this.boss_name = boss_name;
 	}
 
-	public int getRequest_id() {
-		return request_id;
-	}
-
 	public int getCreated_users_id() {
 		return created_users_id;
 	}
@@ -110,5 +123,14 @@ public class RequestListBean implements Serializable {
 	public void setUpdated_users_id(int updated_users_id) {
 		this.updated_users_id = updated_users_id;
 	}
+
+	public int getMonth_req_id() {
+		return month_req_id;
+	}
+
+	public int getStamp_rev_req_id() {
+		return stamp_rev_req_id;
+	}
+
 
 }
