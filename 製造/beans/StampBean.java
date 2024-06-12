@@ -48,10 +48,6 @@ public class StampBean implements Serializable {
 		return stamp_id;
 	}
 
-	public void setStamp_id(int stamp_id) {
-		this.stamp_id = stamp_id;
-	}
-
 	public String getUsers_id() {
 		return users_id;
 	}
