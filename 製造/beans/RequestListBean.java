@@ -6,20 +6,22 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class RequestListBean implements Serializable {
-	private int request_id;             
-	private int request_foreign_id;     
-	private Date date_and_time;         
-	private String reason;    			
-	private int status;    				
-	private int content;   				
-	private String name;                
-	private String boss_name;   		
-	
-	public RequestListBean() {}
-	public RequestListBean(int request_id,int request_foreign_id,Date date_and_time,
-			String reason,int status,int content,String name,String boss_name) {
+	private int request_id;
+	private int att_status_id;
+	private Date date_and_time;
+	private String reason;
+	private int status;
+	private int content;
+	private String name;
+	private String boss_name;
+
+	public RequestListBean() {
+	}
+
+	public RequestListBean(int request_id, int request_foreign_id, Date date_and_time,
+			String reason, int status, int content, String name, String boss_name) {
 		this.request_id = request_id;
-		this.request_foreign_id = request_foreign_id;
+		this.att_status_id = request_foreign_id;
 		this.date_and_time = date_and_time;
 		this.reason = reason;
 		this.status = status;
@@ -27,50 +29,65 @@ public class RequestListBean implements Serializable {
 		this.name = name;
 		this.boss_name = boss_name;
 	}
-	public int getrequest_id() {
-		return request_id;
+
+	public int getAtt_status_id() {
+		return att_status_id;
 	}
-	public int getrequest_foreign_id() {
-		return request_foreign_id;
+
+	public void setAtt_status_id(int att_status_id) {
+		this.att_status_id = att_status_id;
 	}
-	public void setrequest_foreign_id(int request_foreign_id) {
-		this.request_foreign_id = request_foreign_id;
-	}
-	public Date getdate_and_time(){
+
+	public Date getDate_and_time() {
 		return date_and_time;
 	}
-	public void setdate_and_time(Date date_and_time){
+
+	public void setDate_and_time(Date date_and_time) {
 		this.date_and_time = date_and_time;
 	}
-	public String getreason(){
+
+	public String getReason() {
 		return reason;
 	}
-	public void setreason(String reason){
+
+	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	public int getstatus(){
+
+	public int getStatus() {
 		return status;
 	}
-	public void setstatus(int status){
+
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public int getcontent(){
+
+	public int getContent() {
 		return content;
 	}
-	public void setcontent( int content){
+
+	public void setContent(int content) {
 		this.content = content;
 	}
-	public String getname(){
+
+	public String getName() {
 		return name;
 	}
-	public void setname(String name){
+
+	public void setName(String name) {
 		this.name = name;
 	}
-	public String getboss_name(){
+
+	public String getBoss_name() {
 		return boss_name;
 	}
-	public void setboss_name(String boss_name){
+
+	public void setBoss_name(String boss_name) {
 		this.boss_name = boss_name;
 	}
-		
-}    
+
+	public int getRequest_id() {
+		return request_id;
+	}
+
+}
