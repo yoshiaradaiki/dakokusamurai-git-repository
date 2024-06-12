@@ -16,9 +16,9 @@ public class UserBean {
 	private String emp_name;
 	private String boss_users_id;
 	private int level;
-	boolean delete_flag;
-	boolean boss_flag;
-	Date year_and_month;
+	private boolean delete_flag;
+	private boolean boss_flag;
+	private Date year_and_month;
 	
 	
 	//コンストラクタ
