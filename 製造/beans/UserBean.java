@@ -38,6 +38,7 @@ public class UserBean {
 		this.year_and_month = year_and_month;
 	}
 	
+	//getset
 	public String getLogin_id() {
 		return login_id;
 	}
