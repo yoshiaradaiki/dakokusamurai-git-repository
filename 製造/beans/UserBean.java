@@ -1,10 +1,12 @@
+//***担当者：横山
+//***作成日時:6/12
+
 package beans;
 
 import java.sql.Date;
 
 public class UserBean {
-	//***担当者：横山
-	//***作成日時:6/12
+	
 	
 	//フィールド
 	private int users_id;
@@ -35,6 +37,7 @@ public class UserBean {
 		this.boss_flag = boss_flag;
 		this.year_and_month = year_and_month;
 	}
+	
 	public String getLogin_id() {
 		return login_id;
 	}
