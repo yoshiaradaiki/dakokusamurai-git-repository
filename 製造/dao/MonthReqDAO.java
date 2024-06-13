@@ -41,15 +41,14 @@ public class MonthReqDAO {
 
 			//INSERT文の準備
 			String insertSql = "INSERT INTO month_req (att_status_id, status,　created_users_id, updated_users_id)\n"
-					+ "VALUES (?,?, ?, ?); ";
+					+ "VALUES (?, ?, ?, ?); ";
 			PreparedStatement pStmt = conn.prepareStatement(insertSql);
 
 			//INSERT文の？に使用する値を設定
-			RequestListBean reqListBean = new RequestListBean();
-			pStmt.setInt(1, reqListBean.getAtt_status_id());
-			pStmt.setInt(2, reqListBean.getStatus());
-			pStmt.setInt(3, reqListBean.getCreated_users_id());
-			pStmt.setInt(4, reqListBean.getUpdated_users_id());
+			pStmt.setInt(1, att_status_id);
+			pStmt.setInt(2, status);
+			pStmt.setInt(3, created_users_id);
+			pStmt.setInt(4, updated_users_id);
 
 			//INSERT文を実行
 			int result = pStmt.executeUpdate();
@@ -80,11 +79,10 @@ public class MonthReqDAO {
 			PreparedStatement pStmt = conn.prepareStatement(updateSql);
 
 			//UPDATE文の？に使用する値を設定
-			RequestListBean reqListBean = new RequestListBean();
-			pStmt.setInt(1, reqListBean.getStatus());
-			pStmt.setString(2, reqListBean.getReason());
-			pStmt.setInt(3, reqListBean.getUpdated_users_id());
-			pStmt.setInt(4, reqListBean.getMonth_req_id());
+			pStmt.setInt(1, status);
+			pStmt.setString(2, reason);
+			pStmt.setInt(3, updated_users_id);
+			pStmt.setInt(4, month_req_id);
 
 			//UPDATE文を実行
 			int result = pStmt.executeUpdate();
@@ -101,6 +99,7 @@ public class MonthReqDAO {
 	//メソッド名：自分の申請を取得
 	//引数　　　：自分の利用者ID
 	//戻り値　　：申請一覧リスト
+	//テスト：statusが3（キャンセル）の場合、表示しないこと
 	public List<RequestListBean> findMyRequest(int users_id) {
 		//ArrayList作成
 		List<RequestListBean> myReqList = new ArrayList<>();
@@ -147,6 +146,7 @@ public class MonthReqDAO {
 	//メソッド名：部下の申請を取得
 	//引数　　　：部下の利用者ID
 	//戻り値　　：申請一覧リスト
+	//テスト：statusが3（キャンセル）の場合、表示しないこと
 	public List<RequestListBean> findMySubRequest(int users_id) {
 		//ArrayList作成
 		List<RequestListBean> subReqList = new ArrayList<>();
@@ -212,9 +212,8 @@ public class MonthReqDAO {
 			//型の変換
 			long timeInMilliSeconds = years.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
+			
 			//UPDATE文の？に使用する値を設定
-			//UsersBean usersBean = new UsersBean();
-			//AttStatusBean attStatusBran = new AttStatusBean();
 			pStmt.setInt(1, users_id);//セッションスコープに保存された利用者IDを取得
 			pStmt.setDate(2, sqlDate);//選択された年月を取得
 
