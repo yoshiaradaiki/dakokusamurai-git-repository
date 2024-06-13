@@ -22,9 +22,17 @@ public class MonthReqDAO {
 	final String DB_USER = "dakokuSamurai";
 	final String DB_PASSWORD = "dakokusamurai";
 
+	public static void main(String[] args) {
+		//テスト用
+//		MonthReqDAO monthReqDAO = new MonthReqDAO();
+//		monthReqDAO.insertMonthReq(1, 10, 10, 10);//成功
+//	/monthReqDAO.updateMonthReq(8, 8, "理由うう", 3);//成功
+	}
+
 	//メソッド名：月末申請登録
 	//引数　　　：勤怠状況表ID、ステータス、作成者、更新者
 	//戻り値　　：boolean(true：成功、false：失敗)
+	//テスト：成功　湯
 	public Boolean insertMonthReq(int att_status_id, int status, int created_users_id, int updated_users_id) {
 
 		//H2DBへ接続する
@@ -33,7 +41,7 @@ public class MonthReqDAO {
 
 			//INSERT文の準備
 			String insertSql = "INSERT INTO month_req (att_status_id, status,　created_users_id, updated_users_id)\n"
-					+ "VALUES (?, ?, ?, ?); ";
+					+ "VALUES (?,?, ?, ?); ";
 			PreparedStatement pStmt = conn.prepareStatement(insertSql);
 
 			//INSERT文の？に使用する値を設定
@@ -58,6 +66,7 @@ public class MonthReqDAO {
 	//メソッド名：月末申請更新
 	//引数　　　：月末申請ID、承認・差し戻し、理由、更新者＝上司の利用者ID
 	//戻り値　　：boolean(true：成功、false：失敗)
+	//テスト：成功　湯
 	public Boolean updateMonthReq(int month_req_id, int status, String reason, int updated_users_id) {
 
 		//H2DBへ接続する
@@ -65,8 +74,8 @@ public class MonthReqDAO {
 			System.out.println("H2データベースに接続しました。");
 
 			//UPDATE文の準備
-			String updateSql = "UPDATE month_req\n"
-					+ "SET status = ?, reason = ?, updated_users_id = ?\n"
+			String updateSql = "UPDATE month_req "
+					+ "SET status = ?, reason = ?, updated_users_id = ?"
 					+ "WHERE month_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(updateSql);
 
@@ -181,46 +190,50 @@ public class MonthReqDAO {
 		return subReqList;
 	}
 
-	//メソッド名：自分の勤怠状況表に表示する差し戻しの理由を取得
-	//引数　　　：利用者ID、日時
-	//戻り値　　：申請一覧リスト
-	public RequestListBean findMyAttStatusMonthRequest(int users_id, Date date) {//一番新しい差し戻された勤怠状況表に理由を表示
+	//メソッド名：自分の勤怠状況表に表示する差し戻しの理由を取得（勤怠状況表画面で年月を選択する時）
+	//引数　　　：利用者ID、勤怠状況表.日時
+	//戻り値　　：申請一覧リスト（打刻修正申請テーブル+月末申請テーブル）
+	public RequestListBean findMyAttStatusMonthRequest(int users_id, Date years) {//選択された年月の一番新しい差し戻された理由を表示
 		RequestListBean requestListBean = null;
-		
+
 		//H2DBへ接続する
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
 			System.out.println("H2データベースに接続しました。");
 
 			//SELECT文の準備
-			String selectSql = "SELECT reason\n"
+			String selectSql = "SELECT month_req.reason\n"
 					+ "FROM month_req\n"
-					+ "WHERE users_id = ? AND date = ?";
+					+ "INNER JOIN att_status ON month_req.users_id = att_status.users_id\n"
+					+ "INNER JOIN users ON att_status.users_id = users.users_id\n"
+					+ "WHERE users.users_id = ? AND att_status.years = ?;";//選択された年月の一番新しい差し戻された理由を表示
+
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
 
-			//Date型変換
-			long timeInMilliSeconds = date.getTime();
+			//型の変換
+			long timeInMilliSeconds = years.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
-
 			//UPDATE文の？に使用する値を設定
-			UsersBean usersBean = new UsersBean();
-			pStmt.setInt(1, usersBean.getUsers_id());
-			pStmt.setDate(2, usersBean.getDate());//一番新しい差し戻された勤怠状況表に理由を表示
+			//UsersBean usersBean = new UsersBean();
+			//AttStatusBean attStatusBran = new AttStatusBean();
+			pStmt.setInt(1, users_id);//セッションスコープに保存された利用者IDを取得
+			pStmt.setDate(2, sqlDate);//選択された年月を取得
 
-			ResultSet rs = pStmt.executeQuery();
+			//実行
+			pStmt.executeQuery();
 
 		} catch (SQLException e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
+			return null;
 		}
 		return requestListBean;
 	}
 
 	//メソッド名：勤怠状況表に表示する差し戻しの理由を取得
-	//引数　　　：利用者ID
-	//戻り値　　：申請一覧リスト
+	//引数　　　：勤怠状況表ID
+	//戻り値　　：申請一覧リスト（打刻修正申請テーブル+月末申請テーブル）
 	public RequestListBean findAttStatusMonthRequest(int att_status_id) {
 		RequestListBean requestListBean = null;
-		
+
 		//H2DBへ接続する
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
 			System.out.println("H2データベースに接続しました。");
@@ -230,12 +243,13 @@ public class MonthReqDAO {
 					+ "FROM month_req\n"
 					+ "WHERE att_status_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
-			
+
 			//UPDATE文の？に使用する値を設定
 			RequestListBean reqListBean = new RequestListBean();
 			pStmt.setInt(1, reqListBean.getAtt_status_id());
 
-			ResultSet rs = pStmt.executeQuery();
+			//実行
+			pStmt.executeQuery();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -243,5 +257,4 @@ public class MonthReqDAO {
 		}
 		return requestListBean;
 	}
-
 }
