@@ -38,7 +38,6 @@ public class RequestListLogic {
 	//処理概要　：キャンセルボタン：月末申請データを更新し、申請一覧画面再描画する
 	public Boolean updateReqCancelByAttStatus(int month_req_id) {
 		MonthReqDAO monthReqDAO = new MonthReqDAO();
-		if(month_req_id) {
 		return monthReqDAO.updateMonthReq(month_req_id);
 	}
 
