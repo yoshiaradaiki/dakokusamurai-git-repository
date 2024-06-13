@@ -10,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import beans.UserBean;
+import beans.UsersBean;
 
 public class UsersDAO {
 	private final String JDBC_URL = "jdbc:h2:tcp://localhost/C:\\dakokuSamuraiDB\\dakokuSamuraiDB";
@@ -20,8 +20,8 @@ public class UsersDAO {
 	//メソッド　：findLoginCheck
 	//引数　　　：ログインID, パスワード
 	//戻り値　　：ユーザーデータ（利用者ID,社員番号,氏名,権限レベル,上司フラグ）※存在しない場合は、NULL
-	public UserBean findLoginCheck(String login_id, String password) {
-		UserBean users = null;
+	public UsersBean findLoginCheck(String login_id, String password) {
+		UsersBean users = null;
 		
         //JDBCドライバを読み込む
 		try {
@@ -59,7 +59,7 @@ public class UsersDAO {
 				String boss_users_id = rs.getString("boss_users_id");
 				int level = rs.getInt("level");
 				Boolean boss_flag = rs.getBoolean("boss_flag");
-				users = new UserBean();
+				users = new UsersBean();
 				users.setUsers_id(users_id);
 				users.setEmp_name(emp_name);
 				users.setBoss_users_id(boss_users_id);
@@ -75,8 +75,8 @@ public class UsersDAO {
 	//メソッド名：findMyAttStatusUsers
 	//引数　　　：利用者ID
 	//戻り値　　：勤怠状況表/勤怠状況詳細に表示する値（年月,社員番号,氏名）※存在しない場合は、NULL
-	public UserBean findMyAttStatusUsers(int users_id) {
-		UserBean users = null;
+	public UsersBean findMyAttStatusUsers(int users_id) {
+		UsersBean users = null;
 		
 		//JDBCドライバを読み込む
 		try {
@@ -101,7 +101,7 @@ public class UsersDAO {
 				Date year_and_month = rs.getDate("year_and_month");
 				String emp_no = rs.getString("emp_no");
 				String emp_name = rs.getString("emp_name");
-				users = new UserBean();
+				users = new UsersBean();
 				users.setYear_and_month(year_and_month);
 				users.setEmp_no(emp_no);
 				users.setEmp_name(emp_name);
