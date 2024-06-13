@@ -2,7 +2,7 @@
 //***　作成日時：2024/6/12
 package beans;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class AttStatusBean {
 	//勤怠状況表テーブル主キー：勤怠状況表ID
@@ -10,7 +10,7 @@ public class AttStatusBean {
 	//外部キー：利用者ID
 	private int users_id;
 	//年月
-	private Date years;
+	private LocalDate years;
 	//作成者
 	private int created_users_id;
 	//更新者
@@ -20,7 +20,7 @@ public class AttStatusBean {
 
 	}
 
-	public AttStatusBean(int att_status_id, int users_id, Date years, int created_users_id, int updated_users_id) {
+	public AttStatusBean(int att_status_id, int users_id, LocalDate years, int created_users_id, int updated_users_id) {
 		super();
 		this.att_status_id = att_status_id;
 		this.users_id = users_id;
@@ -37,11 +37,11 @@ public class AttStatusBean {
 		this.users_id = users_id;
 	}
 
-	public Date getYears() {
+	public LocalDate getYears() {
 		return years;
 	}
 
-	public void setYears(Date years) {
+	public void setYears(LocalDate years) {
 		this.years = years;
 	}
 

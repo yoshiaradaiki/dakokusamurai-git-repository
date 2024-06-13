@@ -214,9 +214,8 @@ public class MonthReqDAO {
 			//型の変換
 			long timeInMilliSeconds = years.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
+			
 			//UPDATE文の？に使用する値を設定
-			//UsersBean usersBean = new UsersBean();
-			//AttStatusBean attStatusBran = new AttStatusBean();
 			pStmt.setInt(1, users_id);//セッションスコープに保存された利用者IDを取得
 			pStmt.setDate(2, sqlDate);//選択された年月を取得
 
