@@ -61,7 +61,7 @@ public class StampRevReqDAO {
 		}
 		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
 				
-			String updateSql = "UPDATE stamp_correct_re,\n"
+			String sql = "UPDATE stamp_correct_re,\n"
 					+ "SET status = ?, reason = ?, updated_users_id = ?\n"
 					+ "WHERE month_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
