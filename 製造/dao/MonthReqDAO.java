@@ -101,6 +101,7 @@ public class MonthReqDAO {
 	//メソッド名：自分の申請を取得
 	//引数　　　：自分の利用者ID
 	//戻り値　　：申請一覧リスト
+	//テスト：statusが3（キャンセル）の場合、表示しないこと
 	public List<RequestListBean> findMyRequest(int users_id) {
 		//ArrayList作成
 		List<RequestListBean> myReqList = new ArrayList<>();
@@ -147,6 +148,7 @@ public class MonthReqDAO {
 	//メソッド名：部下の申請を取得
 	//引数　　　：部下の利用者ID
 	//戻り値　　：申請一覧リスト
+	//テスト：statusが3（キャンセル）の場合、表示しないこと
 	public List<RequestListBean> findMySubRequest(int users_id) {
 		//ArrayList作成
 		List<RequestListBean> subReqList = new ArrayList<>();
