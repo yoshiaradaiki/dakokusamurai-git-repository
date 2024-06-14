@@ -5,6 +5,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,7 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import beans.RequestListBean;
+import beans.UsersBean;
 import logic.AttDetailLogic;
 
 
@@ -35,9 +39,23 @@ public class AttDetailApprovalController extends HttpServlet {
 		
 		attDetailLogic.updateStampRevReq(stamp_rev_req_id, status, reason);
 		
-		request.setAttribute(, );
+        HttpSession session = request.getSession();
+        
+//		自分の申請一覧
+		UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
+		List<RequestListBean> myRequestListBeans = attDetailLogic.findMyRequest(users_id);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/attendanceStatusDetail.jsp");
+		request.setAttribute("myRequestListBeans", myRequestListBeans);
+
+//		部下の申請一覧
+		UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
+		List<RequestListBean> mySubRequestListBeans = attDetailLogic.findMySubRequest(users_id);
+		
+		request.setAttribute("mySubRequestListBeans", mySubRequestListBeans);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
 		dispatcher.forward(request, response);
 
 								
