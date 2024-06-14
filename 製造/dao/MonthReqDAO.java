@@ -40,7 +40,7 @@ public class MonthReqDAO {
 			System.out.println("H2データベースに接続しました。");
 
 			//INSERT文の準備
-			String insertSql = "INSERT INTO month_req (att_status_id, status,　created_users_id, updated_users_id)\n"
+			String insertSql = "INSERT INTO month_req (att_status_id, status, created_users_id, updated_users_id)\n"
 					+ "VALUES (?, ?, ?, ?); ";
 			PreparedStatement pStmt = conn.prepareStatement(insertSql);
 

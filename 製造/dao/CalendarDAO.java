@@ -52,7 +52,7 @@ public class CalendarDAO {
 	
 	
 	// 1ヶ月取得するメソッド
-	public List<StampBean> findMyAttStatusDetailStamp(int users_id, Date date) {
+	public List<StampBean> findMyAttStatusMonthStamp(int users_id, Date date) {
 		
 		Connection con = null;
 		PreparedStatement psmt = null;
@@ -195,7 +195,7 @@ public class CalendarDAO {
 	}
 	
 	// 1ヶ月取得するメソッド
-	public StampBean findMyAttStatusMonthStamp(int users_id, Date date) {
+	public StampBean findMyAttStatusDetailStamp(int users_id, Date date) {
 		
 		Connection con = null;
 		PreparedStatement psmt = null;
