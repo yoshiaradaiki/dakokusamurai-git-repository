@@ -4,8 +4,11 @@
 package logic;
 
 import java.util.Date;
+import java.util.List;
 
+import beans.RequestListBean;
 import beans.StampBean;
+import dao.MonthReqDAO;
 import dao.StampDAO;
 import dao.StampRevDAO;
 import dao.StampRevReqDAO;
@@ -57,5 +60,24 @@ public boolean updateStampRevReq(int stamp_rev_req_id, int status, String reason
 	return stampRevReqDAO.updateStampRevReq( stamp_rev_req_id, status,  reason);				
     
 }
+//メソッド名：findMyRequest
+	//引数　　　：users_id
+	//戻り値　　：
+	//処理概要　：
+	public List<RequestListBean> findMyRequest(int users_id) {
+		MonthReqDAO monthReqDAO = new MonthReqDAO();
+		return monthReqDAO.findMyRequest(users_id);
+	}
+
+	//メソッド名：findMySubRequest
+	//引数　　　：users_id
+	//戻り値　　：
+	//処理概要　：
+	public List<RequestListBean> findMySubRequest(int users_id) {
+		MonthReqDAO monthReqDAO = new MonthReqDAO();
+		return monthReqDAO.findMySubRequest(users_id);
+	}
+
+
 
 }

@@ -1,6 +1,8 @@
 //担当:長江
 //2024/06/14
-//勤怠状況詳細の承認ボタン
+//勤怠状況詳細の差し戻しボタン
+
+
 
 package servlet;
 
@@ -19,29 +21,30 @@ import beans.RequestListBean;
 import beans.UsersBean;
 import logic.AttDetailLogic;
 
-
-@WebServlet("/AttDetailApprovalController")
-public class AttDetailApprovalController extends HttpServlet {
+/**
+ * Servlet implementation class AttDetailRemandController
+ */
+@WebServlet("/AttDetailRemandController")
+public class AttDetailRemandController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("UTF-8");
 		
-//        部下の打刻修正申請を承認する
+		AttDetailLogic attDetailLogic = new AttDetailLogic();	
 		
-		AttDetailLogic attDetailLogic = new AttDetailLogic();
 		
 		int stamp_rev_req_id =Integer.parseInt( request.getParameter("stamp_rev_req_id"));
-		int status = 2; //承認済み
-		String reason = "";  //承認時は理由は不要
+		int status = 0;//差し戻し
+		String reason = "";//差し戻し時は差し戻し理由が必要
 		
 		attDetailLogic.updateStampRevReq(stamp_rev_req_id, status, reason);
 		
-        HttpSession session = request.getSession();
-        
-//		自分の申請一覧
+		HttpSession session = request.getSession();
+		
+//　　　自分の申請一覧		
 		UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
 		int users_id = sessionUsersBean.getUsers_id();
 		List<RequestListBean> myRequestListBeans = attDetailLogic.findMyRequest(users_id);
@@ -57,8 +60,6 @@ public class AttDetailApprovalController extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
 		dispatcher.forward(request, response);
-
-								
 	}
 
 }

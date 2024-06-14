@@ -5,12 +5,18 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import beans.StampBean;
+import beans.UsersBean;
+import logic.RequestListLogic;
 
 /**
  * Servlet implementation class RequestDetailController
@@ -33,18 +39,21 @@ public class RequestDetailController extends HttpServlet {
 
 		//部下の変更申請（勤怠状況表ID）を取得
 		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
-		//勤怠状況表IDで部下の利用者ID、勤怠状況表の年月を取得する
-		int subUsers_id = 
-
+		//勤怠状況表IDで部下の利用者IDを取得（年月を持つUsersBean）
+		UsersBean usersBean = new RequestListLogic().findMySubAttStatusUsers(att_status_id);
+		int users_id = usersBean.getUsers_id();
+		Date year_and_month = usersBean.getYear_and_month();
+				
 		//------------------------------------------------------------------------------------//
 		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
 		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-		
+		RequestListLogic requestListLogic = new RequestListLogic();
+		List<StampBean> attBean = requestListLogic.findAttStatusMonthStamp(users_id, year_and_month);
 		
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
-		
+		request.setAttribute("attBean", attBean);
 
 		//"attendanceStatus.jsp"へ転送する
 		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
