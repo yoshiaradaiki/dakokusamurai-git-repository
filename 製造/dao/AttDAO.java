@@ -13,12 +13,19 @@ import beans.AttStatusBean;
 import beans.UsersBean;
 
 public class AttDAO {
-	//データベース接続に使用する情報
+	//H2データベース接続に使用する情報
 	private final String JDBC_URL="jdbc:h2:tcp://localhost/C:\\dakokusamuraiDB\\dakokusamuraiDB";
 	private final String DB_USER ="dakokuSamurai";
 	private final String DB_PASS ="dakokusamurai";
 	
-
+	//テスト用
+	public static void main(String[]args) {
+//		AttDAO attDAO = new AttDAO();
+//		attDAO.insertAttStatus(null);
+//		attDAO.findUserget(1);
+		
+	}
+	
 	//勤怠状況表登録
 	public boolean insertAttStatus(AttStatusBean attStatusBean) {	
 	
@@ -64,7 +71,7 @@ public class AttDAO {
 	
 	//利用者の取得
 	//申請一覧から申請IDを取得する
-	public UsersBean  findUserget(int att_status_id) {
+	public UsersBean  findUsers(int att_status_id) {
 		//UserBean格納インスタンス
 		UsersBean usersBean = new UsersBean(); 
 	
