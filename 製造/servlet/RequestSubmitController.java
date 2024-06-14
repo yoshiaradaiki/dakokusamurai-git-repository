@@ -1,7 +1,7 @@
 //申請一覧画面：再提出ボタン
 //機能：勤務状況表画面へ
 //作成者：湯
-//作成日：2024/6/13
+//作成日：2024/6/14
 package servlet;
 
 import java.io.IOException;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import beans.AttStatusBean;
 import beans.RequestListBean;
+import beans.StampBean;
 import beans.UsersBean;
 import logic.RequestListLogic;
 
@@ -56,14 +56,14 @@ public class RequestSubmitController extends HttpServlet {
 		UsersBean usersBean = new UsersBean();
 		usersBean.setUsers_id(sessionUsersBean.getUsers_id());
 		//取得した勤怠状況表IDによって差し戻された一ヶ月分の勤怠状況表を表示する
-		List<AttStatusBean> attStatusBean = new RequestListLogic().findAttStatus(att_status_id);
+		List<StampBean> stampBean = new RequestListLogic().findAttStatus(att_status_id);
 		//取得した勤怠状況表IDによって勤怠状況表に差し戻しの理由を取得し、表示する
 		RequestListBean reqListBeanReason = new RequestListLogic().findAttStatusMonthReason(att_status_id);
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
 		request.setAttribute("usersBean", usersBean);//利用者ID
-		request.setAttribute("attStatusBean", attStatusBean);//勤怠状況表
+		request.setAttribute("attStatusBean", stampBean);//勤怠状況表
 		request.setAttribute("reqListBeanReason", reqListBeanReason);//理由
 		
 		//"attendanceStatus.jsp"へ転送する
