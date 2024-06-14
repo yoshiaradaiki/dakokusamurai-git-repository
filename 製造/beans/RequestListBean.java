@@ -4,7 +4,7 @@
 package beans;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 public class RequestListBean implements Serializable {
 	//月末申請テーブル主キー：月末申請ID
@@ -16,7 +16,7 @@ public class RequestListBean implements Serializable {
 	//外部キー：打刻修正ID
 	private int stamp_rev_id;
 	//申請日時
-	private LocalDate date_and_time;
+	private Date date_and_time;
 	//差し戻しの理由
 	private String reason;
 	//0：差し戻し１：承認待ち２：承認済み３：キャンセル
@@ -35,7 +35,7 @@ public class RequestListBean implements Serializable {
 	}
 
 	public RequestListBean(int month_req_id, int stamp_rev_req_id, int att_status_id, int stamp_rev_id,
-			LocalDate date_and_time, String reason, int status, int content, String name, String boss_name,
+			Date date_and_time, String reason, int status, int content, String name, String boss_name,
 			int created_users_id, int updated_users_id) {
 		super();
 		this.month_req_id = month_req_id;
@@ -52,12 +52,13 @@ public class RequestListBean implements Serializable {
 		this.updated_users_id = updated_users_id;
 	}
 
-	public RequestListBean(LocalDate date_and_time, int status) {
+	public RequestListBean(Date date_and_time, int status, int content) {
 		this.date_and_time = date_and_time;
 		this.status = status;
+		this.content = content;
 	}
 
-	public RequestListBean(LocalDate date_and_time, int content, int status, String boss_name) {
+	public RequestListBean(Date date_and_time, int content, int status, String boss_name) {
 		this.date_and_time = date_and_time;
 		this.content = content;
 		this.status = status;
@@ -80,11 +81,11 @@ public class RequestListBean implements Serializable {
 		this.stamp_rev_id = stamp_rev_id;
 	}
 
-	public LocalDate getDate_and_time() {
+	public Date getDate_and_time() {
 		return date_and_time;
 	}
 
-	public void setDate_and_time(LocalDate date_and_time) {
+	public void setDate_and_time(Date date_and_time) {
 		this.date_and_time = date_and_time;
 	}
 

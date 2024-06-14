@@ -132,7 +132,9 @@ public class MonthReqDAO {
 				Timestamp date_and_time = rs.getTimestamp("date_and_time");
 				int status = rs.getInt("status");
 				//RequestListBean reqListBean = new RequestListBean(date_and_time, status);
-				myReqList.add(new RequestListBean(date_and_time, status));
+//				myReqList.add(new RequestListBean(date_and_time, status));
+				RequestListBean requestListBean = new RequestListBean();
+				requestListBean.setDate_and_time(date_and_time);
 			}
 
 		} catch (SQLException e) {
@@ -156,11 +158,11 @@ public class MonthReqDAO {
 			System.out.println("H2データベースに接続しました。");
 
 			//SELECT文の準備　ステータス番号の小さい順で並べる
-			String selectSql = "SELECT m.date_req, m.status, u.users_id FROM month_req m\n"
+			String selectSql = "SELECT m.date_req, m.status, u.users_id, 0 AS content FROM month_req m\n"
 					+ " INNER JOIN att_status a ON m.att_status_id = a.att_status_id\n"
 					+ " INNER JOIN users u ON m.users_id = u.users_id\n"
 					+ "UNION\n"
-					+ "SELECT s.date_req, s.status, u.users_id\n"
+					+ "SELECT s.date_req, s.status, u.users_id, 1 AS content\n"
 					+ "FROM stamp_correct_req s\n"
 					+ "INNER JOIN stamp_revision r ON s.stamp_revision_id = r.stamp_revision_id\n"
 					+ "INNER JOIN users u ON r.users_id = u.users_id\n"
@@ -178,8 +180,9 @@ public class MonthReqDAO {
 			while (rs.next()) {
 				Timestamp date_and_time = rs.getTimestamp("date_and_time");
 				int status = rs.getInt("status");
+				int content = rs.getInt("content");
 				//RequestListBean reqListBean = new RequestListBean(date_and_time, status);
-				subReqList.add(new RequestListBean(date_and_time, status));
+				subReqList.add(new RequestListBean(date_and_time, status, content));
 			}
 
 		} catch (SQLException e) {
