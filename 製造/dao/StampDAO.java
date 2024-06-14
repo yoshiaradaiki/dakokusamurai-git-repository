@@ -4,22 +4,42 @@
 package dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalTime;
+import java.util.Date;
 
 public class StampDAO {
     private final String JDBC_URL = "jdbc:h2:tcp://localhost/C:\\dakokuSamuraiDB\\dakokuSamuraiDB";
     private final String DB_USER = "dakokuSamurai";
     private final String DB_PASS = "dakokusamurai";
     
+    // util.Date型をsql.Date型に変換する
+    private java.sql.Date changeDate(Date date) {
+    	if (date != null) {
+    		long timeInMilliSeconds = date.getTime();
+    		java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
+    		return sqlDate;    		
+    	} else {
+    		return null;
+    	}
+    }
+    // LocalTime型をsql.Time型に変換する
+    private Time changeTime(LocalTime lTime) {
+    	if (lTime != null) {
+    		return new Time(lTime.getHour(), lTime.getMinute(), 0);    		
+    	} else {
+    		return null;
+    	}
+    }
+    
     //メソッド：insertStamp
     //引数　　：利用者ID, 日付, 出勤時刻, 補正出勤時刻,
     //戻り値　：true or false
-    public boolean insertStamp(int users_id, Date stamp_date, Time workln_raw, Time wolkln_re)
+    public boolean insertStamp(int users_id, Date stamp_date, LocalTime workln_raw, LocalTime wolkln_re)
     {
     	//JDBCドライバを読み込む
     	try {
@@ -35,9 +55,9 @@ public class StampDAO {
     		
     		//INSERT文の？に使用する値を設定
     		ps.setInt(1, users_id);
-    		ps.setDate(2, stamp_date);
-    		ps.setTime(3, workln_raw);
-    		ps.setTime(4, wolkln_re);
+    		ps.setDate(2, changeDate(stamp_date));
+    		ps.setTime(3, changeTime(workln_raw));
+    		ps.setTime(4, changeTime(wolkln_re));
     		
             ps.executeUpdate();
 
@@ -51,7 +71,7 @@ public class StampDAO {
     //メソッド：updateStamp
     //引数　　：利用者ID, 日付, 退勤時刻, 補正退勤時刻,
     //戻り値　：true or false
-    public boolean updateStamp(int users_id, Date stamp_date, Time workOut_raw, Time wolkOut_re) {
+    public boolean updateStamp(int users_id, Date stamp_date, LocalTime workOut_raw, LocalTime workOut_re) {
     	
     	//JDBCドライバを読み込む
     	try {
@@ -61,15 +81,15 @@ public class StampDAO {
 		}
     	try(Connection conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS)){
     		
-    		String sql= "INSERT INTO stamp(users_id, stamp_date, WorkOut_raw, wolkOut_re)\n"
-    				  + "VALUE(?,?,?,?)";
+    		String sql= "UPDATE stamp TO workOut_raw = ?, wolkOut_re = ?\n"
+    				+ "WHERE users_id = ? AND stamp_date = ?";
     		PreparedStatement ps = conn.prepareStatement(sql);
     		
     		//INSERT文の？に使用する値を設定
-    		ps.setInt(1, users_id);
-    		ps.setDate(2, stamp_date);
-    		ps.setTime(3, workOut_raw);
-    		ps.setTime(4, wolkOut_re);
+    		ps.setTime(1, changeTime(workOut_raw));
+    		ps.setTime(2, changeTime(workOut_re));
+    		ps.setInt(3, users_id);
+    		ps.setDate(4, changeDate(stamp_date));
     		
             ps.executeUpdate();
 
@@ -101,7 +121,7 @@ public class StampDAO {
     		PreparedStatement ps = conn.prepareStatement(sql);
     		//INSERT文の？に使用する値を設定
     		ps.setInt(1, users_id);
-    		ps.setDate(2, stamp_date); 		
+    		ps.setDate(2, changeDate(stamp_date)); 		
     		ResultSet rs = ps.executeQuery();
     		
     		if (rs.next()) {
