@@ -1,5 +1,4 @@
 //社員画面：申請一覧ボタン押下時の処理
-//仮作成：湯
 package servlet;
 
 import java.io.IOException;

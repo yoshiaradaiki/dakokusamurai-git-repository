@@ -48,28 +48,7 @@
             </c:forEach>
         </tbody>
     </table>
-    <script>
-        function submitForm(action, requestId) {
-            var form = document.createElement('form');
-            form.setAttribute('method', 'post');
-            form.setAttribute('action', 'processRequest');
-
-            var hiddenField = document.createElement('input');
-            hiddenField.setAttribute('type', 'hidden');
-            hiddenField.setAttribute('name', 'action');
-            hiddenField.setAttribute('value', action);
-            form.appendChild(hiddenField);
-
-            var requestIdField = document.createElement('input');
-            requestIdField.setAttribute('type', 'hidden');
-            requestIdField.setAttribute('name', 'requestId');
-            requestIdField.setAttribute('value', requestId);
-            form.appendChild(requestIdField);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-    </script>
+    
     <h4>部下の申請一覧</h4>
     <table>
         <thead>
@@ -96,27 +75,6 @@
             </c:forEach>
         </tbody>
     </table>
-    <script>
-        function submitForm(action, requestId) {
-            var form = document.createElement('form');
-            form.setAttribute('method', 'post');
-            form.setAttribute('action', 'processRequest');
 
-            var hiddenField = document.createElement('input');
-            hiddenField.setAttribute('type', 'hidden');
-            hiddenField.setAttribute('name', 'action');
-            hiddenField.setAttribute('value', action);
-            form.appendChild(hiddenField);
-
-            var requestIdField = document.createElement('input');
-            requestIdField.setAttribute('type', 'hidden');
-            requestIdField.setAttribute('name', 'requestId');
-            requestIdField.setAttribute('value', requestId);
-            form.appendChild(requestIdField);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-    </script>
 </body>
 </html>
