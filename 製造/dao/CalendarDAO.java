@@ -194,7 +194,7 @@ public class CalendarDAO {
 		return stampBeans;
 	}
 	
-	// 1ヶ月取得するメソッド
+	// 1日分取得するメソッド
 	public StampBean findMyAttStatusDetailStamp(int users_id, Date date) {
 		
 		Connection con = null;
