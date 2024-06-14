@@ -1,3 +1,6 @@
+//作成者：鈴木
+//作成日時：6/14
+
 package logic;
 
 import java.util.Date;
