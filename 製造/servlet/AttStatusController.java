@@ -41,7 +41,7 @@ public class AttStatusController extends HttpServlet {
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
 
 		//勤怠状況表の利用者取得
-		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers1(users_id);
+		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(users_id);
 
 		//勤怠状況表の表示
 		List<StampBean> stampBean = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
