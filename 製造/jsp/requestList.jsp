@@ -164,7 +164,7 @@ th {
        					 </c:when>
 						</c:choose></td>
 					<td style="text-align: center;"><c:out
-							value="${request.bossName}" /></td>
+							value="${request.name}" /></td>
 					<td style="text-align: center;"><c:choose>
 							<c:when test="${request.content == 0}">
 								<button type="button" onclick="goRevDetail()">変更詳細</button>
