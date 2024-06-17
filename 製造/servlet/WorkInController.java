@@ -1,3 +1,7 @@
+//社員画面：出勤ボタン
+//作成者：鈴木
+//作成日時：2024/06/14
+
 package servlet;
 
 import java.io.IOException;

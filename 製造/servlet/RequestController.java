@@ -1,11 +1,10 @@
-//社員画面：勤怠状況表ボタン
+//社員画面：申請一覧ボタン
 //作成者：鈴木
 //作成日時：2024/06/14
 
 package servlet;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,12 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.RequestListBean;
-import beans.StampBean;
 import beans.UsersBean;
-import logic.AttStatusLogic;
+import logic.EmpLogic;
 
 @WebServlet("/AttStatusController")
-public class AttStatusController extends HttpServlet {
+public class RequestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,27 +32,19 @@ public class AttStatusController extends HttpServlet {
 		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
 		int users_id = sessionUsersBean.getUsers_id();
 
-		//現在の日付を取得
-		Date date = new Date();
+		EmpLogic empLogic = new EmpLogic();
 
-		// AttStatusLogic のインスタンスを生成
-		AttStatusLogic attStatusLogic = new AttStatusLogic();
+		//自分が提出した申請を表示
+		List<RequestListBean> requestListBean = empLogic.findMyRequest(users_id);
 
-		//勤怠状況表の利用者取得
-		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers1(users_id);
-
-		//勤怠状況表の表示
-		List<StampBean> stampBean = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
-
-		//差し戻し理由を一覧から取得
-		RequestListBean requestListBean = attStatusLogic.findMyAttStatusMonthRequest(users_id, date);
+		//自分宛ての申請を表示
+		List<RequestListBean> subrequestListBean = empLogic.findMySubRequest(users_id);
 
 		//JSPで取得する属性を入れる
-		request.setAttribute("usersBean", usersBean);//利用者ID
-		request.setAttribute("stampBean", stampBean);//勤怠状況表
-		request.setAttribute("requestListBean", requestListBean); //理由
+		request.setAttribute("requestListBean", requestListBean);//自分が提出した申請
+		request.setAttribute("subrequestListBean", subrequestListBean);//自分宛ての申請
 
-		//"Att.jsp"へ送る
-		request.getRequestDispatcher("WEB-INF/jsp/Att.jsp").forward(request, response);
+		//"attendanceStatus.jsp"へ送る
+		request.getRequestDispatcher("WEB-INF/jsp/requestList.jsp").forward(request, response);
 	}
 }
