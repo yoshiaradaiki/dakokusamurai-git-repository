@@ -1,5 +1,5 @@
 //担当:長江
-//2024/06/14
+//更新日：2024/06/17
 //勤怠状況詳細の差し戻しボタン
 
 
@@ -33,32 +33,36 @@ public class AttDetailRemandController extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		request.setCharacterEncoding("UTF-8");
 		
-		AttDetailLogic attDetailLogic = new AttDetailLogic();	
-		
-		
-		int stamp_rev_req_id =Integer.parseInt( request.getParameter("stamp_rev_req_id"));
-		int status = 0;//差し戻し
-		String reason = "";//差し戻し時は差し戻し理由が必要
-		
-		attDetailLogic.updateStampRevReq(stamp_rev_req_id, status, reason);
-		
+//	　　セッションを取得
 		HttpSession session = request.getSession();
 		
 //　　　自分の申請一覧		
 		UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
+//      セッションから利用者IDを取得		
 		int users_id = sessionUsersBean.getUsers_id();
-		List<RequestListBean> myRequestListBeans = attDetailLogic.findMyRequest(users_id);
 		
-		request.setAttribute("myRequestListBeans", myRequestListBeans);
+		AttDetailLogic attDetailLogic = new AttDetailLogic();	
+		
+//		hiddenから取得		
+		int stamp_rev_req_id =Integer.parseInt( request.getParameter("stamp_rev_req_id"));//打刻修正申請IDを取得
+		int status = 0;//差し戻し
+		String reason = request.getParameter("reason");//差し戻し時は差し戻し理由が必要
+		
+//		打刻修正申請IDを実行し、打刻修正申請ID、ステータス、理由の結果を取得
+		attDetailLogic.updateStampRevReq(stamp_rev_req_id, status, reason,users_id);
 
-//		部下の申請一覧
-		UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
-		int users_id = sessionUsersBean.getUsers_id();
-		List<RequestListBean> mySubRequestListBeans = attDetailLogic.findMySubRequest(users_id);
+//　　　申請一覧を取得
+		List<RequestListBean> myRequestListBean = attDetailLogic.findMyRequest(users_id);
+		List<RequestListBean> subRequestListBean = attDetailLogic.findMySubRequest(users_id);
 		
-		request.setAttribute("mySubRequestListBeans", mySubRequestListBeans);
 		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
+		
+//　　　遷移先画面である申請一覧画面へ値を渡す					
+		request.setAttribute("myRequestListBean", myRequestListBean);
+		request.setAttribute("subRequestListBean", subRequestListBean);	
+		
+//		JSPからサーブレットへ転送		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/RequestList.jsp");
 		dispatcher.forward(request, response);
 	}
 
