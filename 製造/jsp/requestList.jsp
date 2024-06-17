@@ -13,67 +13,93 @@ table {
 }
 
 th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: left;
+	border: 1px solid #1e90ff;
+	padding: 4px;
+	text-align: center;
+	background-color: #f0f8ff; /* デフォルトの背景色を設定 */
 }
 
 th {
-	background-color: #f2f2f2;
+	background-color: #87cefa;
 }
 </style>
 </head>
 <body>
 
 	<%-- ********************自分の申請一覧フォーム******************** --%>
-<h2>申請一覧</h2>
-<table style="width: 100%; border-collapse: collapse;">
-    <thead>
-        <tr>
-            <th style="text-align: center;">日時</th>
-            <th style="text-align: center;">内容</th>
-            <th style="text-align: center;">ステータス</th>
-            <th style="text-align: center;">承認者</th>
-            <th style="text-align: center;">操作</th>
-        </tr>
-    </thead>
-    <tbody>
-        <c:forEach var="request" items="${requestList}">
-            <tr>
-                <td style="text-align: center;"><c:out value="${request.dateAndTime}" /></td>
-                <td style="text-align: center;"><c:out value="${request.content}" /></td>
-                <td style="text-align: center;"><c:out value="${request.status}" /></td>
-                <td style="text-align: center;"><c:out value="${request.bossName}" /></td>
-                <td style="text-align: center;">
-                    <c:choose>
-                        <c:when test="${request.status < 3}">
-                            <c:choose>
-                                <c:when test="${request.content == 0 && request.status < 2}">
-                                    <button type="button" onclick="resubmit()">再申請</button>
-                                    <button type="button" onclick="resubmit()">キャンセル</button>
-                                </c:when>
-                                <c:when test="${request.content == 1 && request.status < 2}">
-                                    <button type="button" onclick="resubmit()">再提出</button>
-                                    <button type="button" onclick="resubmit()">キャンセル</button>
-                                </c:when>
-                                <c:otherwise>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:when>
-                        <c:otherwise>
-                        </c:otherwise>
-                    </c:choose>
-                </td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
+	<h2>申請一覧</h2>
+	<table style="width: 100%; border-collapse: collapse;">
+		<thead>
+			<tr>
+				<th>日時</th>
+				<th>内容</th>
+				<th>ステータス</th>
+				<th>承認者</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="request" items="${requestList}">
+				<tr>
+					<td style="text-align: center;"><c:out
+							value="${request.dateAndTime}" /></td>
+					<td style="text-align: center;"><c:out
+							value="${request.content}" /> <c:choose>
+							<c:when test="${request.content == 0}">
+     					       ：変更申請
+     					   </c:when>
+							<c:when test="${request.content == 1}">
+      					      ：勤怠状況表提出
+      					  </c:when>
+						</c:choose></td>
+					<td style="text-align: center;"><c:out
+							value="${request.status}" /> <c:choose>
+							<c:when test="${request.status == 0}">
+   					         ：差し戻し
+   					     </c:when>
+							<c:when test="${request.status == 1}">
+   					         ：承認待ち
+    				    </c:when>
+							<c:when test="${request.status == 2}">
+     					      ：承認済み
+   					     </c:when>
+							<c:when test="${request.status == 3}">
+        				    ：キャンセル
+       					 </c:when>
+						</c:choose></td>
+					<td style="text-align: center;"><c:out
+							value="${request.bossName}" /></td>
+					<td style="text-align: center;"><c:choose>
+							<c:when test="${request.status < 3}">
+								<c:choose>
+									<c:when test="${request.content == 0 && request.status == 0}">
+										<button type="button" onclick="goRevDetail()">再申請</button>
+										<button type="button" onclick="goRequestList()">キャンセル</button>
+									</c:when>
+									<c:when test="${request.content == 1 && request.status == 0}">
+										<button type="button" onclick="goRevMonth()">再提出</button>
+										<button type="button" onclick="goRequestList()">キャンセル</button>
+									</c:when>
+									<c:when test="${request.status < 2}">
+										<button type="button" onclick="goRequestList()">キャンセル</button>
+									</c:when>
+									<c:otherwise>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 
 	<!-- ページネーション -->
 	<div class="pagination">
 		<%-- 前のページへのリンク --%>
 		<c:if test="${currentPage > 1}">
-			<c:url value="ListPageController" var="prevPageUrl">
+			<c:url value="MyReqListPageController" var="prevPageUrl">
 				<c:param name="page" value="${currentPage - 1}" />
 			</c:url>
 			<a href="${prevPageUrl}">前のページへ</a>
@@ -84,7 +110,7 @@ th {
 
 		<%-- 次のページへのリンク --%>
 		<c:if test="${currentPage < totalPages}">
-			<c:url value="ListPageController" var="nextPageUrl">
+			<c:url value="MyReqListPageController" var="nextPageUrl">
 				<c:param name="page" value="${currentPage + 1}" />
 			</c:url>
 			<a href="${nextPageUrl}">次のページへ</a>
@@ -93,10 +119,102 @@ th {
 
 
 	<%-- 　*******************部下の申請一覧フォーム******************** --%>
+	<h2>部下の申請一覧</h2>
+	<table style="width: 100%; border-collapse: collapse;">
+		<thead>
+			<tr>
+				<th>日時</th>
+				<th>内容</th>
+				<th>ステータス</th>
+				<th>申請者</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach var="request" items="${requestList}">
+				<tr>
+					<td style="text-align: center;"><c:out
+							value="${request.dateAndTime}" /></td>
+					<td style="text-align: center;"><c:out
+							value="${request.content}" /> <c:choose>
+							<c:when test="${request.content == 0}">
+     					      ： 変更申請
+     					   </c:when>
+							<c:when test="${request.content == 1}">
+      					      ：勤怠状況表提出
+      					  </c:when>
+						</c:choose></td>
+					<td style="text-align: center;"><c:out
+							value="${request.status}" />
+						<c:choose>
+							<c:when test="${request.status == 0}">
+   					         ：差し戻し
+   					     </c:when>
+							<c:when test="${request.status == 1}">
+   					         ：承認待ち
+    				    </c:when>
+							<c:when test="${request.status == 2}">
+     					      ：承認済み
+   					     </c:when>
+							<c:when test="${request.status == 3}">
+        				    ：キャンセル
+       					 </c:when>
+						</c:choose></td>
+					<td style="text-align: center;"><c:out
+							value="${request.bossName}" /></td>
+					<td style="text-align: center;"><c:choose>
+							<c:when test="${request.content == 0}">
+								<button type="button" onclick="goRevDetail()">変更詳細</button>
+							</c:when>
+							<c:when test="${request.content == 1}">
+								<button type="button" onclick="goRevMonth()">提出詳細</button>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose></td>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 
+	<!-- ページネーション -->
+	<div class="pagination">
+		<%-- 前のページへのリンク --%>
+		<c:if test="${currentPage > 1}">
+			<c:url value="MyReqListPageController" var="prevPageUrl">
+				<c:param name="page" value="${currentPage - 1}" />
+			</c:url>
+			<a href="${prevPageUrl}">前のページへ</a>
+		</c:if>
 
+		<%-- 現在のページ番号 --%>
+		<span>現在ページ ${currentPage}/${totalPages}</span>
+
+		<%-- 次のページへのリンク --%>
+		<c:if test="${currentPage < totalPages}">
+			<c:url value="MyReqListPageController" var="nextPageUrl">
+				<c:param name="page" value="${currentPage + 1}" />
+			</c:url>
+			<a href="${nextPageUrl}">次のページへ</a>
+		</c:if>
+	</div>
 
 	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
-	<a href="社員画面.jsp">戻る</a>
+	<a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>
 </body>
 </html>
+
+<script>
+	//勤怠状況詳細画面へ遷移
+	function goRevDetail() {
+		window.location.href = '/WEB-INF/jsp/attendanceStatusDetail.jsp';
+	}
+	//勤怠状況表画面へ遷移
+	function goRevMonthl() {
+		window.location.href = '/WEB-INF/jsp/attendanceStatus.jsp';
+	}
+	//再描画
+	function goRequestList() {
+		window.location.href = '/WEB-INF/jsp/requestLis.jsp';
+	}
+</script>
