@@ -1,7 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.Date; // Dateクラスをインポート
+import java.time.LocalTime;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,7 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.StampDAO;
+import beans.UsersBean;
+import logic.EmpLogic;
 
 @WebServlet("/WolkInController")
 public class WorkInController extends HttpServlet {
@@ -26,10 +28,26 @@ public class WorkInController extends HttpServlet {
 
 		// セッションから利用者IDを取得
 		HttpSession session = request.getSession();
+		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
 
 		// 現在時刻を取得
 		Date date = new Date();
 
-	}
+		// 現在時刻からLocalTimeを取得
+		LocalTime workIn_raw = LocalTime.now();
 
+		//登録処理
+		EmpLogic empLogic = new EmpLogic();
+		boolean result = empLogic.insertStamp(users_id, date, workIn_raw);
+
+		if (result) {
+			//登録成功（社員画面リダイレクト）
+			request.getRequestDispatcher("userMain.jsp").forward(request, response);
+		} else {
+			//登録失敗（エラー表示＆社員画面リダイレクト）
+			request.setAttribute("errorMsg", "出勤時刻の登録に失敗しました。");
+			request.getRequestDispatcher("WEB-INF/jsp/userMain.jsp").forward(request, response);
+		}
+	}
 }

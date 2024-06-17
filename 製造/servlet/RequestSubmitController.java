@@ -46,7 +46,7 @@ public class RequestSubmitController extends HttpServlet {
 		//セッションスコープから利用者IDを取得
 		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
 		//UsersBeanから利用者IDを取得
-		//int users_id = sessionUsersBean.getUsers_id();
+		int users_id = sessionUsersBean.getUsers_id();
 		//"att_status_id"勤怠状況表IDパラメータを文字列として取得し、Integer.parseInt()を利用して整数に変換する
 		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
 		Date year_and_month = sessionUsersBean.getYear_and_month();
