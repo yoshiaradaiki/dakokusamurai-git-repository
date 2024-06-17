@@ -5,6 +5,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import beans.RequestListBean;
-import beans.StampRevBean;
+import beans.StampBean;
 import beans.UsersBean;
 import logic.RequestListLogic;
 
@@ -47,6 +48,8 @@ public class RequestRequestController extends HttpServlet {
 
 		//"stamp_rev_id"を取得
 		int stamp_rev_id = Integer.parseInt(request.getParameter("stamp_rev_id"));
+		//int users_id = sessionUsersBean;
+		Date year_and_month = sessionUsersBean.getYear_and_month();
 
 		//------------------------------------------------------------------------------------//
 		//DBから再提出ボタンを押下時の勤怠状況詳細データを取得する処理
@@ -54,8 +57,10 @@ public class RequestRequestController extends HttpServlet {
 		//UsersBeanに利用者IDをセット
 		UsersBean usersBean = new UsersBean();
 		usersBean.setUsers_id(sessionUsersBean.getUsers_id());
+		//利用者IDを取得
+		int users_id = usersBean.getUsers_id();
 		//取得した勤怠状況詳細IDによって差し戻された一ヶ月分の勤怠状況詳細データを表示する
-		StampRevBean stampRevBean = new RequestListLogic().findAttStatusDetail(stamp_rev_id);
+		StampBean stampRevBean = new RequestListLogic().findAttStatusDetail(users_id, year_and_month);
 		//取得した勤怠状況詳細IDによって勤怠状況詳細に差し戻しの理由を取得し、表示する
 		RequestListBean reqListBeanReason = new RequestListLogic().findAttDetailReason(stamp_rev_id);
 		//------------------------------------------------------------------------------------//

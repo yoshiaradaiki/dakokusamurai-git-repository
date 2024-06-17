@@ -51,8 +51,6 @@ request.setCharacterEncoding("UTF-8");
 		Boolean isCancelled = requestListLogic.updateReqCancelByOneDay(stamp_rev_req_id, 3, null, sessionUsersBean);
 		// キャンセル操作の結果をリクエストスコープに設定
 		request.setAttribute("isCancelled", isCancelled);
-
-		
 		request.setAttribute("resultMsg", "打刻修正申請をキャンセルしました。");
 
 		//"attendanceStatus.jsp"へ転送する

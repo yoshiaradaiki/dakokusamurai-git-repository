@@ -53,6 +53,7 @@ public class RequestDetailController extends HttpServlet {
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
+		request.setAttribute("usersBean", usersBean);
 		request.setAttribute("attBean", attBean);
 
 		//"attendanceStatus.jsp"へ転送する
