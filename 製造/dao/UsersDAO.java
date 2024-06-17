@@ -32,24 +32,53 @@ public class UsersDAO {
 		//SQL文作成
 		try(Connection conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS)){
 			 
-			String sql = "CASE                                                         \n"
-					   + "WHEN EXISTS (                                                \n"
-					   + "SELECT *                                                     \n"
-					   + "FROM users                                                   \n"
-					   + "WHERE boss_users_id = (SELECT users_id FROM users            \n"
-					   + "                       WHERE login_id = ?                    \n"
-					   + "                       AND password = ?                      \n"
-					   + "                       AND deleteflag = false)               \n"
-					   + "THEN true                                                    \n"
-					   + "ELSE false                                                   \n"
-					   + "END as boss_flag                                             \n"
-					   + "FROM users                                                   \n"
-					   + "WHERE login_id = ? AND password = ? AND delete_flag = false";
+//			String sql = "CASE                                                         \n"
+//					   + "WHEN EXISTS (                                                \n"
+//					   + "SELECT *                                                     \n"
+//					   + "FROM users                                                   \n"
+//					   + "WHERE boss_users_id = (SELECT users_id FROM users            \n"
+//					   + "                       WHERE login_id = ?                    \n"
+//					   + "                       AND password = ?                      \n"
+//					   + "                       AND deleteflag = false)               \n"
+//					   + "THEN true                                                    \n"
+//					   + "ELSE false                                                   \n"
+//					   + "END as boss_flag                                             \n"
+//					   + "FROM users                                                   \n"
+//					   + "WHERE login_id = ? AND password = ? AND delete_flag = false";
+			
+			// sql文の修正 吉新
+			String sql = "SELECT \n"
+					+ "    u.users_id, \n"
+					+ "    u.emp_name, \n"
+					+ "    u.boss_users_id, \n"
+					+ "    u.level,\n"
+					+ "    CASE \n"
+					+ "        WHEN EXISTS (\n"
+					+ "            SELECT * \n"
+					+ "            FROM users \n"
+					+ "            WHERE boss_users_id = (\n"
+					+ "                SELECT users_id \n"
+					+ "                FROM users \n"
+					+ "                WHERE login_id = ? \n"
+					+ "                AND password = ? \n"
+					+ "                AND deleteflag = false\n"
+					+ "            )\n"
+					+ "        ) THEN true \n"
+					+ "        ELSE false \n"
+					+ "    END AS boss_flag \n"
+					+ "FROM \n"
+					+ "    users u\n"
+					+ "WHERE \n"
+					+ "    u.login_id = ? \n"
+					+ "    AND u.password = ? \n"
+					+ "    AND u.deleteflag = false;";
 			PreparedStatement ps = conn.prepareStatement(sql);
 			
 			//WHERE文の？に使用する値を設定
 			ps.setString(1,login_id );
 			ps.setString(2,password);
+			ps.setString(3,login_id ); // 追加 吉新
+			ps.setString(4,password); // 追加 吉新
 			ResultSet rs = ps.executeQuery();
 			
 			//値受け取り
