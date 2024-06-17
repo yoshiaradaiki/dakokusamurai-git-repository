@@ -5,15 +5,12 @@ package logic;
 import java.util.Date;
 import java.util.List;
 
-import beans.AttStatusBean;
 import beans.RequestListBean;
 import beans.StampBean;
-import beans.StampRevBean;
 import beans.UsersBean;
 import dao.AttDAO;
 import dao.CalendarDAO;
 import dao.MonthReqDAO;
-import dao.StampRevDAO;
 import dao.StampRevReqDAO;
 
 public class RequestListLogic {
@@ -22,19 +19,18 @@ public class RequestListLogic {
 	//引数　　　：セッションスコープに保存された利用者ID
 	//戻り値　　：勤怠状況表データ
 	//処理概要　：再提出ボタン：選択された月末申請の勤怠状況表のヘッダーに利用者IDを表示
-	public AttStatusBean findMyAttStatusUsers(int users_id) {
+	public UsersBean findMyAttStatusUsers(int att_status_id) {
 		AttDAO attDAO = new AttDAO();
-		//セッションスコープに保存された利用者ID
-		return attDAO.findAttStatusMonthStamp(users_id);
+		return attDAO.findUsers(att_status_id);
 	}
 
 	//メソッド名：差し戻された月末申請（勤怠状況表）を取得
 	//引数　　　：勤怠状況表ID
 	//戻り値　　：打刻リスト
 	//処理概要　：再提出ボタン：差し戻された一ヶ月分の勤怠状況表を取得する
-	public List<StampBean> findAttStatus(int att_status_id) {
+	public List<StampBean> findAttStatus(int users_id, Date date) {
 		CalendarDAO calendarDAO = new CalendarDAO();
-		return calendarDAO.findMyAttStatusMonthStamp(att_status_id);
+		return calendarDAO.findMyAttStatusMonthStamp(users_id, date);
 	}
 
 	//メソッド名：勤怠状況表に差し戻された理由を取得
@@ -50,19 +46,18 @@ public class RequestListLogic {
 	//引数　　　：セッションスコープに保存された利用者ID
 	//戻り値　　：利用者データ
 	//処理概要　：再申請ボタン：選択された変更申請の勤怠状況詳細画面のヘッダーに利用者IDを表示する
-	public UsersBean findMyAttDetailUsers(int users_id) {
+	public UsersBean findMyAttDetailUsers(int att_status_id) {
 		AttDAO attDAO = new AttDAO();
-		//セッションスコープに保存された利用者ID
-		return attDAO.findAttStatusMonthStamp(users_id);
+		return attDAO.findUsers(att_status_id);
 	}
 
 	//メソッド名：差し戻された変更申請（勤怠状況詳細）を取得
 	//引数　　　：打刻修正ID
 	//戻り値　　：打刻修正データ
 	//処理概要　：再申請ボタン：選択された差し戻された一日分の打刻修正データ（勤怠状況詳細画面）を取得する
-	public StampRevBean findAttStatusDetail(int stamp_rev_id) {
-		StampRevDAO stampRevDAO = new StampRevDAO();
-		return stampRevDAO.findAttStatusDetailStamp(stamp_rev_id);
+	public StampBean findAttStatusDetail(int users_id, Date date) {
+		CalendarDAO calendarDAO = new CalendarDAO();
+		return calendarDAO.findMyAttStatusDetailStamp(users_id, date);
 	}
 
 	//メソッド名：勤怠状況詳細に差し戻された理由を取得
