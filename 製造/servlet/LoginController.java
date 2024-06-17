@@ -1,3 +1,5 @@
+// 吉新
+// 2024/06/14
 package servlet;
 
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class LoginController extends HttpServlet {
 			session.setAttribute("sessionUsersBean", usersBean);
 			if (usersBean.getLevel() == 1) {
 				// 社員画面
-				rd = request.getRequestDispatcher("社員画面名");
+				rd = request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp");
 			} else {
 				// 管理者画面（仮）
 				request.setAttribute("errorMsg", "管理者画面はありません。");
