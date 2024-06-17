@@ -8,8 +8,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
-import beans.AttStatusBean;
 import beans.UsersBean;
 
 public class AttDAO {
@@ -26,8 +26,8 @@ public class AttDAO {
 		
 	}
 	
-	//勤怠状況表登録
-	public boolean insertAttStatus(AttStatusBean attStatusBean) {	
+	//勤怠状況表登録--------------------------------------------------------------
+	public boolean insertAttStatus(int att_status_id, int users_id,Date date) {	
 	
 		//JDBCドライバを読み込む
 		try {
@@ -41,18 +41,18 @@ public class AttDAO {
 			
 			//★★★SQL★★★
 			//追加したい情報：勤怠状況表ID+利用者ID+年月
-			sql = "INSERT INTO ATT_STATUS (ATT_STATUS_ID, USERS_ID, YEARS)\n"
+			sql = "INSERT INTO Att_status_id (ATT_STATUS_ID, USERS_ID, YEARS)\n"
 					+ "VALUES (?, ?, ?);";
 			
 			
 			//DATE型変換　java.util.Dateをjava.sql.Dateに変換する　　
-			 long timeInMilliSeconds = attStatusBean.getYears().getTime();
+			 long timeInMilliSeconds = date.getTime();
 		     java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
 		     
 		   //SQLを実行する
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setInt(1,attStatusBean.getAtt_status_id());
-			pStmt.setInt(2,attStatusBean.getUsers_id());
+			pStmt.setInt(1,att_status_id);
+			pStmt.setInt(2,users_id);
 			pStmt.setDate(3,sqlDate);
 			
 			//Insert文を実行
@@ -69,8 +69,8 @@ public class AttDAO {
 		
 	}
 	
-	//利用者の取得
-	//申請一覧から申請IDを取得する
+	//利用者の取得--------------------------------------------------------------
+	//申請一覧から勤怠状況表IDを取得する
 	public UsersBean  findUsers(int att_status_id) {
 		//UserBean格納インスタンス
 		UsersBean usersBean = new UsersBean(); 
@@ -107,8 +107,58 @@ public class AttDAO {
 		}
 		return usersBean;
 	}
+	
+	//勤怠状況表ID取得メソッド--------------------------------------------------------------
+	//
+	public int findAttStatusId(int users_id,Date date){
+		int att_status_id = 0;
+				//JDBCドライバを読み込む
+				try {
+					Class.forName("org.h2.Driver");
+				}catch(ClassNotFoundException e) {
+					e.printStackTrace();
+					throw new IllegalStateException("JDBCドライバをよみこめませんでした");
+				}
+				try(Connection conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS)){
+					
+					//★★★SQL★★★
+					//勤怠状況表IDを利用者IDと日時を元に取得
+					String sql= "SELECT att_status_id FROM att_status where users_id = ? and years = ?";
+					
+					//DATE型変換　java.util.Dateをjava.sql.Dateに変換する　　
+					 long timeInMilliSeconds = date.getTime();
+				     java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
+					
+					
+					//SQLを実行する
+					PreparedStatement pStmt = conn.prepareStatement(sql);
+					pStmt.setInt(1,users_id);
+					pStmt.setDate(2,sqlDate);
+					
+					 //結果を処理する
+					// SQLの結果を取得
+					ResultSet rs = pStmt.executeQuery();
+				
+					
+					//一件ずつ処理する
+		            while (rs.next()) {
+		            	att_status_id = rs.getInt("att_status_id"); 
+		           
+		            } 
+		            
+				} catch (SQLException e) {
+					e.printStackTrace();
+					 
+				}
+				return att_status_id;
+				
+			}
+		
+	}
+	
+	
 
-}
+
 
 
 //破棄する文章
@@ -151,10 +201,7 @@ public class AttDAO {
 //			
 //			ResultSet rs = pStmt.executeQuery();
 //			while (rs.next()) {
-//				
-//				 
-//
-//				
+//	
 //			}
 //		
 //		} catch (SQLException e) {

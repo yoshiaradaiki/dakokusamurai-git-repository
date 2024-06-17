@@ -47,13 +47,12 @@ public class AttConfirmController extends HttpServlet {
 		//1月は0のため-1、1日が欲しいので1を入力している
 		Date date = new Date(year,month-1,1);
 
-		
-		
+	
 		//-------------------------AttStatuLogicのメソッド取得---------------------------------
 		//AttStatusLogi インスタンス作成 
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
 		
-		//メソッド
+		//メソッドにUsersBeanへセッションUsers_idをセットしたものを再セットする
 		UsersBean attUsers = attStatusLogic.findMyAttStatusUsers(users_id);
 		//UserBeanにIdしかセットしていないので年月は別で取得する
 		attUsers.setYear_and_month(date); 
@@ -63,6 +62,7 @@ public class AttConfirmController extends HttpServlet {
 		
 		
 		//----------------------取得した情報を次の画面に投げる処理-----------------------------
+		request.setAttribute("date",date );
 		request.setAttribute("attUsers", attUsers);
 		request.setAttribute("attStampList", attStampList);
 		request.setAttribute("attRequestList", attRequestList);
