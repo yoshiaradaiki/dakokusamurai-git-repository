@@ -25,10 +25,36 @@ th, td {
 th {
 	background-color: #87cefa;
 }
+
+.pagination {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.pagination a {
+	display: inline-block;
+	padding: 5px 10px;
+	margin: 0 5px;
+	background-color: #f2f2f2;
+	color: #333;
+	text-decoration: none;
+	border: 1px solid #ccc;
+}
+
+.pagination a:hover {
+	background-color: #ddd;
+}
+
+.pagination span {
+	display: inline-block;
+	padding: 5px 10px;
+	background-color: #4CAF50;
+	color: white;
+}
 </style>
 </head>
 <body>
-
+	<jsp:include page="header.jsp" /><hr>
 	<%-- ********************自分の申請一覧フォーム******************** --%>
 	<h2>申請一覧</h2>
 	<table style="width: 100%; border-collapse: collapse;">
@@ -148,8 +174,7 @@ th {
       					  </c:when>
 						</c:choose></td>
 					<td style="text-align: center;"><c:out
-							value="${request.status}" />
-						<c:choose>
+							value="${request.status}" /> <c:choose>
 							<c:when test="${request.status == 0}">
    					         ：差し戻し
    					     </c:when>
@@ -163,14 +188,19 @@ th {
         				    ：キャンセル
        					 </c:when>
 						</c:choose></td>
-					<td style="text-align: center;"><c:out
-							value="${request.name}" /></td>
+					<td style="text-align: center;"><c:out value="${request.name}" /></td>
 					<td style="text-align: center;"><c:choose>
-							<c:when test="${request.content == 0}">
-								<button type="button" onclick="goRevDetail()">変更詳細</button>
-							</c:when>
-							<c:when test="${request.content == 1}">
-								<button type="button" onclick="goRevMonth()">提出詳細</button>
+							<c:when test="${request.status == 1 || request.status == 2}">
+								<c:choose>
+									<c:when test="${request.content == 0}">
+										<button type="button" onclick="goRevDetail()">変更詳細</button>
+									</c:when>
+									<c:when test="${request.content == 1}">
+										<button type="button" onclick="goRevMonth()">提出詳細</button>
+									</c:when>
+									<c:otherwise>
+									</c:otherwise>
+								</c:choose>
 							</c:when>
 							<c:otherwise>
 							</c:otherwise>
@@ -180,27 +210,28 @@ th {
 		</tbody>
 	</table>
 
-	<!-- ページネーション -->
+	<!-- ページネーション2 -->
 	<div class="pagination">
 		<%-- 前のページへのリンク --%>
-		<c:if test="${currentPage > 1}">
+		<c:if test="${currentPage2 > 1}">
 			<c:url value="MyReqListPageController" var="prevPageUrl">
-				<c:param name="page" value="${currentPage - 1}" />
+				<c:param name="page2" value="${currentPage2 - 1}" />
 			</c:url>
 			<a href="${prevPageUrl}">前のページへ</a>
 		</c:if>
 
 		<%-- 現在のページ番号 --%>
-		<span>現在ページ ${currentPage}/${totalPages}</span>
+		<span>現在ページ ${currentPage2}/${totalPages2}</span>
 
 		<%-- 次のページへのリンク --%>
-		<c:if test="${currentPage < totalPages}">
+		<c:if test="${currentPage2 < totalPages2}">
 			<c:url value="MyReqListPageController" var="nextPageUrl">
-				<c:param name="page" value="${currentPage + 1}" />
+				<c:param name="page2" value="${currentPage2 + 1}" />
 			</c:url>
 			<a href="${nextPageUrl}">次のページへ</a>
 		</c:if>
 	</div>
+
 
 	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
 	<a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>
