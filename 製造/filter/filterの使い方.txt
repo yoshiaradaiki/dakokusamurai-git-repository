@@ -1,9 +1,11 @@
 src/main/javaの下にfilterパッケージを作成し、「SessionUsersFilter.java」を自分のプロジェクトのfilterフォルダに入れる。
 
+*基本的にサーブレットクラスは変更する必要がない
 
 
 
-エラー時に見て：
+
+*エラー時に見て：
 
 if (Bean名 != null) {
     // 処理の内容
