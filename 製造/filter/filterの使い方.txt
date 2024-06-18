@@ -6,7 +6,7 @@ src/main/javaの下にfilterパッケージを作成し、「SessionUsersFilter.
 
 
 *エラー時に見て：
-
+[サーブレットクラス]
 if (Bean名 != null) {
     // 処理の内容
 } else {
