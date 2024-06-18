@@ -27,7 +27,6 @@ public class RequestController extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=utf-8");
 
-		
 		//********************　 ページング　********************//
 		int page = 1;
 		int recordsPerPage = 5; // 申請一覧の1ページあたりの表示件数
@@ -41,20 +40,39 @@ public class RequestController extends HttpServlet {
 			page2 = Integer.parseInt(request.getParameter("page2"));
 		}
 		//********************　 ページング　********************//
-		
-		
+
 		// セッションから利用者IDを取得
 		HttpSession session = request.getSession();
 		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-		int users_id = sessionUsersBean.getUsers_id();
+            // ユーザービーンからusers_idを取得
+            int users_id = sessionUsersBean.getUsers_id();
+            
+		//		//--------ダミーセッション利用者IDセット---------//
+		//		UsersBean sessionUsersBean = new UsersBean();
+		//		sessionUsersBean.setUsers_id(123);
+		//		int users_id = sessionUsersBean.getUsers_id();
+		//
+		//		//--------ダミーセッション利用者IDゲット----------//
+		//		HttpSession session = request.getSession();
+		//		sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		//		if (sessionUsersBean != null) {
+		//			users_id = sessionUsersBean.getUsers_id();
+		//			// ユーザーIDを使った処理を記述
+		//		} else {
+		//			// エラー処理など、sessionUsersBean が null の場合の対応
+		//		}
+		//		session.setAttribute("sessionUsersBean", sessionUsersBean);
+		//		//--------ダミーセッション利用者ID----------//
 
 		EmpLogic empLogic = new EmpLogic();
 
 		//自分が提出した申請を表示
 		List<RequestListBean> requestListBean = empLogic.findMyRequest(users_id);
-		
+
 		//********************　 ページング　********************//
+
 		int listSize = requestListBean.size();
+
 		int start = (page - 1) * recordsPerPage;
 		int end = Math.min(start + recordsPerPage, listSize);
 		int totalPages = (int) Math.ceil((double) requestListBean.size() / recordsPerPage);
@@ -63,21 +81,20 @@ public class RequestController extends HttpServlet {
 
 		//自分宛ての申請を表示
 		List<RequestListBean> subrequestListBean = empLogic.findMySubRequest(users_id);
-		
+
 		//********************　 ページング　********************//
 		int listSize2 = subrequestListBean.size();
 		int start2 = (page2 - 1) * recordsPerPage2;
 		int end2 = Math.min(start2 + recordsPerPage2, listSize2);
 		int totalPages2 = (int) Math.ceil((double) subrequestListBean.size() / recordsPerPage2);
 		List<RequestListBean> displayedRequests2 = subrequestListBean.subList(start, end);//範囲指定
+
 		//********************　 ページング　********************//
-		
-		
+
 		//JSPで取得する属性を入れる
-//		request.setAttribute("requestListBean", requestListBean);//自分が提出した申請
-//		request.setAttribute("subrequestListBean", subrequestListBean);//自分宛ての申請
-		
-		
+		//		request.setAttribute("requestListBean", requestListBean);//自分が提出した申請
+		//		request.setAttribute("subrequestListBean", subrequestListBean);//自分宛ての申請
+
 		//********************　 ページング　********************//
 		request.setAttribute("requestList", displayedRequests);
 		request.setAttribute("currentPage", page);
@@ -86,8 +103,7 @@ public class RequestController extends HttpServlet {
 		request.setAttribute("currentPage2", page2);
 		request.setAttribute("totalPages2", totalPages2);
 		//********************　 ページング　********************//
-		
-
+ 
 		//"attendanceStatus.jsp"へ送る
 		request.getRequestDispatcher("WEB-INF/jsp/requestList.jsp").forward(request, response);
 	}
