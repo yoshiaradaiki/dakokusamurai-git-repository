@@ -1,4 +1,4 @@
-<!-- 湯振裕
+<!-- 湯
 　　　2024-6-17
  -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -35,28 +35,29 @@ th {
 	display: inline-block;
 	padding: 5px 10px;
 	margin: 0 5px;
-	background-color: #f2f2f2;
+	background-color: #87cefa;
 	color: #333;
 	text-decoration: none;
 	border: 1px solid #ccc;
 }
 
 .pagination a:hover {
-	background-color: #ddd;
+	background-color: #e0ffff;
 }
 
 .pagination span {
 	display: inline-block;
 	padding: 5px 10px;
-	background-color: #4CAF50;
+	background-color: #a9a9a9;
 	color: white;
 }
 </style>
 </head>
 <body>
 	<jsp:include page="header.jsp" /><hr>
+	
 	<%-- ********************自分の申請一覧フォーム******************** --%>
-	<h2>申請一覧</h2>
+	<h3>申請一覧</h3>
 	<table style="width: 100%; border-collapse: collapse;">
 		<thead>
 			<tr>
@@ -124,9 +125,8 @@ th {
 		</tbody>
 	</table>
 
-	<!-- ページネーション -->
+	<!-- 申請一覧のページネーション -->
 	<div class="pagination">
-		<%-- 前のページへのリンク --%>
 		<c:if test="${currentPage > 1}">
 			<c:url value="MyReqListPageController" var="prevPageUrl">
 				<c:param name="page" value="${currentPage - 1}" />
@@ -134,10 +134,8 @@ th {
 			<a href="${prevPageUrl}">前のページへ</a>
 		</c:if>
 
-		<%-- 現在のページ番号 --%>
 		<span>現在ページ ${currentPage}/${totalPages}</span>
 
-		<%-- 次のページへのリンク --%>
 		<c:if test="${currentPage < totalPages}">
 			<c:url value="MyReqListPageController" var="nextPageUrl">
 				<c:param name="page" value="${currentPage + 1}" />
@@ -148,7 +146,7 @@ th {
 
 
 	<%-- 　*******************部下の申請一覧フォーム******************** --%>
-	<h2>部下の申請一覧</h2>
+	<h3>部下の申請一覧</h3>
 	<table style="width: 100%; border-collapse: collapse;">
 		<thead>
 			<tr>
@@ -160,7 +158,7 @@ th {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="request" items="${requestList}">
+			<c:forEach var="request" items="${requestList2}">
 				<tr>
 					<td style="text-align: center;"><c:out
 							value="${request.dateAndTime}" /></td>
@@ -210,31 +208,29 @@ th {
 		</tbody>
 	</table>
 
-	<!-- ページネーション2 -->
+
+	<!-- 部下の申請一覧のページネーション -->
 	<div class="pagination">
-		<%-- 前のページへのリンク --%>
 		<c:if test="${currentPage2 > 1}">
-			<c:url value="MyReqListPageController" var="prevPageUrl">
+			<c:url value="MyReqListPageController" var="prevPageUrl2">
 				<c:param name="page2" value="${currentPage2 - 1}" />
 			</c:url>
-			<a href="${prevPageUrl}">前のページへ</a>
+			<a href="${prevPageUrl2}">前のページへ</a>
 		</c:if>
 
-		<%-- 現在のページ番号 --%>
 		<span>現在ページ ${currentPage2}/${totalPages2}</span>
 
-		<%-- 次のページへのリンク --%>
 		<c:if test="${currentPage2 < totalPages2}">
-			<c:url value="MyReqListPageController" var="nextPageUrl">
+			<c:url value="MyReqListPageController" var="nextPageUrl2">
 				<c:param name="page2" value="${currentPage2 + 1}" />
 			</c:url>
-			<a href="${nextPageUrl}">次のページへ</a>
+			<a href="${nextPageUrl2}">次のページへ</a>
 		</c:if>
 	</div>
 
 
 	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
-	<a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>
+	<a href="/WEB-INF/jsp/userMain.jsp">戻る</a>
 </body>
 </html>
 
