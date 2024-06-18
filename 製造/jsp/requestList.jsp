@@ -55,6 +55,7 @@ th {
 </head>
 <body>
 	<jsp:include page="header.jsp" /><hr>
+	
 	<%-- ********************自分の申請一覧フォーム******************** --%>
 	<h3>申請一覧</h3>
 	<table style="width: 100%; border-collapse: collapse;">
@@ -157,7 +158,7 @@ th {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="request" items="${requestList}">
+			<c:forEach var="request" items="${requestList2}">
 				<tr>
 					<td style="text-align: center;"><c:out
 							value="${request.dateAndTime}" /></td>
@@ -208,9 +209,6 @@ th {
 	</table>
 
 
-
-
-
 	<!-- 部下の申請一覧のページネーション -->
 	<div class="pagination">
 		<c:if test="${currentPage2 > 1}">
@@ -232,7 +230,7 @@ th {
 
 
 	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
-	<a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>
+	<a href="/WEB-INF/jsp/userMain.jsp">戻る</a>
 </body>
 </html>
 
