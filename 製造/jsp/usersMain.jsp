@@ -112,7 +112,7 @@
 </div>
 
 <div class="button-group2">
-    <form action="RequestController" method="get">
+    <form action="ReqListController" method="get">
         <input type="submit" value="申請一覧">
     </form>
     <form action="AttStatusController" method="get">
