@@ -54,7 +54,7 @@ public class AttStatusController extends HttpServlet {
 		request.setAttribute("stampBean", stampBean);//勤怠状況表
 		request.setAttribute("requestListBean", requestListBean); //理由
 
-		//"Att.jsp"へ送る
-		request.getRequestDispatcher("WEB-INF/jsp/Att.jsp").forward(request, response);
+		//"attendanceStatus.jsp"へ送る
+		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
 	}
 }

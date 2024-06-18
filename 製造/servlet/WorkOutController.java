@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 import beans.UsersBean;
 import logic.EmpLogic;
 
-@WebServlet("/WolkOutController")
+@WebServlet("/WorkOutController")
 public class WorkOutController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class WorkOutController extends HttpServlet {
 
 		if (result) {
 			//登録成功（社員画面リダイレクト）
-			request.getRequestDispatcher("userMain.jsp").forward(request, response);
+			request.getRequestDispatcher("WEB-INF/jsp/userMain.jsp").forward(request, response);
 		} else {
 			//登録失敗（エラー表示＆社員画面リダイレクト）
 			request.setAttribute("errorMsg", "出勤時刻の登録に失敗しました。");
