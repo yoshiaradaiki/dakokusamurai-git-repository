@@ -69,7 +69,7 @@ public class RequestController extends HttpServlet {
 		int start2 = (page2 - 1) * recordsPerPage2;
 		int end2 = Math.min(start2 + recordsPerPage2, listSize2);
 		int totalPages2 = (int) Math.ceil((double) subrequestListBean.size() / recordsPerPage2);
-		List<RequestListBean> displayedRequests2 = requestListBean.subList(start, end);//範囲指定
+		List<RequestListBean> displayedRequests2 = subrequestListBean.subList(start, end);//範囲指定
 		//********************　 ページング　********************//
 		
 		
