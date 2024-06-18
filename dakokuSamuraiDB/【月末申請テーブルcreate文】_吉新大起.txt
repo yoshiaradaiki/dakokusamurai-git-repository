@@ -1,12 +1,23 @@
 CREATE TABLE IF NOT EXISTS month_req (
  month_req_id INT auto_increment PRIMARY KEY,
  att_status_id INT NOT NULL,
- date_req TIMESTAMP NOT NULL,
+ date_req TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  status INT NOT NULL,
  reason VARCHAR(100),
  created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
  created_users_id INT NOT NULL,
  updated_users_id INT NOT NULL,
-FOREIGN KEY (att_status_id) REFERENCES att_status(att_status_id)
+ FOREIGN KEY (att_status_id) REFERENCES att_status(att_status_id)
 );
+
+
+ダミーデータ:
+
+INSERT INTO month_req (att_status_id, date_req, status, reason, created_datetime, updated_datetime, created_users_id, updated_users_id)
+VALUES
+(1, '2024-06-01 10:00:00', 1, '理由1', '2024-06-01 10:00:00', '2024-06-01 10:00:00', 1, 1),
+(2, '2024-06-02 11:00:00', 2, '理由2', '2024-06-02 11:00:00', '2024-06-02 11:00:00', 2, 2),
+(3, '2024-06-03 12:00:00', 1, '理由3', '2024-06-03 12:00:00', '2024-06-03 12:00:00', 1, 2),
+(1, '2024-06-04 13:00:00', 3, '理由4', '2024-06-04 13:00:00', '2024-06-04 13:00:00', 3, 1),
+(2, '2024-06-05 14:00:00', 1, '理由5', '2024-06-05 14:00:00', '2024-06-05 14:00:00', 2, 3);

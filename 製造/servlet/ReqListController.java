@@ -18,8 +18,8 @@ import beans.RequestListBean;
 import beans.UsersBean;
 import logic.EmpLogic;
 
-@WebServlet("/RequestController")
-public class RequestController extends HttpServlet {
+@WebServlet("/ReqListController")
+public class ReqListController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
