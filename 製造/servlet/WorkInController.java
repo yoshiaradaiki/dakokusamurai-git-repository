@@ -41,7 +41,7 @@ public class WorkInController extends HttpServlet {
 		// 現在時刻からLocalTimeを取得
 		LocalTime workIn_raw = LocalTime.now();
 
-		//登録処理
+		//登録処理（出勤ボタン押下時）
 		EmpLogic empLogic = new EmpLogic();
 		boolean result = empLogic.insertStamp(users_id, date, workIn_raw);
 

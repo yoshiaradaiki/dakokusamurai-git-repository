@@ -18,7 +18,7 @@ import beans.RequestListBean;
 import beans.UsersBean;
 import logic.EmpLogic;
 
-@WebServlet("/AttStatusController")
+@WebServlet("/RequestController")
 public class RequestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
