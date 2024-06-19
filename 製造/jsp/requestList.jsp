@@ -230,7 +230,7 @@ th {
 
 
 	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
-	<a href="/WEB-INF/jsp/userMain.jsp">戻る</a>
+	<button onclick="/WEB-INF/jsp/userMain.jsp">戻る</button>
 </body>
 </html>
 
