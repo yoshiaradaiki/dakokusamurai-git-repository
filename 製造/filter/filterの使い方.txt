@@ -5,7 +5,6 @@ src/main/javaの下にfilterパッケージを作成し、「SessionUsersFilter.
 
 
 
-・controlの中に入れる
 *エラー時に見て：
 [サーブレットクラス]
 if (Bean名 != null) {
@@ -13,4 +12,3 @@ if (Bean名 != null) {
 } else {
     // Bean名 が null の場合の処理を記述する（例えばエラー処理や初期化処理）
 }
-

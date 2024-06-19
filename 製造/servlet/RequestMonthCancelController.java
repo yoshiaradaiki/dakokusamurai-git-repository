@@ -55,7 +55,7 @@ public class RequestMonthCancelController extends HttpServlet {
 		request.setAttribute("resultMsg", "月末申請をキャンセルしました。");
 
 		//"attendanceStatus.jsp"へ転送する
-		request.getRequestDispatcher("WEB-INF/jsp/.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/jsp/requestList.jsp").forward(request, response);
 	}
 
 }
