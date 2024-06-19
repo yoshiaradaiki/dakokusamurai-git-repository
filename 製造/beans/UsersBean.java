@@ -18,7 +18,7 @@ public class UsersBean {
 	private int level;
 	private boolean delete_flag;
 	private boolean boss_flag;
-	private Date year_and_month;
+	private Date year_and_month; //Date date = new Date(year,month-1,1)
 	
 	
 	//コンストラクタ

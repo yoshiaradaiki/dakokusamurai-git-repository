@@ -21,7 +21,7 @@ import logic.AttStatusLogic;
 //勤怠状況表申請ボタン押下処理
 //勤怠状況表の作成　インサート処理
 
-@WebServlet("/AttRequestController ")
+@WebServlet("/AttRequestController")
 public class AttRequestController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

@@ -178,7 +178,12 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 					</tr>				
 			</c:forEach>		
 		</table>
-	<!--  -->
+			
+		<!-- 合計実労働時間 -->
+			合計実労働時間<br>
+				
+			
+		<!-- 申請 -->
 			<form action="AttRequestController" method="get" >
 				<input type="submit" value="申請">
 			</form>
@@ -311,8 +316,6 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 	<!-- 申請一覧へ遷移、WEB-INFフォルダへのアクセス？ -->
 	<!-- <a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>    -->
 	<a href="/WEB-INF/jsp/requestList.jsp">戻る</a>
-
-
 	
 </body>
 </html>

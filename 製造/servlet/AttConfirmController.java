@@ -46,7 +46,6 @@ public class AttConfirmController extends HttpServlet {
 		//Dateに年・月・日を渡す
 		//1月は0のため-1、1日が欲しいので1を入力している
 		Date date = new Date(year,month-1,1);
-
 	
 		//-------------------------AttStatuLogicのメソッド取得---------------------------------
 		//AttStatusLogi インスタンス作成 

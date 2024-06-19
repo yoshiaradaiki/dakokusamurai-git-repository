@@ -59,7 +59,7 @@ public class AttRemandController extends HttpServlet {
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
 		dispatcher.forward(request, response);
-	}
+	} 
 
 }
 

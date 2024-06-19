@@ -63,7 +63,7 @@ public class AttApprovalController extends HttpServlet {
 		request.setAttribute("mySubRequestListBeans", mySubRequestListBeans);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
-		dispatcher.forward(request, response);
+		dispatcher.forward(request, response); 
 
 	}
 

@@ -39,9 +39,11 @@ public class AttEditController extends HttpServlet {
 		//フォーム情報の取得
 		int year =Integer.parseInt(request.getParameter("year")) ;
 		int month = Integer.parseInt(request.getParameter("month")) ;
+		int formdate = Integer.parseInt(request.getParameter("date")) ;
 		//Dateに年・月・日を渡す
 		//1月は0のため-1、1日が欲しいので1を入力している
-		Date date = new Date(year,month-1,1);
+		Date date = new Date(year,month,formdate);
+		System.out.println(date);
 		
 		//-------------------------AttStatuLogicのメソッド取得---------------------------------
 		//AttStatusLogi インスタンス作成 
@@ -61,6 +63,7 @@ public class AttEditController extends HttpServlet {
 
 		
 		//----------------------取得した情報を次の画面に投げる処理-----------------------------
+		request.setAttribute("date", date);
 		request.setAttribute("attDetailUsers", attDetailUsers);
 		request.setAttribute("attDetailStamp", attDetailStamp);
 		request.setAttribute("attDetailUsersRequestList", attDetailUsersRequestList);
@@ -68,5 +71,62 @@ public class AttEditController extends HttpServlet {
 		
 		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatusDetail.jsp").forward(request, response);
 	}
+//　チャットGPTアドバイス
+//	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//	    request.setCharacterEncoding("utf-8");
+//	    response.setContentType("text/html; charset=utf-8");
+//
+//	    // セッション情報取得
+//	    HttpSession session = request.getSession();
+//	    UsersBean sessionUsersBean =(UsersBean)session.getAttribute("sessionUsersBean");
+//	    int users_id = sessionUsersBean.getUsers_id();
+//	    
+//	    // フォーム情報の取得と年月処理
+//	    String yearParam = request.getParameter("year");
+//	    String monthParam = request.getParameter("month");
+//
+//	    if (yearParam == null || monthParam == null) {
+//	        // パラメータが送信されていない場合のエラーハンドリング
+//	        // 通常はフォームの設定を確認する必要があります
+//	        response.getWriter().println("<p>Error: 年または月が指定されていません。</p>");
+//	        return;
+//	    }
+//
+//	    int year;
+//	    int month;
+//
+//	    try {
+//	        year = Integer.parseInt(yearParam);
+//	        month = Integer.parseInt(monthParam);
+//	    } catch (NumberFormatException e) {
+//	        // 数値への変換に失敗した場合のエラーハンドリング
+//	        response.getWriter().println("<p>Error: 年または月の値が不正です。</p>");
+//	        return;
+//	    }
+//
+//	    // Dateオブジェクトの生成（1月は0であるため、-1する必要があります）
+//	    Date date = new Date(year - 1900, month - 1, 1);
+//	    
+//	    // AttStatusLogicのインスタンス作成
+//	    AttStatusLogic attStatusLogic = new AttStatusLogic();
+//	    
+//	    // 利用者を取得するlogic
+//	    UsersBean attDetailUsers = attStatusLogic.findMyAttStatusUsers(users_id);
+//	    attDetailUsers.setYear_and_month(date);
+//	    
+//	    // 勤怠状況詳細の一行取得logic
+//	    StampBean attDetailStamp = attStatusLogic.findMyAttDetailStatusStamp(users_id, date);
+//	    
+//	    // 勤怠状況詳細の差し戻し理由logic
+//	    RequestListBean attDetailUsersRequestList = attStatusLogic.findMyAttDetailStatusRequest(users_id);
+//	    
+//	    // 取得した情報を次の画面に投げる処理
+//	    request.setAttribute("attDetailUsers", attDetailUsers);
+//	    request.setAttribute("attDetailStamp", attDetailStamp);
+//	    request.setAttribute("attDetailUsersRequestList", attDetailUsersRequestList);
+//	    
+//	    request.getRequestDispatcher("WEB-INF/jsp/attendanceStatusDetail.jsp").forward(request, response);
+//	}
+
 
 }
