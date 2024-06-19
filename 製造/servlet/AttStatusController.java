@@ -45,14 +45,14 @@ public class AttStatusController extends HttpServlet {
 		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(users_id);
 
 		//勤怠状況表の表示
-		List<StampBean> stampBean = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
+		List<StampBean> stampBeans = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
 
 		//差し戻し理由を一覧から取得
 		RequestListBean requestListBean = attStatusLogic.findMyAttStatusMonthRequest(users_id, date);
 
 		//JSPで取得する属性を入れる
 		request.setAttribute("usersBean", usersBean);//利用者ID
-		request.setAttribute("stampBean", stampBean);//勤怠状況表
+		request.setAttribute("stampBeans", stampBeans);//勤怠状況表
 		request.setAttribute("requestListBean", requestListBean); //理由
 
 		//"attendanceStatus.jsp"へ送る	
