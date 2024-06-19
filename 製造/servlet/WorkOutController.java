@@ -46,7 +46,7 @@ public class WorkOutController extends HttpServlet {
 		boolean result = empLogic.updateStamp(users_id, date, workOut_raw);
 
 		if (result) {
-			//登録成功（社員画面リダイレクト）
+			//登録成功（成功表示＆社員画面リダイレクト）
 			request.setAttribute("resultMsg", "退勤時刻を登録しました。");
 			request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp").forward(request, response);
 		} else {
