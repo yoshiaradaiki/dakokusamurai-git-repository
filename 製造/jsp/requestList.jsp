@@ -55,7 +55,7 @@ th {
 </head>
 <body>
 	<jsp:include page="header.jsp" /><hr>
-	
+
 	<%-- ********************自分の申請一覧フォーム******************** --%>
 	<h3>申請一覧</h3>
 	<table style="width: 100%; border-collapse: collapse;">
@@ -230,7 +230,10 @@ th {
 
 
 	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
-	<button onclick="/WEB-INF/jsp/userMain.jsp">戻る</button>
+	<form action="BackController" method="get">
+		<input type="submit" value="戻る">
+	</form>
+	
 </body>
 </html>
 
