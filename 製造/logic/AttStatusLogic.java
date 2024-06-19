@@ -138,9 +138,5 @@ public class AttStatusLogic {
 		AttDAO attDAO = new AttDAO();
 		return attDAO.findAttStatusId(users_id, date);
 	}
-	
 
-	
-	
-	
 }

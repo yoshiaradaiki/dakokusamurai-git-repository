@@ -10,6 +10,7 @@
 <title>勤怠状況詳細画面</title>
 </head>
 <body>
+<jsp:include page="header.jsp"/><hr>
 	<h1>勤怠状況詳細</h1>
 	<fmt:formatDate value="${usersBean.year_and_month}" pattern="yyyy年　M月" />
 	<br>
@@ -21,11 +22,9 @@
 	<br> 氏名：
 	<c:out value="${usersBean.emp_name}" />
 	<br>
-	
 
-
-	<% //if (社員がログインし自分の打刻データを見る場合){ %>
-	<% if (false){ %>
+	<% //if (社員がログインし自分の打刻修正を見る場合)treu:申請フォーム false:承認フォーム{ %>
+	<% if (true){ %>
 	<h1>申請フォーム</h1>
 	<table border=1>
 		<tr>
@@ -47,30 +46,36 @@
 			<th>備考</th>
 		</tr>
 		<tr>
+			<!--日付を表示  -->
 			<td><fmt:formatDate value="${stampBean.stamp_date}" pattern="d" /></td>
+			<!--曜日を表示  -->
 			<c:choose>
-				<c:when test="${stampBean.week==0} ">
+				<c:when test="${stampBean.week == 0}">
 					<td>日</td>
 				</c:when>
-				<c:when test="${stampBean.week==1} ">
+				<c:when test="${stampBean.week == 1}">
 					<td>月</td>
 				</c:when>
-				<c:when test="${stampBean.week==2} ">
+				<c:when test="${stampBean.week == 2}">
 					<td>火</td>
 				</c:when>
-				<c:when test="${stampBean.week==3}">
+				<c:when test="${stampBean.week == 3}">
 					<td>水</td>
 				</c:when>
-				<c:when test="${stampBean.week==4} ">
+				<c:when test="${stampBean.week == 4}">
 					<td>木</td>
 				</c:when>
-				<c:when test="${stampBean.week==5} ">
+				<c:when test="${stampBean.week == 5}">
 					<td>金</td>
 				</c:when>
-				<c:when test="${stampBean.week==6} ">
+				<c:when test="${stampBean.week == 6}">
 					<td>土</td>
 				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
 			</c:choose>
+			<!--勤怠状況コードを表示  -->
 			<c:choose>
 				<c:when test="${stampBean.work_status == 1}">
 					<td>1：出勤</td>
@@ -99,6 +104,9 @@
 				<c:when test="${stampBean.work_status == 14}">
 					<td>14：欠勤</td>
 				</c:when>
+				<c:otherwise>
+					<td></td>
+				</c:otherwise>
 			</c:choose>
 
 			<td><c:out value="${stampBean.workIn_re}" /></td>
@@ -106,30 +114,34 @@
 			<td><c:out value="${stampBean.workIn_raw}" /></td>
 			<td><c:out value="${stampBean.workOut_raw}" /></td>
 			<td><c:out value="${stampBean.rest_time}" /></td>
+			<td><c:out value="${stampBean.real_work_time}" /></td>
 			<td><c:out value="${stampBean.note}" /></td>
 		</tr>
 	</table>
 	<form action="AttDetailRevRequestController" method="get">
 		<!-- ここにフォームの内容を追加 -->
 		<h3>変更内容</h3>
-		記入してください<br> 勤怠状況： <select name="">
-			<option value="1">1:出勤</option>
-			<option value="6">6:遅刻</option>
-			<option value="7">7：早退
-				</options>
+		記入してください<br> 
+		勤怠状況： 
+		<select name="work_status">
+			<option value="1">1：出勤</option>
+			<option value="6">6：遅刻</option>
+			<option value="7">7：早退</options>
 			<option value="8">8：土祝出勤</option>
 			<option value="10">10：1日有給休暇</option>
 			<option value="11">11：半日有給休暇</option>
 			<option value="12">12：特別休暇</option>
 			<option value="13">13：休日</option>
 			<option value="14">14：欠勤</option>
-		</select><br> 開始時刻： <input type="time" name=""
-			value="${stampBean.workIn_re}"><br> 終了時刻： <input
-			type="time" name="" value="${stampBean.workOut_re}"><br>
-		休憩： <input type="time" name="" value="${stampBean.rest_time}"><br>
+		</select><br> 
+		開始時刻： <input type="time" name="workIn_re" value="${stampBean.workIn_re}"><br> 
+			
+		終了時刻： <input type="time" name="workOut_re" value="${stampBean.workOut_re}"><br>
+		休憩： 
+		<input type="time" name="rest_time" value="${stampBean.rest_time}"><br>
 		備考：
-		<textarea name="" cols="" rows="" 　maxlength="20"><c:out
-				value="${stamBean.note}" /></textarea>
+		<textarea name="note" cols="" rows="" 　maxlength="20"><c:out
+				value="${stamBean.note}" /></textarea><br>
 		理由
 		<p>
 			<c:out value="${requestListBean.reason}" />
@@ -138,7 +150,7 @@
 			<input type="submit" value="変更申請">
 	</form>
 			<%}else{ %>
-		
+<% //if (上司がログインし部下の打刻修正を見る場合){ %>		
 		<h1>承認フォーム</h1>
 		<table border=1>
 			<tr>
@@ -162,27 +174,30 @@
 			<tr>
 				<td><fmt:formatDate value="${stampBean.stamp_date}" pattern="d" /></td>
 				<c:choose>
-					<c:when test="${stampBean.week==0} ">
+					<c:when test="${stampBean.week==0}">
 						<td>日</td>
 					</c:when>
-					<c:when test="${stampBean.week==1} ">
+					<c:when test="${stampBean.week==1}">
 						<td>月</td>
 					</c:when>
-					<c:when test="${stampBean.week==2} ">
+					<c:when test="${stampBean.week==2}">
 						<td>火</td>
 					</c:when>
 					<c:when test="${stampBean.week==3}">
 						<td>水</td>
 					</c:when>
-					<c:when test="${stampBean.week==4} ">
+					<c:when test="${stampBean.week==4}">
 						<td>木</td>
 					</c:when>
-					<c:when test="${stampBean.week==5} ">
+					<c:when test="${stampBean.week==5}">
 						<td>金</td>
 					</c:when>
-					<c:when test="${stampBean.week==6} ">
+					<c:when test="${stampBean.week==6}">
 						<td>土</td>
 					</c:when>
+					<c:otherwise>
+					<td></td>
+				</c:otherwise>
 				</c:choose>
 				<c:choose>
 					<c:when test="${stampBean.work_status == 1}">
@@ -212,6 +227,9 @@
 					<c:when test="${stampBean.work_status == 14}">
 						<td>14：欠勤</td>
 					</c:when>
+					<c:otherwise>
+					<td></td>
+				</c:otherwise>
 				</c:choose>
 
 				<td><c:out value="${stampBean.workIn_re}" /></td>
@@ -219,6 +237,7 @@
 				<td><c:out value="${stampBean.workIn_raw}" /></td>
 				<td><c:out value="${stampBean.workOut_raw}" /></td>
 				<td><c:out value="${stampBean.rest_time}" /></td>
+				<td><c:out value="${stampBean.real_work_time}" /></td>
 				<td><c:out value="${stampBean.note}" /></td>
 			</tr>
 		</table>
@@ -252,24 +271,30 @@
 			<c:when test="${stampBean.work_status == 14}">
 	        14：欠勤
 	    </c:when>
-		</c:choose>
+		    <c:otherwise>
+			<td></td>
+		    </c:otherwise>
+		</c:choose><br>
 		開始時刻：
-		<c:out value="${stamBean.workIn_re}" />
+		<c:out value="${stamBean.workIn_re}" /><br>
 		終了時刻：
-		<c:out value="${stamBean.workOut_re}" />
+		<c:out value="${stamBean.workOut_re}" /><br>
 		休憩：
-		<c:out value="${stamBean.rest_time}" />
+		<c:out value="${stamBean.rest_time}" /><br>
 		備考：
-		<c:out value="${stamBean.note}" />
+		<c:out value="${stamBean.note}" /><br>
 
 		<form method="get" action="AttDetailApprovalController">
 			<input type="submit" value="承認">
+			<input type="hidden" name="stamp_rev_req_id" value="2">
 		</form>
 
 		<form method="get" action="AttDetailRemandController">
 			理由:
-			<textarea name=""></textarea>
+			<textarea name="reason"></textarea><br>
+			<input type="hidden" name="stamp_rev_req_id" value="2">
 			<input type="submit" value="差し戻し">
 		</form>
 	<% } %>
+	<button onclick="/WEB-INF/jsp/requestList.jsp">戻る</button>
 </html>
