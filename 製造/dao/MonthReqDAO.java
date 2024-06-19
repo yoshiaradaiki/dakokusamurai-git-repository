@@ -235,7 +235,7 @@ public class MonthReqDAO {
 			//SELECT文の準備
 			String selectSql = "SELECT month_req.reason\n"
 					+ "FROM month_req\n"
-					+ "INNER JOIN att_status ON month_req.users_id = att_status.users_id\n"
+					+ "INNER JOIN att_status ON month_req.att_status_id = att_status.att_status_id\n"
 					+ "INNER JOIN users ON att_status.users_id = users.users_id\n"
 					+ "WHERE users.users_id = ? AND att_status.years = ?;";//選択された年月の一番新しい差し戻された理由を表示
 
