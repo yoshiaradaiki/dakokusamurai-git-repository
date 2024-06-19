@@ -3,8 +3,8 @@
 
 package logic;
 
-import java.util.Date;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import beans.RequestListBean;
@@ -101,9 +101,9 @@ public class EmpLogic {
 
 	//メソッド名：findMyAttStatusMonthStamp
 	//処理概要　：先月の自分の勤怠状況表を表示する
-	public StampBean findMyAttStatusMonthStamp(int users_id, Date date) {
+	public StampBean findMyAttStatusDetailStamp(int users_id, Date date) {
 		CalendarDAO calendarDAO = new CalendarDAO();
-		return calendarDAO.findMyAttStatusMonthStamp(users_id, date);
+		return calendarDAO.findMyAttStatusDetailStamp(users_id, date);
 	}
 
 }
