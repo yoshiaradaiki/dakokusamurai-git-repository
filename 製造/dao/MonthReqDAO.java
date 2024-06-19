@@ -24,9 +24,10 @@ public class MonthReqDAO {
 
 	public static void main(String[] args) {
 		//テスト用
-//		MonthReqDAO monthReqDAO = new MonthReqDAO();
-//		monthReqDAO.insertMonthReq(1, 10, 10, 10);//成功
-//	/monthReqDAO.updateMonthReq(8, 8, "理由うう", 3);//成功
+		MonthReqDAO monthReqDAO = new MonthReqDAO();
+		//		monthReqDAO.insertMonthReq(1, 10, 10, 10);//成功
+		//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
+		monthReqDAO.findMyRequest(1);
 	}
 
 	//メソッド名：月末申請登録
@@ -57,6 +58,7 @@ public class MonthReqDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("エラー：データを追加できませんでした。");
 			return false;
 		}
 		return true;
@@ -91,6 +93,7 @@ public class MonthReqDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			System.out.println("エラー：データを更新できませんでした。");
 			return false;
 		}
 		return true;
@@ -99,7 +102,7 @@ public class MonthReqDAO {
 	//メソッド名：自分の申請を取得
 	//引数　　　：自分の利用者ID
 	//戻り値　　：申請一覧リスト
-	//テスト：statusが3（キャンセル）の場合、表示しないこと
+	//テスト：成功　湯
 	public List<RequestListBean> findMyRequest(int users_id) {
 		//ArrayList作成
 		List<RequestListBean> myReqList = new ArrayList<>();
@@ -109,34 +112,60 @@ public class MonthReqDAO {
 			System.out.println("H2データベースに接続しました。");
 
 			//SELECT文の準備　ステータス番号の小さい順で並べる
-			String selectSql = "SELECT m.date_req, m.status, u.users_id FROM month_req m\n"
-					+ " INNER JOIN att_status a ON m.att_status_id = a.att_status_id\n"
-					+ " INNER JOIN users u ON m.users_id = u.users_id\n"
-					+ "UNION\n"
-					+ "SELECT s.date_req, s.status, u.users_id\n"
-					+ "FROM stamp_correct_req s\n"
-					+ "INNER JOIN stamp_revision r ON s.stamp_revision_id = r.stamp_revision_id\n"
-					+ "INNER JOIN users u ON r.users_id = u.users_id\n"
-					+ "WHERE u.users_id = ?\n"
-					+ "ORDER BY status ASC;";
+			String selectSql = "SELECT\r\n"
+					+ "    COALESCE(m.date_req, scr.date_req) AS date_req,\r\n"
+					+ "    COALESCE(m.status, scr.status) AS status,\r\n"
+					+ "    COALESCE(u.boss_users_id, m.created_users_id) AS boss_users_id,\r\n"
+					+ "    0 AS content\r\n"
+					+ "FROM\r\n"
+					+ "    month_req m\r\n"
+					+ "    LEFT JOIN stamp_correct_req scr ON m.month_req_id = scr.stamp_rev_id\r\n"
+					+ "    LEFT JOIN users u ON u.users_id = ?\r\n"
+					+ "WHERE\r\n"
+					+ "    COALESCE(m.status, scr.status) IN (0, 1)\r\n"
+					+ " \r\n"
+					+ "UNION ALL\r\n"
+					+ " \r\n"
+					+ "SELECT\r\n"
+					+ "    COALESCE(scr.date_req, m.date_req) AS date_req,\r\n"
+					+ "    COALESCE(scr.status, m.status) AS status,\r\n"
+					+ "    COALESCE(u.boss_users_id, m.created_users_id) AS boss_users_id,\r\n"
+					+ "    1 AS content\r\n"
+					+ "FROM\r\n"
+					+ "    stamp_correct_req scr\r\n"
+					+ "    LEFT JOIN month_req m ON scr.stamp_rev_id = m.month_req_id\r\n"
+					+ "    LEFT JOIN users u ON u.users_id = ?\r\n"
+					+ "WHERE\r\n"
+					+ "    COALESCE(m.status, scr.status) IN (0, 1)\r\n"
+					+ " \r\n"
+					+ "ORDER BY\r\n"
+					+ "    status ASC;";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
 			//UPDATE文の？に使用する値を設定
 			UsersBean usersBean = new UsersBean();
 			pStmt.setInt(1, usersBean.getUsers_id());
+			pStmt.setInt(2, usersBean.getUsers_id());
 
 			//SELECT文を実行
 			ResultSet rs = pStmt.executeQuery();
 
 			//SELECT文の結果をArrayListに格納
 			while (rs.next()) {
-				Timestamp date_and_time = rs.getTimestamp("date_and_time");
-				int status = rs.getInt("status");
-				//RequestListBean reqListBean = new RequestListBean(date_and_time, status);
-//				myReqList.add(new RequestListBean(date_and_time, status));
-				RequestListBean requestListBean = new RequestListBean();
-				requestListBean.setDate_and_time(date_and_time);
+				RequestListBean reqListBean = new RequestListBean();
+				//申請日時を取得
+				reqListBean.setDate_and_time(rs.getDate("date_req"));
+				reqListBean.setStatus(rs.getInt("status"));
+				reqListBean.setBoss_name(rs.getString("boss_users_id"));
+				reqListBean.setContent(rs.getInt("content"));
+				//検査結果出力
+				System.out.print(reqListBean.getDate_and_time() + " ");
+				System.out.print(reqListBean.getStatus() + " ");
+				System.out.print(reqListBean.getBoss_name() + " ");
+				System.out.println(reqListBean.getContent() + " ");
 			}
-
+			System.out.println("検索成功しました。");
+			//			rs.close();
+			//			pStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -146,7 +175,7 @@ public class MonthReqDAO {
 	}
 
 	//メソッド名：部下の申請を取得
-	//引数　　　：部下の利用者ID
+	//引数　　　：自分の利用者ID(上司利用者ID)
 	//戻り値　　：申請一覧リスト
 	//テスト：statusが3（キャンセル）の場合、表示しないこと
 	public List<RequestListBean> findMySubRequest(int users_id) {
@@ -206,7 +235,7 @@ public class MonthReqDAO {
 			//SELECT文の準備
 			String selectSql = "SELECT month_req.reason\n"
 					+ "FROM month_req\n"
-					+ "INNER JOIN att_status ON month_req.users_id = att_status.users_id\n"
+					+ "INNER JOIN att_status ON month_req.att_status_id = att_status.att_status_id\n"
 					+ "INNER JOIN users ON att_status.users_id = users.users_id\n"
 					+ "WHERE users.users_id = ? AND att_status.years = ?;";//選択された年月の一番新しい差し戻された理由を表示
 
@@ -215,7 +244,7 @@ public class MonthReqDAO {
 			//型の変換
 			long timeInMilliSeconds = years.getTime();
 			java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
-			
+
 			//UPDATE文の？に使用する値を設定
 			pStmt.setInt(1, users_id);//セッションスコープに保存された利用者IDを取得
 			pStmt.setDate(2, sqlDate);//選択された年月を取得

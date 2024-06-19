@@ -41,28 +41,28 @@ public class ReqListController extends HttpServlet {
 		}
 		//********************　 ページング　********************//
 
-		// セッションから利用者IDを取得
-		HttpSession session = request.getSession();
-		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-		// ユーザービーンからusers_idを取得
-		int users_id = sessionUsersBean.getUsers_id();
+//		// セッションから利用者IDを取得
+//		HttpSession session = request.getSession();
+//		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+//		// ユーザービーンからusers_idを取得
+//		int users_id = sessionUsersBean.getUsers_id();
 
-		//		//--------ダミーセッション利用者IDセット---------//
-		//		UsersBean sessionUsersBean = new UsersBean();
-		//		sessionUsersBean.setUsers_id(123);
-		//		int users_id = sessionUsersBean.getUsers_id();
-		//
-		//		//--------ダミーセッション利用者IDゲット----------//
-		//		HttpSession session = request.getSession();
-		//		sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-		//		if (sessionUsersBean != null) {
-		//			users_id = sessionUsersBean.getUsers_id();
-		//			// ユーザーIDを使った処理を記述
-		//		} else {
-		//			// エラー処理など、sessionUsersBean が null の場合の対応
-		//		}
-		//		session.setAttribute("sessionUsersBean", sessionUsersBean);
-		//		//--------ダミーセッション利用者ID----------//
+				//--------ダミーセッション利用者IDセット---------//
+				UsersBean sessionUsersBean = new UsersBean();
+				sessionUsersBean.setUsers_id(1);
+				int users_id = sessionUsersBean.getUsers_id();
+		
+				//--------ダミーセッション利用者IDゲット----------//
+				HttpSession session = request.getSession();
+				sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+				if (sessionUsersBean != null) {
+					users_id = sessionUsersBean.getUsers_id();
+					// ユーザーIDを使った処理を記述
+				} else {
+					// エラー処理など、sessionUsersBean が null の場合の対応
+				}
+				session.setAttribute("sessionUsersBean", sessionUsersBean);
+				//--------ダミーセッション利用者ID----------//
 
 		EmpLogic empLogic = new EmpLogic();
 
@@ -87,7 +87,7 @@ public class ReqListController extends HttpServlet {
 			int start2 = (page2 - 1) * recordsPerPage2;
 			int end2 = Math.min(start2 + recordsPerPage2, listSize2);
 			int totalPages2 = (int) Math.ceil((double) subrequestListBean.size() / recordsPerPage2);
-			List<RequestListBean> displayedRequests2 = subrequestListBean.subList(start, end);//範囲指定
+			List<RequestListBean> displayedRequests2 = subrequestListBean.subList(start2, end2);//範囲指定
 
 			//********************　 ページング　********************//
 

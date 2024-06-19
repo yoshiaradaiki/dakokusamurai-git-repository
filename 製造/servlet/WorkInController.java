@@ -46,12 +46,13 @@ public class WorkInController extends HttpServlet {
 		boolean result = empLogic.insertStamp(users_id, date, workIn_raw);
 
 		if (result) {
-			//登録成功（社員画面リダイレクト）
-			request.getRequestDispatcher("WEB-INF/jsp/userMain.jsp").forward(request, response);
+			//登録成功（成功表示＆社員画面リダイレクト）
+			request.setAttribute("resultMsg", "出勤時刻を登録しました。");
+			request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp").forward(request, response);
 		} else {
 			//登録失敗（エラー表示＆社員画面リダイレクト）
-			request.setAttribute("errorMsg", "出勤時刻の登録に失敗しました。");
-			request.getRequestDispatcher("WEB-INF/jsp/userMain.jsp").forward(request, response);
+			request.setAttribute("resultMsg", "出勤時刻の登録に失敗しました。");
+			request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp").forward(request, response);
 		}
 	}
 }

@@ -92,7 +92,6 @@
         let msg = nowHour + ":" + nowMin;
         document.getElementById("clockDisplay").textContent = msg;
     }
-
     // 1秒ごとに時計を更新
     setInterval(clockDisplay, 1000);
 </script>
@@ -101,6 +100,8 @@
 <div id="dateDisplay"></div>
 <!-- 時刻表示 -->
 <p id="clockDisplay" style="font-size: 60px;"></p>
+
+<p style="color:red;"><c:out value="${resultMsg}"/></p>
 
 <div class="button-group1">
     <form action="WorkInController" method="get">

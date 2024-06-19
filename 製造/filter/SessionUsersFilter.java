@@ -29,7 +29,7 @@ public class SessionUsersFilter implements Filter {
 
 		// ダミーのsessionUsersBeanを作成
 		UsersBean sessionUsersBean = new UsersBean();
-		sessionUsersBean.setUsers_id(123); // ダミーのusers_idをセット
+		sessionUsersBean.setUsers_id(1); // ダミーのusers_idをセット
 
 		// セッションスコープに保存
 		session.setAttribute("sessionUsersBean", sessionUsersBean);
