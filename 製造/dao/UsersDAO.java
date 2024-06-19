@@ -123,21 +123,15 @@ public class UsersDAO {
 			//WHERE文の？に使用する値を設定
 			ps.setInt(1, users_id);
 			ResultSet rs = ps.executeQuery();
-<<<<<<< Updated upstream
 
 			//値受け取り
 			while (rs.next()) {
-				Date year_and_month = rs.getDate("year_and_month");
-=======
-			
-		    //値受け取り
-			while(rs.next()) {
-//				Date year_and_month = rs.getDate("year_and_month");
->>>>>>> Stashed changes
+				//Date year_and_month = rs.getDate("year_and_month");
+
 				String emp_no = rs.getString("emp_no");
 				String emp_name = rs.getString("emp_name");
 				users = new UsersBean();
-//				users.setYear_and_month(year_and_month);
+				//users.setYear_and_month(year_and_month);
 				users.setEmp_no(emp_no);
 				users.setEmp_name(emp_name);
 			}
