@@ -100,7 +100,7 @@ public class AttDetailRevRequestController extends HttpServlet {
 
 		//　打刻修正申請テーブルに登録
 		 RequestListBean requestListBean= new RequestListBean ();
-		 requestListBean.setStamp_rev_id(attDetailLogic.findStampRevId(stamp_id));
+		 //requestListBean.setStamp_rev_id(attDetailLogic.findStampRevId(stamp_id));
 		 requestListBean.setStatus(1);
 		 requestListBean.setCreated_users_id(users_id);
 		 requestListBean.setUpdated_users_id(users_id);
