@@ -32,7 +32,7 @@ public class AttStatusLogic {
 	//処理概要　：勤怠状況状況表の表示②
 	public List<StampBean> findMyAttStatusMonthStamp(int users_id, Date date) {
 		CalendarDAO calenderDAO = new CalendarDAO();
-		return calenderDAO.findMyAttStatusDetailStamp(users_id, date);
+		return calenderDAO.findMyAttStatusMonthStamp(users_id, date);
 	}
 
 
@@ -66,7 +66,7 @@ public class AttStatusLogic {
 	public StampBean findMyAttDetailStatusStamp(int users_id, Date date) {
 		CalendarDAO calenderDAO = new CalendarDAO();
 		//calendarで作成されてから確認
-		return  calenderDAO.findMyAttStatusMonthStamp(users_id,date);
+		return  calenderDAO.findMyAttStatusDetailStamp(users_id,date);
 	
 	}
 	//引数　　　：user_id,date
