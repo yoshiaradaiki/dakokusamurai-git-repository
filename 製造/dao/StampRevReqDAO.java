@@ -156,6 +156,7 @@ public class StampRevReqDAO {
     	}catch (SQLException e) {
     	     e.printStackTrace();
      }
+    	System.out.println(requestListBean);
     	return requestListBean;
     }
    }
