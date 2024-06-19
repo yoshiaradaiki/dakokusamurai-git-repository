@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,7 +55,8 @@ public class AttStatusController extends HttpServlet {
 		request.setAttribute("stampBean", stampBean);//勤怠状況表
 		request.setAttribute("requestListBean", requestListBean); //理由
 
-		//"Att.jsp"へ送る
-		request.getRequestDispatcher("WEB-INF/jsp/Att.jsp").forward(request, response);
+		//"attendanceStatus.jsp"へ送る	
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp");
+		dispatcher.forward(request, response);
 	}
 }

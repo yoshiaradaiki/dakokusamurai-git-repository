@@ -11,6 +11,7 @@ import beans.UsersBean;
 import dao.AttDAO;
 import dao.CalendarDAO;
 import dao.MonthReqDAO;
+import dao.StampRevDAO;
 import dao.StampRevReqDAO;
 
 public class RequestListLogic {
@@ -124,4 +125,9 @@ public class RequestListLogic {
 		return calendarDAO.findMyAttStatusDetailStamp(users_id, date);
 	}
 
+	public int findStampRevId(int findStampRevId) {
+		StampRevDAO stampRevDAO = new StampRevDAO();
+		return stampRevDAO.findStampRevId(findStampRevId);
+		
+	}
 }

@@ -18,7 +18,23 @@ ALTER TABLE users add FOREIGN KEY(boss_users_id) REFERENCES users(users_id);
 
 
 
-
+追加：湯
+CREATE TABLE IF NOT EXISTS Users (
+    users_id INT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(20) NOT NULL,
+    password VARCHAR(20) NOT NULL,
+    emp_no VARCHAR(20) NOT NULL,
+    emp_name VARCHAR(20) NOT NULL,
+    boss_users_id VARCHAR(20) NOT NULL,
+    level INT NOT NULL,
+    delete_flag BOOLEAN NOT NULL,
+    created_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_users_id INT NOT NULL,
+    updated_users_id INT NOT NULL,
+    FOREIGN KEY (created_users_id) REFERENCES Users(users_id),
+    FOREIGN KEY (updated_users_id) REFERENCES Users(users_id)
+);
 
 
 

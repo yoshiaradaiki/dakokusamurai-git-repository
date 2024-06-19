@@ -16,10 +16,14 @@
     }
     #dateDisplay {
         font-size: 30px; /* 月・日・曜日表示のフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
         margin-bottom: 0px; /* 月日表示と時刻表示の間の余白 */
+        color: #000; /* 文字色の指定 */
     }
     #clockDisplay {
         font-size: 60px; /* 時刻表示のフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
+        color: #000; /* 文字色の指定 */
     }
     .button-group1 {
         margin-top: 10px; /* ボタン間の余白 */
@@ -39,15 +43,23 @@
     .button-group1 input[type="submit"] {
         padding: 10px 30px; /* パディングを設定してボタンのサイズを調整 */
         font-size: 20px; /* ボタンのテキストのフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
+        background-color: #1F2F0A; /* ボタンの背景色*/
+        color: #C29B36; /* ボタンの文字色 */
     }
     .button-group2 input[type="submit"] {
         padding: 5px 20px; /* パディングを設定してボタンのサイズを調整 */
         font-size: 20px; /* ボタンのテキストのフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
+        background-color: #1F2F0A; /* ボタンの背景色*/
+        color: #C29B36; /* ボタンの文字色 */
+
     }
 </style>
 </head>
 <body>
 <!------------------------------------- 月日表示 -------------------------------------->
+<jsp:include page="header.jsp" /><hr>
 <script>
     // 月・日・曜日を取得
     var today = new Date();
@@ -100,7 +112,7 @@
 </div>
 
 <div class="button-group2">
-    <form action="RequestController" method="get">
+    <form action="ReqListController" method="get">
         <input type="submit" value="申請一覧">
     </form>
     <form action="AttStatusController" method="get">

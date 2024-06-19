@@ -8,3 +8,15 @@ CREATE TABLE IF NOT EXISTS att_status (
  updated_users_id INT NOT NULL,
   FOREIGN KEY (users_id) REFERENCES users(users_id)
 );
+
+
+ダミーデータ:
+
+-- ダミーデータの挿入
+INSERT INTO att_status (users_id, years, created_datetime, updated_datetime, created_users_id, updated_users_id)
+VALUES
+(1, '2024-01-01', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1),
+(2, '2024-02-01', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 2),
+(3, '2024-03-01', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 2),
+(1, '2024-04-01', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 1),
+(2, '2024-05-01', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 3);
