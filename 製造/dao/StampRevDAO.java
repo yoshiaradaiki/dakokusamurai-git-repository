@@ -6,7 +6,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
@@ -77,44 +76,10 @@ public class StampRevDAO {
 			}
 			return true;
 			
-		}
-		
-		//users_idを取り出す
-		public int findStampRevId(int stamp_id) {
-			ResultSet rs = null;
-			int users_id = 0;
-			//JDBCドライバを読み込む
-			try {
-				Class.forName("org.h2.Driver");
-			}catch(ClassNotFoundException e) {
-				e.printStackTrace();
-				throw new IllegalStateException("JDBCドライバをよみこめませんでした");
-			}
-			try(Connection conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS)){
-				
-				String sql= "SELECT users_id FROM STAMP_REVISION WHERE stamp_id = ?";
-				
-			   //SQLを実行する
-				PreparedStatement pStmt = conn.prepareStatement(sql);
-				
-				pStmt.setInt(1, stamp_id);
-	
-				
-				//SELECT文を実行
-				rs =pStmt.executeQuery();
-				
-				while (rs.next()) {
-					users_id = rs.getInt("users_id");
-				}
-				
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			return users_id;
-			
 	}
-		
-		
 
+		
+//		public StamBean findStampRevId(){
+//			
+//		}
 }

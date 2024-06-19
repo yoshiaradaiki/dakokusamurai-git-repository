@@ -81,10 +81,10 @@ public List<RequestListBean> findMySubRequest(int users_id) {
 //メソッド名：findMySubRequest
 //引数　　　：stamp_id
 //戻り値　　：利用者ID
-//処理概要　：
-public int findStampRevId(int stamp_id) {
-	StampRevDAO stampRevDAO = new StampRevDAO();
-	return stampRevDAO.findStampRevId(stamp_id);
-}
+//処理概要　：stamp_idから打刻修正IDを取得する
+//public int findStampRevId(int stamp_id) {
+//	StampRevDAO stampRevDAO = new StampRevDAO();
+//	return stampRevDAO.findStampRevId(stamp_id);
+//}
     
 }
