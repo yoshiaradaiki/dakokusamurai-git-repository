@@ -68,22 +68,26 @@ public class ReqListController extends HttpServlet {
 
 		//自分が提出した申請を表示
 		List<RequestListBean> requestListBean = empLogic.findMyRequest(users_id);
+		
+		//System.out.println("requestListBeanは" + requestListBean != null);
 
 		//********************　 ページング　********************//
 		if (requestListBean != null) {
 			int listSize = requestListBean.size();
-
+			
+			
 			int start = (page - 1) * recordsPerPage;
 			int end = Math.min(start + recordsPerPage, listSize);
 			int totalPages = (int) Math.ceil((double) requestListBean.size() / recordsPerPage);
 			List<RequestListBean> displayedRequests = requestListBean.subList(start, end);//範囲指定
-			//********************　 ページング　********************//
-
 			
+		
+			
+			
+			//********************　 ページング　********************//
 			//自分宛ての申請を表示
 			List<RequestListBean> subrequestListBean = empLogic.findMySubRequest(users_id);
 
-			
 			//********************　 ページング　********************//
 			int listSize2 = subrequestListBean.size();
 			int start2 = (page2 - 1) * recordsPerPage2;
@@ -93,12 +97,10 @@ public class ReqListController extends HttpServlet {
 
 			//********************　 ページング　********************//
 
-			
 			//JSPで取得する属性を入れる
 			//		request.setAttribute("requestListBean", requestListBean);//自分が提出した申請
 			//		request.setAttribute("subrequestListBean", subrequestListBean);//自分宛ての申請
 
-			
 			//********************　 ページング　********************//
 			request.setAttribute("requestList", displayedRequests);
 			request.setAttribute("currentPage", page);
@@ -107,10 +109,9 @@ public class ReqListController extends HttpServlet {
 			request.setAttribute("currentPage2", page2);
 			request.setAttribute("totalPages2", totalPages2);
 			//********************　 ページング　********************//
-			
-			
+
 		}
-		
+
 		//"attendanceStatus.jsp"へ送る
 		request.getRequestDispatcher("WEB-INF/jsp/requestList.jsp").forward(request, response);
 
