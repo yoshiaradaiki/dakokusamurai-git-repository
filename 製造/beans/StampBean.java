@@ -182,4 +182,10 @@ public class StampBean implements Serializable {
 	public int getStamp_id() {
 		return stamp_id;
 	}
+
+
+
+	public void setStamp_id(int stamp_id) {
+		this.stamp_id = stamp_id;
+	}
 }
