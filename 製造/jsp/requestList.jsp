@@ -72,33 +72,35 @@ th {
 			<c:forEach var="request" items="${requestList}">
 				<tr>
 					<td style="text-align: center;"><c:out
-							value="${request.dateAndTime}" /></td>
-					<td style="text-align: center;"><c:out
-							value="${request.content}" /> <c:choose>
-							<c:when test="${request.content == 0}">
-     					       ：変更申請
-     					   </c:when>
-							<c:when test="${request.content == 1}">
-      					      ：勤怠状況表提出
-      					  </c:when>
+							value="${request.date_and_time}" /></td>
+					<td style="text-align: center;"><c:choose>
+							<c:when test="${request.content eq 0}">
+            変更申請
+        </c:when>
+							<c:when test="${request.content eq 1}">
+            勤怠状況表提出
+        </c:when>
+							<c:otherwise>
+								<c:out value="${request.content}" />
+							</c:otherwise>
 						</c:choose></td>
-					<td style="text-align: center;"><c:out
-							value="${request.status}" /> <c:choose>
-							<c:when test="${request.status == 0}">
-   					         ：差し戻し
-   					     </c:when>
-							<c:when test="${request.status == 1}">
-   					         ：承認待ち
-    				    </c:when>
-							<c:when test="${request.status == 2}">
-     					      ：承認済み
-   					     </c:when>
-							<c:when test="${request.status == 3}">
-        				    ：キャンセル
-       					 </c:when>
+					<td style="text-align: center;"><c:choose>
+							<c:when test="${request.status eq 0}">
+            差し戻し
+        </c:when>
+							<c:when test="${request.status eq 1}">
+            承認待ち
+        </c:when>
+							<c:when test="${request.status eq 2}">
+            承認済み
+        </c:when>
+							<c:when test="${request.status eq 3}">
+            キャンセル
+        </c:when>
 						</c:choose></td>
+
 					<td style="text-align: center;"><c:out
-							value="${request.bossName}" /></td>
+							value="${request.boss_name}" /></td>
 					<td style="text-align: center;"><c:choose>
 							<c:when test="${request.status < 3}">
 								<c:choose>
@@ -128,7 +130,7 @@ th {
 	<!-- 申請一覧のページネーション -->
 	<div class="pagination">
 		<c:if test="${currentPage > 1}">
-			<c:url value="MyReqListPageController" var="prevPageUrl">
+			<c:url value="ReqListController" var="prevPageUrl">
 				<c:param name="page" value="${currentPage - 1}" />
 			</c:url>
 			<a href="${prevPageUrl}">前のページへ</a>
@@ -137,7 +139,7 @@ th {
 		<span>現在ページ ${currentPage}/${totalPages}</span>
 
 		<c:if test="${currentPage < totalPages}">
-			<c:url value="MyReqListPageController" var="nextPageUrl">
+			<c:url value="ReqListController" var="nextPageUrl">
 				<c:param name="page" value="${currentPage + 1}" />
 			</c:url>
 			<a href="${nextPageUrl}">次のページへ</a>
@@ -161,29 +163,27 @@ th {
 			<c:forEach var="request" items="${requestList2}">
 				<tr>
 					<td style="text-align: center;"><c:out
-							value="${request.dateAndTime}" /></td>
-					<td style="text-align: center;"><c:out
-							value="${request.content}" /> <c:choose>
+							value="${request.date_and_time}" /></td>
+					<td style="text-align: center;"><c:choose>
 							<c:when test="${request.content == 0}">
-     					      ： 変更申請
+     					      変更申請
      					   </c:when>
 							<c:when test="${request.content == 1}">
-      					      ：勤怠状況表提出
+      					      勤怠状況表提出
       					  </c:when>
 						</c:choose></td>
-					<td style="text-align: center;"><c:out
-							value="${request.status}" /> <c:choose>
+					<td style="text-align: center;"><c:choose>
 							<c:when test="${request.status == 0}">
-   					         ：差し戻し
+   					         差し戻し
    					     </c:when>
 							<c:when test="${request.status == 1}">
-   					         ：承認待ち
+   					         承認待ち
     				    </c:when>
 							<c:when test="${request.status == 2}">
-     					      ：承認済み
+     					      承認済み
    					     </c:when>
 							<c:when test="${request.status == 3}">
-        				    ：キャンセル
+        				    キャンセル
        					 </c:when>
 						</c:choose></td>
 					<td style="text-align: center;"><c:out value="${request.name}" /></td>
@@ -212,7 +212,7 @@ th {
 	<!-- 部下の申請一覧のページネーション -->
 	<div class="pagination">
 		<c:if test="${currentPage2 > 1}">
-			<c:url value="MyReqListPageController" var="prevPageUrl2">
+			<c:url value="ReqListController" var="prevPageUrl2">
 				<c:param name="page2" value="${currentPage2 - 1}" />
 			</c:url>
 			<a href="${prevPageUrl2}">前のページへ</a>
@@ -221,7 +221,7 @@ th {
 		<span>現在ページ ${currentPage2}/${totalPages2}</span>
 
 		<c:if test="${currentPage2 < totalPages2}">
-			<c:url value="MyReqListPageController" var="nextPageUrl2">
+			<c:url value="ReqListController" var="nextPageUrl2">
 				<c:param name="page2" value="${currentPage2 + 1}" />
 			</c:url>
 			<a href="${nextPageUrl2}">次のページへ</a>
@@ -229,11 +229,11 @@ th {
 	</div>
 
 
-	<!-- 社員画面へ遷移、WEB-INFフォルダへのアクセス？ -->
+	<!-- 社員画面へ遷移 -->
 	<form action="BackController" method="get">
 		<input type="submit" value="戻る">
 	</form>
-	
+
 </body>
 </html>
 

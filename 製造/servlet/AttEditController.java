@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -42,7 +43,13 @@ public class AttEditController extends HttpServlet {
 		int formdate = Integer.parseInt(request.getParameter("date")) ;
 		//Dateに年・月・日を渡す
 		//1月は0のため-1、1日が欲しいので1を入力している
-		Date date = new Date(year,month,formdate);
+//		Date date = new Date(year,month,formdate);
+		// Calendar オブジェクトを取得し、日付をセットする
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, formdate); // 年、月（0から始まるので注意）、日をセット
+        
+        // Date オブジェクトに変換する
+        Date date = calendar.getTime();
 		System.out.println(date);
 		
 		//-------------------------AttStatuLogicのメソッド取得---------------------------------
@@ -64,9 +71,9 @@ public class AttEditController extends HttpServlet {
 		
 		//----------------------取得した情報を次の画面に投げる処理-----------------------------
 		request.setAttribute("date", date);
-		request.setAttribute("attDetailUsers", attDetailUsers);
-		request.setAttribute("attDetailStamp", attDetailStamp);
-		request.setAttribute("attDetailUsersRequestList", attDetailUsersRequestList);
+		request.setAttribute("usersBean", attDetailUsers);
+		request.setAttribute("stampBean", attDetailStamp);
+		request.setAttribute("requestListBean", attDetailUsersRequestList);
 		
 		
 		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatusDetail.jsp").forward(request, response);
