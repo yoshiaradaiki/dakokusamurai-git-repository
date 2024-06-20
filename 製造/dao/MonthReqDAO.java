@@ -23,16 +23,16 @@ public class MonthReqDAO {
 
 	public static void main(String[] args) {
 		//テスト用
-//		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
-//		monthReqDAO.insertMonthReq(1, 0, 10, 10);//成功
-//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
-//		monthReqDAO.findMyRequest(1);//成功
-//		monthReqDAO.findMySubRequest(1);//成功
-		
-//		@SuppressWarnings("deprecation")
-//		Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
-//		monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
-//		monthReqDAO.findAttStatusMonthRequest(1);//成功
+		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
+		//		monthReqDAO.insertMonthReq(1, 0, 10, 10);//成功
+		//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
+		monthReqDAO.findMyRequest(1);//成功
+		//		monthReqDAO.findMySubRequest(1);//成功
+
+		//		@SuppressWarnings("deprecation")
+		//		Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
+		//		monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
+		//		monthReqDAO.findAttStatusMonthRequest(1);//成功
 	}
 
 	//メソッド名：月末申請登録
@@ -93,7 +93,7 @@ public class MonthReqDAO {
 
 			//UPDATE文を実行
 			int result = pStmt.executeUpdate();
-			
+
 			if (result != 1) {
 				return false;
 			}
@@ -119,38 +119,44 @@ public class MonthReqDAO {
 
 			//SELECT文の準備　ステータス番号の小さい順で並べる
 			String selectSql = "SELECT\r\n"
-					+ "    COALESCE(m.date_req, scr.date_req) AS date_req,\r\n"
-					+ "    COALESCE(m.status, scr.status) AS status,\r\n"
-					+ "    COALESCE(u.boss_users_id, m.created_users_id) AS boss_users_id,\r\n"
+					+ "    m.date_req,\r\n"
+					+ "    m.status,\r\n"
+					+ "    u2.emp_name,\r\n"
 					+ "    0 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    month_req m\r\n"
-					+ "    LEFT JOIN stamp_correct_req scr ON m.month_req_id = scr.stamp_rev_id\r\n"
-					+ "    LEFT JOIN users u ON u.users_id = ?\r\n"
+					+ "    JOIN att_status as ast ON m.att_status_id = ast.att_status_id\r\n"
+					+ "    JOIN users u1 ON u1.users_id = ast.users_id\r\n"
+					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
 					+ "WHERE\r\n"
-					+ "    COALESCE(m.status, scr.status) IN (0, 1)\r\n"
-					+ " \r\n"
+					+ "    u2.users_id = ?\r\n"
+					+ "    AND m.status IN (0, 1)\r\n"
+					+ "\r\n"
 					+ "UNION ALL\r\n"
-					+ " \r\n"
+					+ "\r\n"
 					+ "SELECT\r\n"
-					+ "    COALESCE(scr.date_req, m.date_req) AS date_req,\r\n"
-					+ "    COALESCE(scr.status, m.status) AS status,\r\n"
-					+ "    COALESCE(u.boss_users_id, m.created_users_id) AS boss_users_id,\r\n"
+					+ "    scr.date_req,\r\n"
+					+ "    scr.status,\r\n"
+					+ "    u1.emp_name,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
-					+ "    LEFT JOIN month_req m ON scr.stamp_rev_id = m.month_req_id\r\n"
-					+ "    LEFT JOIN users u ON u.users_id =?\r\n"
+					+ "    JOIN stamp_revision sr ON scr.stamp_rev_id = sr.stamp_rev_id\r\n"
+					+ "    JOIN stamp s ON s.stamp_id = sr.stamp_id\r\n"
+					+ "    JOIN users u1 ON u1.users_id = s.users_id\r\n"
+					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
 					+ "WHERE\r\n"
-					+ "    COALESCE(m.status, scr.status) IN (0, 1)\r\n"
-					+ " \r\n"
+					+ "    u2.users_id = ?\r\n"
+					+ "    AND scr.status IN (0, 1)\r\n"
+					+ "\r\n"
 					+ "ORDER BY\r\n"
-					+ "    status ASC;";
+					+ "    status ASC;\r\n"
+					+ "";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
 			//UPDATE文の？に使用する値を設定
 			UsersBean usersBean = new UsersBean();
-			pStmt.setInt(1, usersBean.getUsers_id());
-			pStmt.setInt(2, usersBean.getUsers_id());
+			pStmt.setInt(1, 1);
+			pStmt.setInt(2, 1);
 
 			//SELECT文を実行
 			ResultSet rs = pStmt.executeQuery();
@@ -164,16 +170,14 @@ public class MonthReqDAO {
 				reqListBean.setBoss_name(rs.getString("boss_users_id"));
 				reqListBean.setContent(rs.getInt("content"));
 				//検査結果出力
-//				System.out.print(reqListBean.getDate_and_time() + " ");
-//				System.out.print(reqListBean.getStatus() + " ");
-//				System.out.print(reqListBean.getBoss_name() + " ");
-//				System.out.println(reqListBean.getContent() + " ");
-				
+				System.out.print(reqListBean.getDate_and_time() + " ");
+				System.out.print(reqListBean.getStatus() + " ");
+				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
+				System.out.println(reqListBean.getContent() + " ");
+
 				myReqList.add(reqListBean);
 			}
 			System.out.println("検索成功しました。");
-			//			rs.close();
-			//			pStmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
@@ -196,36 +200,33 @@ public class MonthReqDAO {
 
 			//SELECT文の準備　ステータス番号の小さい順で並べる
 			String selectSql = "SELECT\r\n"
-					+ "    m.date_req,\r\n"
-					+ "    m.status,\r\n"
-					+ "    u2.emp_name,\r\n"
+					+ "    COALESCE(m.date_req, scr.date_req) AS date_req,\r\n"
+					+ "    COALESCE(m.status, scr.status) AS status,\r\n"
+					+ "    COALESCE(u.users_id, m.created_users_id) AS users_id,\r\n"
 					+ "    0 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    month_req m\r\n"
-					+ "    JOIN att_status as ast ON m.att_status_id = ast.att_status_id\r\n"
-					+ "    JOIN users u1 ON u1.users_id = ast.users_id\r\n"
-					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
+					+ "    LEFT JOIN stamp_correct_req scr ON m.month_req_id = scr.stamp_rev_id\r\n"
+					+ "    LEFT JOIN users u ON u.boss_users_id = ?\r\n"
 					+ "WHERE\r\n"
-					+ "    u2.users_id = ?\r\n"
-					+ "\r\n"
+					+ "    COALESCE(m.status, scr.status) IN (1, 2)\r\n"
+					+ " \r\n"
 					+ "UNION ALL\r\n"
-					+ "\r\n"
+					+ " \r\n"
 					+ "SELECT\r\n"
-					+ "    scr.date_req,\r\n"
-					+ "    scr.status,\r\n"
-					+ "    u1.emp_name,\r\n"
+					+ "    COALESCE(scr.date_req, m.date_req) AS date_req,\r\n"
+					+ "    COALESCE(scr.status, m.status) AS status,\r\n"
+					+ "    COALESCE(u.users_id, m.created_users_id) AS users_id,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
-					+ "    JOIN stamp_revision sr ON scr.stamp_rev_id = sr.stamp_rev_id\r\n"
-					+ "    JOIN stamp s ON s.stamp_id = sr.stamp_id\r\n"
-					+ "    JOIN users u1 ON u1.users_id = s.users_id\r\n"
-					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
+					+ "    LEFT JOIN month_req m ON scr.stamp_rev_id = m.month_req_id\r\n"
+					+ "    LEFT JOIN users u ON u.boss_users_id =?\r\n"
 					+ "WHERE\r\n"
-					+ "    u2.users_id = ?\r\n"
-					+ "\r\n"
+					+ "    COALESCE(m.status, scr.status) IN (1, 2)\r\n"
+					+ " \r\n"
 					+ "ORDER BY\r\n"
-					+ "    status ASC;";
+					+ "    status ASC;\r\n";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
 			//UPDATE文の？に使用する値を設定
 			UsersBean usersBean = new UsersBean();
@@ -241,14 +242,14 @@ public class MonthReqDAO {
 				//申請日時を取得
 				reqListBean.setDate_and_time(rs.getDate("date_req"));
 				reqListBean.setStatus(rs.getInt("status"));
-				reqListBean.setName(rs.getString("users_id"));//承認者
+				reqListBean.setName(rs.getString("users_id"));//申請者
 				reqListBean.setContent(rs.getInt("content"));
 				//検査結果出力
-//				System.out.print(reqListBean.getDate_and_time() + " ");
-//				System.out.print(reqListBean.getStatus() + " ");
-//				System.out.print(reqListBean.getName() + " ");
-//				System.out.println(reqListBean.getContent() + " ");
-				
+				//				System.out.print(reqListBean.getDate_and_time() + " ");
+				//				System.out.print(reqListBean.getStatus() + " ");
+				//				System.out.print(reqListBean.getName() + " ");
+				//				System.out.println(reqListBean.getContent() + " ");
+
 				subReqList.add(reqListBean);
 			}
 
@@ -291,7 +292,7 @@ public class MonthReqDAO {
 
 			//実行
 			pStmt.executeQuery();
-			
+
 			RequestListBean reqListBean = new RequestListBean();
 			System.out.println(reqListBean.getReason());
 
@@ -326,9 +327,8 @@ public class MonthReqDAO {
 
 			//実行
 			pStmt.executeQuery();
-			
-			System.out.println(reqListBean.getReason());
 
+			System.out.println(reqListBean.getReason());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
