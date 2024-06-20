@@ -10,9 +10,7 @@
 <%
 //Samplに入る
 StampBean stampBean = (StampBean) request.getAttribute("StampBean");
-//UsersBean usersBean =new UsersBean();
-//Date date =UsersBean.getyear_and_month(date);
-//Date date = new Date(); 
+ //int formstatus =(Integer)request.getAttribute("formstatus"); 
 %>
 
 <!DOCTYPE html>
@@ -23,8 +21,10 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 
 </head>
 <body>
+
 	<jsp:include page="header.jsp" /><hr>
-	<% if(true){ %>
+	
+	<% if(${formstatus} == 0) { %>
 	<h1>申請フォーム</h1>
 	<!-- フォームの切り替え　JSで残すOrサーブレットで実行 -->
 		<div style="double">
@@ -90,7 +90,6 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 		    
 	 <!-- ここにデータの表示を追加 ---------------------------------------------------------------->
 	 
-	 ★★★編集ボタン遷移NG
 		    <c:forEach var="stampBean" items="${stampBeans}">
 		    <tr>
 		    	<!--日付  -->
@@ -188,7 +187,7 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 				<input type="submit" value="申請">
 			</form>
 		
-	<% }else{ %>
+	<% } else { %>
 	<h1>承認フォーム</h1>
 			<div style="double">
 			<h3>勤怠状況表</h3>
@@ -311,11 +310,12 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 				<input type="submit" value="承認">
 			</form>
 			
-	<% } %>
 	
+	<% } %>	
 	<!-- 申請一覧へ遷移、WEB-INFフォルダへのアクセス？ -->
 	<!-- <a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>    -->
-	<a href="/WEB-INF/jsp/requestList.jsp">戻る</a>
-	
+<form action="BackController" method="get">
+	<input type="submit" value="戻る">	
+</form>
 </body>
 </html>
