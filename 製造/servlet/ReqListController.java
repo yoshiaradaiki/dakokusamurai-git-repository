@@ -49,7 +49,7 @@ public class ReqListController extends HttpServlet {
 
 		//--------ダミーセッション利用者IDセット---------//
 		UsersBean sessionUsersBean = new UsersBean();
-		sessionUsersBean.setUsers_id(1);
+//		sessionUsersBean.setUsers_id(1);
 		int users_id = sessionUsersBean.getUsers_id();
 
 		//--------ダミーセッション利用者IDゲット----------//
