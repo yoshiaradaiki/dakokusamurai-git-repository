@@ -41,49 +41,29 @@ public class ReqListController extends HttpServlet {
 		}
 		//********************　 ページング　********************//
 
-		//		// セッションから利用者IDを取得
-		//		HttpSession session = request.getSession();
-		//		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-		//		// ユーザービーンからusers_idを取得
-		//		int users_id = sessionUsersBean.getUsers_id();
-
-		//--------ダミーセッション利用者IDセット---------//
-		UsersBean sessionUsersBean = new UsersBean();
-//		sessionUsersBean.setUsers_id(1);
-		int users_id = sessionUsersBean.getUsers_id();
-
-		//--------ダミーセッション利用者IDゲット----------//
+		//--------セッション利用者IDゲット----------//
 		HttpSession session = request.getSession();
-		sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-		if (sessionUsersBean != null) {
-			users_id = sessionUsersBean.getUsers_id();
-			// ユーザーIDを使った処理を記述
-		} else {
-			// エラー処理など、sessionUsersBean が null の場合の対応
-		}
+		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
 		session.setAttribute("sessionUsersBean", sessionUsersBean);
-		//--------ダミーセッション利用者ID----------//
+		//--------セッション利用者ID----------//
 
 		EmpLogic empLogic = new EmpLogic();
 
 		//自分が提出した申請を表示
 		List<RequestListBean> requestListBean = empLogic.findMyRequest(users_id);
-		
+
 		//System.out.println("requestListBeanは" + requestListBean != null);
 
 		//********************　 ページング　********************//
 		if (requestListBean != null) {
 			int listSize = requestListBean.size();
-			
-			
+
 			int start = (page - 1) * recordsPerPage;
 			int end = Math.min(start + recordsPerPage, listSize);
 			int totalPages = (int) Math.ceil((double) requestListBean.size() / recordsPerPage);
 			List<RequestListBean> displayedRequests = requestListBean.subList(start, end);//範囲指定
-			
-		
-			
-			
+
 			//********************　 ページング　********************//
 			//自分宛ての申請を表示
 			List<RequestListBean> subrequestListBean = empLogic.findMySubRequest(users_id);

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.UsersBean;
 import logic.RequestListLogic;
 
 /**
@@ -36,26 +37,28 @@ public class RequestMonthCancelController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
-		//セッションを取得
-		HttpSession session = request.getSession();
 
 		//セッションスコープから利用者IDを取得
-		int sessionUsersBean = (int) session.getAttribute("sessionUsersBean");
+		HttpSession session = request.getSession();
+		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
+		session.setAttribute("sessionUsersBean", sessionUsersBean);
+
 		//月末申請IDを取得
 		int month_req_id = Integer.parseInt(request.getParameter("month_req_id"));
-
+		System.out.println("月末申請IDは" + month_req_id);
 		//取得した月末申請IDによって、月末申請をキャンセルする（月末申請.ステータスを3に更新、更新者を利用者IDに更新する）
 		// 月末申請をキャンセルする操作を行うためのロジッククラスのインスタンスを作成
 		RequestListLogic requestListLogic = new RequestListLogic();
+
 		// 月末申請のキャンセル操作を実行し、その結果を取得
-		Boolean isCancelled = requestListLogic.updateReqCancelByAttStatus(month_req_id, 3, null, sessionUsersBean);
+		Boolean isCancelled = requestListLogic.updateReqCancelByAttStatus(month_req_id, 3, null, users_id);
 		// キャンセル操作の結果をリクエストスコープに設定
 		request.setAttribute("isCancelled", isCancelled);
 		request.setAttribute("resultMsg", "月末申請をキャンセルしました。");
 
 		//"attendanceStatus.jsp"へ転送する
-		request.getRequestDispatcher("WEB-INF/jsp/requestList.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp").forward(request, response);
 	}
 
 }
