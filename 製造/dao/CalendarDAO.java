@@ -66,7 +66,8 @@ public class CalendarDAO {
 				+ "       COALESCE(sr2.workOut_rev, s.workOut_re) AS workOut_re,\n"
 				+ "       COALESCE(sr2.work_status, c.work_status) AS work_status,\n"
 				+ "       sr2.rest_time,\n"
-				+ "       COALESCE(sr2.note, c.note) AS note\n"
+				+ "       COALESCE(sr2.note, c.note) AS note,\n"
+				+ "       s.stamp_id\n"
 				+ "FROM calendar c\n"
 				+ "LEFT JOIN\n"
 				+ "(SELECT * FROM STAMP WHERE users_id = ?) s ON c.calendar_date = s.stamp_date\n"
@@ -157,6 +158,8 @@ public class CalendarDAO {
 				}
 				// 備考の取得(String)
 				stampBean.setNote(rs.getString("note"));
+				// 打刻ID(int)
+				stampBean.setStamp_id(rs.getInt("stamp_id"));
 				// リストに追加
 				stampBeans.add(stampBean);
 			}
@@ -209,7 +212,8 @@ public class CalendarDAO {
 				+ "       COALESCE(sr2.workOut_rev, s.workOut_re) AS workOut_re,\n"
 				+ "       COALESCE(sr2.work_status, c.work_status) AS work_status,\n"
 				+ "       sr2.rest_time,\n"
-				+ "       COALESCE(sr2.note, c.note) AS note\n"
+				+ "       COALESCE(sr2.note, c.note) AS note,\n"
+				+ "       s.stamp_id\n"
 				+ "FROM calendar c\n"
 				+ "LEFT JOIN\n"
 				+ "(SELECT * FROM STAMP WHERE users_id = ?) s ON c.calendar_date = s.stamp_date\n"
@@ -233,8 +237,15 @@ public class CalendarDAO {
 			con = ConnectionDB();
 						
 			// SQL文組み立て
-			long timeInMilliSeconds = date.getTime();
-		    java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
+//			long timeInMilliSeconds = date.getTime();
+//		    java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
+//		    System.out.println(sqlDate);
+//		    String strDate = date.getYear() + "-" + date.getMonth() + "-" + date.getDate();
+			// 上の変換だとうまくいかない
+			LocalDate localDate = LocalDate.of(date.getYear(), date.getMonth(), date.getDate());
+			java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+			
+		    
 			psmt = con.prepareStatement(sql);
 			psmt.setInt(1, users_id);
 			psmt.setDate(2, sqlDate);
@@ -292,6 +303,8 @@ public class CalendarDAO {
 				}
 				// 備考の取得(String)
 				stampBean.setNote(rs.getString("note"));
+				// 打刻ID(int)
+				stampBean.setStamp_id(rs.getInt("stamp_id"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
