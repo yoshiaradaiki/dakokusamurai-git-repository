@@ -81,9 +81,9 @@ public class EmpLogic {
 	//メソッド追加:鈴木
 	//メソッド名：attCheck
 	//処理概要　：打刻前に勤怠状況の有無をチェックする
-	public StampBean attCheck(int users_id, Date date) {
+	public StampBean attCheck(int users_id, Date stamp_date) {
 		StampDAO stampDAO = new StampDAO();
-		return stampDAO.attCheck(users_id, date);
+		return stampDAO.attCheck(users_id, stamp_date);
 	}
 
 	//メソッド名：findMyRequest
