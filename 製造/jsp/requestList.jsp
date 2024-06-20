@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>申請一覧</title>
 <style>
@@ -74,29 +75,17 @@ th {
 					<td style="text-align: center;"><c:out
 							value="${request.date_and_time}" /></td>
 					<td style="text-align: center;"><c:choose>
-							<c:when test="${request.content eq 0}">
-            変更申請
-        </c:when>
-							<c:when test="${request.content eq 1}">
-            勤怠状況表提出
-        </c:when>
+							<c:when test="${request.content == 0}">変更申請 </c:when>
+							<c:when test="${request.content == 1}">勤怠状況表提出</c:when>
 							<c:otherwise>
 								<c:out value="${request.content}" />
 							</c:otherwise>
 						</c:choose></td>
 					<td style="text-align: center;"><c:choose>
-							<c:when test="${request.status eq 0}">
-            差し戻し
-        </c:when>
-							<c:when test="${request.status eq 1}">
-            承認待ち
-        </c:when>
-							<c:when test="${request.status eq 2}">
-            承認済み
-        </c:when>
-							<c:when test="${request.status eq 3}">
-            キャンセル
-        </c:when>
+							<c:when test="${request.status == 0}">差し戻し </c:when>
+							<c:when test="${request.status == 1}">承認待ち</c:when>
+							<c:when test="${request.status == 2}">承認済み</c:when>
+							<c:when test="${request.status == 3}">キャンセル</c:when>
 						</c:choose></td>
 
 					<td style="text-align: center;"><c:out
@@ -218,16 +207,16 @@ th {
 							<c:when test="${request.status == 1 || request.status == 2}">
 								<c:choose>
 									<c:when test="${request.content == 0}">
-									<form action="RevDetailController" method="get">
+										<form action="RevDetailController" method="get">
 											<input type="hidden" name="att_status_id"
 												value="${request.att_status_id}">
-										<button type="submit" >変更詳細</button>
+											<button type="submit">変更詳細</button>
 									</c:when>
 									<c:when test="${request.content == 1}">
-									<form action="RequestDetailController" method="get">
+										<form action="RequestDetailController" method="get">
 											<input type="hidden" name="att_status_id"
 												value="${request.att_status_id}">
-										<button type="submit" >提出詳細</button>
+											<button type="submit">提出詳細</button>
 										</form>
 									</c:when>
 									<c:otherwise>
