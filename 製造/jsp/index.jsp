@@ -10,6 +10,7 @@
 <title>打刻侍</title>
 </head>
 <body>
+	<h1>打刻侍</h1>
 	<form action="LoginController" method="get">
 		<label for="login_id">ログインID：</label>
 		<!-- リクエストにlogin_idがあれば表示する -->
