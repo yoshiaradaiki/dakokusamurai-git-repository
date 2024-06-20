@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Calendar;
 import java.util.Date;
 
 import beans.StampBean;
@@ -35,6 +36,15 @@ public class StampDAO {
 	private Time changeTime(LocalTime lTime) {
 		if (lTime != null) {
 			return new Time(lTime.getHour(), lTime.getMinute(), 0);
+		} else {
+			return null;
+		}
+	}
+
+	// sql.Time型をLocalTime型に変換する
+	private LocalTime changeLocalTime(Time time) {
+		if (time != null) {
+			return time.toLocalTime();
 		} else {
 			return null;
 		}
@@ -121,15 +131,16 @@ public class StampDAO {
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setInt(1, users_id);
-			LocalDate localDate = LocalDate.of(stamp_date.getYear(), stamp_date.getMonth(), stamp_date.getDate());
-			java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(stamp_date);
+			java.sql.Date sqlDate = new java.sql.Date(calendar.getTime().getTime());
 			ps.setDate(2, sqlDate);
 
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				stampBean.setWorkIn_raw(rs.getTime("workIn_raw").toLocalTime());
-				stampBean.setWorkOut_raw(rs.getTime("workIn_raw").toLocalTime());
+				stampBean.setWorkIn_raw(changeLocalTime(rs.getTime("workIn_raw")));
+				stampBean.setWorkOut_raw(changeLocalTime(rs.getTime("workOut_raw")));
 			}
 
 		} catch (SQLException e) {
