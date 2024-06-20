@@ -78,6 +78,14 @@ public class EmpLogic {
 		return stampDAO.updateStamp(users_id, stamp_date, workOut_raw, workOut_re);
 	}
 
+	//メソッド追加:鈴木
+	//メソッド名：attCheck
+	//処理概要　：打刻前に勤怠状況の有無をチェックする
+	public StampBean attCheck(int users_id, Date date) {
+		StampDAO stampDAO = new StampDAO();
+		return stampDAO.attCheck(users_id, date);
+	}
+
 	//メソッド名：findMyRequest
 	//処理概要　：自分が提出した申請を表示
 	public List<RequestListBean> findMyRequest(int users_id) {
