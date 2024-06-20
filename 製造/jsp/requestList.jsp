@@ -105,15 +105,42 @@ th {
 							<c:when test="${request.status < 3}">
 								<c:choose>
 									<c:when test="${request.content == 0 && request.status == 0}">
-										<button type="button" onclick="goRevDetail()">再申請</button>
-										<button type="button" onclick="goRequestList()">キャンセル</button>
+										<form action="RequestRequestController" method="get">
+											<input type="hidden" name="stamp_rev_id"
+												value="${request.stamp_rev_id}">
+											<button type="submit">再申請</button>
+										</form>
+										<form action="RequestMonthCancelController" method="get">
+											<input type="hidden" name="month_req_id"
+												value="${request.month_req_id}">
+											<button type="submit">キャンセル</button>
+										</form>
 									</c:when>
 									<c:when test="${request.content == 1 && request.status == 0}">
-										<button type="button" onclick="goRevMonth()">再提出</button>
-										<button type="button" onclick="goRequestList()">キャンセル</button>
+										<form action="RequestSubmitController" method="get">
+											<input type="hidden" name="att_status_id"
+												value="${request.att_status_id}">
+											<button type="submit">再提出</button>
+										</form>
+										<form action="RequestOneDayCancelController" method="get">
+											<input type="hidden" name="stamp_rev_req_id"
+												value="${request.stamp_rev_req_id}">
+											<button type="submit">キャンセル</button>
+										</form>
 									</c:when>
-									<c:when test="${request.status < 2}">
-										<button type="button" onclick="goRequestList()">キャンセル</button>
+									<c:when test="${request.content == 0 && request.status < 2}">
+										<form action="RequestOneDayCancelController" method="get">
+											<input type="hidden" name="stamp_rev_req_id"
+												value="${request.stamp_rev_req_id}">
+											<button type="submit">キャンセル</button>
+										</form>
+									</c:when>
+									<c:when test="${request.content == 1 && request.status < 2}">
+										<form action="RequestMonthCancelController" method="get">
+											<input type="hidden" name="month_req_id"
+												value="${request.month_req_id}">
+											<button type="submit">キャンセル</button>
+										</form>
 									</c:when>
 									<c:otherwise>
 									</c:otherwise>
@@ -191,10 +218,17 @@ th {
 							<c:when test="${request.status == 1 || request.status == 2}">
 								<c:choose>
 									<c:when test="${request.content == 0}">
-										<button type="button" onclick="goRevDetail()">変更詳細</button>
+									<form action="RevDetailController" method="get">
+											<input type="hidden" name="att_status_id"
+												value="${request.att_status_id}">
+										<button type="submit" >変更詳細</button>
 									</c:when>
 									<c:when test="${request.content == 1}">
-										<button type="button" onclick="goRevMonth()">提出詳細</button>
+									<form action="RequestDetailController" method="get">
+											<input type="hidden" name="att_status_id"
+												value="${request.att_status_id}">
+										<button type="submit" >提出詳細</button>
+										</form>
 									</c:when>
 									<c:otherwise>
 									</c:otherwise>
@@ -236,18 +270,3 @@ th {
 
 </body>
 </html>
-
-<script>
-	//勤怠状況詳細画面へ遷移
-	function goRevDetail() {
-		window.location.href = '/WEB-INF/jsp/attendanceStatusDetail.jsp';
-	}
-	//勤怠状況表画面へ遷移
-	function goRevMonthl() {
-		window.location.href = '/WEB-INF/jsp/attendanceStatus.jsp';
-	}
-	//再描画
-	function goRequestList() {
-		window.location.href = '/WEB-INF/jsp/requestLis.jsp';
-	}
-</script>
