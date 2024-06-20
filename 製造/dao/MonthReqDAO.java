@@ -22,11 +22,11 @@ public class MonthReqDAO {
 
 	public static void main(String[] args) {
 		//テスト用
-		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
+//		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
 		//		monthReqDAO.insertMonthReq(1, 0, 10, 10);//成功
 		//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
-		monthReqDAO.findMyRequest(1);//成功
-		monthReqDAO.findMySubRequest(1);//成功
+//		monthReqDAO.findMyRequest(1);//成功
+//		monthReqDAO.findMySubRequest(1);//成功
 
 		//		@SuppressWarnings("deprecation")
 		//		Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
@@ -167,10 +167,10 @@ public class MonthReqDAO {
 				reqListBean.setBoss_name(rs.getString("emp_name"));
 				reqListBean.setContent(rs.getInt("content"));
 				//検査結果出力
-				System.out.print(reqListBean.getDate_and_time() + " ");
-				System.out.print(reqListBean.getStatus() + " ");
-				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
-				System.out.println(reqListBean.getContent() + " ");
+//				System.out.print(reqListBean.getDate_and_time() + " ");
+//				System.out.print(reqListBean.getStatus() + " ");
+//				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
+//				System.out.println(reqListBean.getContent() + " ");
 
 				myReqList.add(reqListBean);
 			}
@@ -246,10 +246,10 @@ public class MonthReqDAO {
 				reqListBean.setName(rs.getString("emp_name"));//申請者
 				reqListBean.setContent(rs.getInt("content"));
 				//検査結果出力
-				System.out.print(reqListBean.getDate_and_time() + " ");
-				System.out.print(reqListBean.getStatus() + " ");
-				System.out.print(reqListBean.getName() + " ");
-				System.out.println(reqListBean.getContent() + " ");
+//				System.out.print(reqListBean.getDate_and_time() + " ");
+//				System.out.print(reqListBean.getStatus() + " ");
+//				System.out.print(reqListBean.getName() + " ");
+//				System.out.println(reqListBean.getContent() + " ");
 
 				subReqList.add(reqListBean);
 			}
