@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,7 +81,7 @@ public class CalendarDAO {
 				+ "    ) sr\n"
 				+ "    WHERE row_num = 1\n"
 				+ ") sr2 ON s.stamp_id = sr2.stamp_id\n"
-				+ "AND c.calendar_date BETWEEN ? AND ?\n"
+				+ "WHERE c.calendar_date BETWEEN ? AND ?\n"
 				+ "ORDER BY c.calendar_date ASC;";
 		
 		ArrayList<StampBean> stampBeans = new ArrayList<>();
@@ -94,10 +93,23 @@ public class CalendarDAO {
 						
 			// SQL文組み立て
 			// 受け取ったdateを元に開始年月日と終了年月日を取得
-			LocalDate localsDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
-			java.sql.Date sDate = java.sql.Date.valueOf(localsDate);
-			LocalDate localeMonth = localsDate.plusMonths(1).minusDays(1);
-			java.sql.Date eDate = java.sql.Date.valueOf(localeMonth);
+//			LocalDate localsDate = LocalDate.of(date.getYear(), date.getMonth(), 1);
+//			java.sql.Date sDate = java.sql.Date.valueOf(localsDate);
+//			LocalDate localeMonth = localsDate.plusMonths(1).minusDays(1);
+//			java.sql.Date eDate = java.sql.Date.valueOf(localeMonth);
+			
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			// dateの月の１日をセット
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			java.sql.Date sDate = new java.sql.Date(calendar.getTime().getTime());
+			// 次の月をセットして１日戻る（対象付きの月末が取得できる）
+			calendar.add(Calendar.MONTH, 1);
+			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			java.sql.Date eDate = new java.sql.Date(calendar.getTime().getTime());
+			
+			System.out.println(sDate);
+			System.out.println(eDate);
 			
 			psmt = con.prepareStatement(sql);
 			psmt.setInt(1, users_id);
@@ -132,8 +144,8 @@ public class CalendarDAO {
 				}
 				// 日付から曜日の取得(int)
 				if (stampBean.getStamp_date() != null) {
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(stampBean.getStamp_date());
+					Calendar calendarWeek = Calendar.getInstance();
+					calendarWeek.setTime(stampBean.getStamp_date());
 					// 曜日の取得と挿入
 					stampBean.setWeek(calendar.get(Calendar.DAY_OF_WEEK));
 				}
@@ -242,8 +254,14 @@ public class CalendarDAO {
 //		    System.out.println(sqlDate);
 //		    String strDate = date.getYear() + "-" + date.getMonth() + "-" + date.getDate();
 			// 上の変換だとうまくいかない
-			LocalDate localDate = LocalDate.of(date.getYear(), date.getMonth(), date.getDate());
-			java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+//			LocalDate localDate = LocalDate.of(date.getYear(), date.getMonth(), date.getDate());
+//			java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+			
+			Calendar calendar = Calendar.getInstance();
+	        calendar.setTime(date);
+	        java.sql.Date sqlDate = new java.sql.Date(calendar.getTime().getTime());
+			
+			System.out.println(sqlDate);
 			
 		    
 			psmt = con.prepareStatement(sql);
@@ -277,8 +295,8 @@ public class CalendarDAO {
 				}
 				// 日付から曜日の取得(int)
 				if (stampBean.getStamp_date() != null) {
-					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(stampBean.getStamp_date());
+					Calendar calendarWeek = Calendar.getInstance();
+					calendarWeek.setTime(stampBean.getStamp_date());
 					// 曜日の取得と挿入
 					stampBean.setWeek(calendar.get(Calendar.DAY_OF_WEEK));
 				}
