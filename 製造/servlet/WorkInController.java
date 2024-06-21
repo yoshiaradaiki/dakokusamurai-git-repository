@@ -56,14 +56,14 @@ public class WorkInController extends HttpServlet {
 
 			if (result) {
 				// 登録成功（成功表示＆社員画面リダイレクト）
-				request.setAttribute("resultMsg", "出勤時刻を登録しました。");
+				request.setAttribute("resultMsg", "出勤時刻を登録しました");
 			} else {
 				// 登録失敗（エラー表示＆社員画面リダイレクト）
-				request.setAttribute("resultMsg", "出勤時刻の登録に失敗しました。");
+				request.setAttribute("resultMsg", "出勤時刻の登録に失敗しました");
 			}
 		} else {
 			// 勤怠情報が既に存在する場合、エラーメッセージを表示
-			request.setAttribute("resultMsg", "既に出勤登録があります。");
+			request.setAttribute("resultMsg", "既に出勤登録があります");
 		}
 
 		request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp").forward(request, response);
