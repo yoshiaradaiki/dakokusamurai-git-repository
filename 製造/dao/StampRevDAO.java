@@ -34,8 +34,8 @@ public class StampRevDAO {
 				//★★★SQL★★★
 				//追加したい情報：打刻修正ID+打刻ID+修正出勤+退勤+休憩時間+勤怠状況+備考
 				String sql= "INSERT INTO STAMP_REVISION "
-						+ "(STAMP_REV_ID ,STAMP_ID ,WORKIN_REV ,WORKOUT_REV ,REST_TIME ,WORK_STATUS ,NOTE )\n"
-						+ "VALUES(?,?,?,?,?,?,?)";
+					+ "(STAMP_ID ,WORKIN_REV ,WORKOUT_REV ,REST_TIME ,WORK_STATUS ,NOTE )\n"
+						+ "VALUES(?,?,?,?,?,?)";
 				
 			   //SQLを実行する
 				PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -55,13 +55,13 @@ public class StampRevDAO {
 //				Time time2 = new Time(0, localTime2.getMinute(), 0);//分
 //				Time time3 = new Time(localTime3.getHour(), 0, 0); //休憩時間のため　時間で取得
 				
-				pStmt.setInt(1,stampRevBean.getStamp_rev_id());
-				pStmt.setInt(2,stampRevBean.getStamp_id());
-				pStmt.setTime(3,time1);
-				pStmt.setTime(4,time2);
-				pStmt.setTime(5,time3);
-				pStmt.setInt(6,stampRevBean.getWork_status());
-				pStmt.setString(7,stampRevBean.getNote());
+//				pStmt.setInt(1,stampRevBean.getStamp_rev_id());
+				pStmt.setInt(1,stampRevBean.getStamp_id());
+				pStmt.setTime(2,time1);
+				pStmt.setTime(3,time2);
+				pStmt.setTime(4,time3);
+				pStmt.setInt(5,stampRevBean.getWork_status());
+				pStmt.setString(6,stampRevBean.getNote());
 	
 				
 				//Insert文を実行
