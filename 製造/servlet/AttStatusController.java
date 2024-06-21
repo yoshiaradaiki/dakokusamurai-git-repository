@@ -5,6 +5,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,12 +38,29 @@ public class AttStatusController extends HttpServlet {
 
 		//現在の日付を取得
 		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		// 今日の日付を1日にする
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		// 先月の日付に変更する
+		calendar.add(Calendar.MONTH, -1);
+		// 変更後の日付を取得
+		date = calendar.getTime();
+		// 年を取得
+		int year = calendar.get(Calendar.YEAR);
+		// 月を取得
+		int month = calendar.get(Calendar.MONTH);
+		
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
 
 		// AttStatusLogic のインスタンスを生成
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
 
 		//勤怠状況表の利用者取得
-		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(1);
+		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(users_id);
+		usersBean.setYear_and_month(date);
+		
 
 		//勤怠状況表の表示
 		List<StampBean> stampBeans = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
