@@ -1,3 +1,5 @@
+//作成者：横山
+//作成日：6/17
 package servlet;
 
 import java.io.IOException;
@@ -55,6 +57,11 @@ public class AttEditController extends HttpServlet {
 		//-------------------------AttStatuLogicのメソッド取得---------------------------------
 		//AttStatusLogi インスタンス作成 
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
+		
+		//6/21　横山追加
+		//フォーム切り替えのリクエストセット　申請フォーム：0
+		int formstatus =0;
+		request.setAttribute("formstatus",formstatus);
 		
 		//メソッド
 		//利用者を取得するlogic①
