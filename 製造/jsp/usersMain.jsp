@@ -17,7 +17,7 @@
     #dateDisplay {
         font-size: 30px; /* 月・日・曜日表示のフォントサイズ */
         font-family: 'HG行書体'; /* フォントの指定 */
-        margin-bottom: 0px; /* 月日表示と時刻表示の間の余白 */
+        margin-bottom: 40px; /* 月日表示と時刻表示の間の余白 */
         color: #000; /* 文字色の指定 */
     }
     #clockDisplay {
@@ -58,8 +58,11 @@
 </style>
 </head>
 <body>
-<!------------------------------------- 月日表示 -------------------------------------->
+<!-- ヘッダー表示 -->
 <jsp:include page="header.jsp" /><hr>
+<br>
+<br>
+<!------------------------------------- 月日表示 -------------------------------------->
 <script>
     // 月・日・曜日を取得
     var today = new Date();
@@ -92,17 +95,20 @@
         let msg = nowHour + ":" + nowMin;
         document.getElementById("clockDisplay").textContent = msg;
     }
-    // 1秒ごとに時計を更新
-    setInterval(clockDisplay, 1000);
+    // 10ミリ秒ごとに時計を更新
+    window.onload = function() {
+    clockDisplay(); // 初回実行
+    setInterval(clockDisplay, 1000); // 1秒ごとに時刻を更新
+};
 </script>
 
 <!-- 月日表示 -->
 <div id="dateDisplay"></div>
 <!-- 時刻表示 -->
-<p id="clockDisplay" style="font-size: 60px;"></p>
-
+<div id="clockDisplay" style="font-size: 60px;"></div>
+<!-- resultMsg表示 -->
 <p style="color:red;"><c:out value="${resultMsg}"/></p>
-
+<!-- ボタン表示 -->
 <div class="button-group1">
     <form action="WorkInController" method="get">
         <input type="submit" value="出勤">

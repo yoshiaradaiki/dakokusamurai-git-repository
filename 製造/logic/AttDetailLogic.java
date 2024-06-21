@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import beans.RequestListBean;
+import beans.StampBean;
 import beans.StampRevBean;
 import dao.MonthReqDAO;
 import dao.StampDAO;
@@ -78,6 +79,12 @@ public List<RequestListBean> findMySubRequest(int users_id) {
 	return monthReqDAO.findMySubRequest(users_id);
 }
 
+// 
+public StampBean attCheck(int users_id, Date stamp_date) {
+	StampDAO stampDAO = new StampDAO();
+	return stampDAO.attCheck(users_id, stamp_date);
+}
+
 //メソッド名：findMySubRequest
 //引数　　　：stamp_id
 //戻り値　　：利用者ID
@@ -86,5 +93,4 @@ public List<RequestListBean> findMySubRequest(int users_id) {
 //	StampRevDAO stampRevDAO = new StampRevDAO();
 //	return stampRevDAO.findStampRevId(stamp_id);
 //}
-    
 }
