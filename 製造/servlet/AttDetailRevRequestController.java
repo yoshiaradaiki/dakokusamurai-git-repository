@@ -4,6 +4,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -42,9 +44,17 @@ public class AttDetailRevRequestController extends HttpServlet {
 		HttpSession session = request.getSession();
 //　　　取得した情報をUserBeanに渡す
 		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		AttDetailLogic attDetailLogic = new AttDetailLogic();
+		
 //      申請日を取得
-		Date requestDate = (Date) request.getAttribute("requestDate");
-
+		Date requestDate = null;
+		try {
+		requestDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("requestDate"));
+		} catch (ParseException e) {
+		e.printStackTrace();
+		}
+		
+		
 		StampBean stampBean = new StampBean();//打刻データ
 		
 		int users_id = sessionUsersBean.getUsers_id();//利用者IDを取得
@@ -54,7 +64,7 @@ public class AttDetailRevRequestController extends HttpServlet {
 		stampBean.setStamp_date(requestDate);//申請日を保持
 
 		//StampRevBean stampRevBean = new StampRevBean();
-		int stamp_id = Integer.parseInt(request.getParameter("stamp_id"));//打刻IDを取得
+		int stamp_id = attDetailLogic.attCheck(users_id,requestDate).getStamp_id();//打刻IDを取得
 
 		int work_status = Integer.parseInt(request.getParameter("work_status"));//勤怠状況
 
@@ -77,7 +87,6 @@ public class AttDetailRevRequestController extends HttpServlet {
 		int status = 1; //ステータス　承認待ち
 
 		//	打刻情報チェック
-		AttDetailLogic attDetailLogic = new AttDetailLogic();
 		//打刻チェックを行い、利用者ID,申請日,打刻情報の結果を取得
 		attDetailLogic.findStampCheck(sessionUsersBean.getUsers_id(), requestDate);
 
@@ -119,7 +128,7 @@ public class AttDetailRevRequestController extends HttpServlet {
 		request.setAttribute("subRequestListBean", subRequestListBean);
 
 		//	JSPからサーブレットへ転送
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/RequestList.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
 		dispatcher.forward(request, response);
 
 	}
