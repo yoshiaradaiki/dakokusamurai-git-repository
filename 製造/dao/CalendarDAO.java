@@ -147,7 +147,7 @@ public class CalendarDAO {
 					Calendar calendarWeek = Calendar.getInstance();
 					calendarWeek.setTime(stampBean.getStamp_date());
 					// 曜日の取得と挿入
-					stampBean.setWeek(calendar.get(Calendar.DAY_OF_WEEK));
+					stampBean.setWeek(calendarWeek.get(Calendar.DAY_OF_WEEK));
 				}
 				// 補正出退勤時刻と休憩時間をもとに実労働時間を取得(hh:mm)
 				if (stampBean.getWorkIn_re() != null && 
@@ -298,7 +298,7 @@ public class CalendarDAO {
 					Calendar calendarWeek = Calendar.getInstance();
 					calendarWeek.setTime(stampBean.getStamp_date());
 					// 曜日の取得と挿入
-					stampBean.setWeek(calendar.get(Calendar.DAY_OF_WEEK));
+					stampBean.setWeek(calendarWeek.get(Calendar.DAY_OF_WEEK));
 				}
 				// 補正出退勤時刻と休憩時間をもとに実労働時間を取得(hh:mm)
 				if (stampBean.getWorkIn_re() != null && 
