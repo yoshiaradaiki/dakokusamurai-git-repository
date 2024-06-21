@@ -51,19 +51,22 @@ public class WorkOutController extends HttpServlet {
 		System.out.println(stampBean.getWorkOut_raw());
 
 		if (stampBean.getWorkIn_raw() != null && stampBean.getWorkOut_raw() == null) {
-			// 勤怠情報がない場合、登録処理を行う
+			// 退勤情報が未登録の場合、退勤時刻を登録
 			boolean result = empLogic.updateStamp(users_id, date, workOut_raw);
 
 			if (result) {
-				// 登録成功（成功表示＆社員画面リダイレクト）
-				request.setAttribute("resultMsg", "退勤時刻を登録しました。");
+				// 登録成功
+				request.setAttribute("resultMsg", "退勤時刻を登録しました");
 			} else {
-				// 登録失敗（エラー表示＆社員画面リダイレクト）
-				request.setAttribute("resultMsg", "退勤時刻の登録に失敗しました。");
+				// 登録失敗
+				request.setAttribute("resultMsg", "退勤時刻の登録に失敗しました");
 			}
-		} else {
-			// 勤怠情報が既に存在する場合、エラーメッセージを表示
-			request.setAttribute("resultMsg", "出勤時刻が登録されていない、もしくは退勤登録済みです。");
+		} else if (stampBean.getWorkIn_raw() == null) {
+			// 出勤情報が存在しない場合
+			request.setAttribute("resultMsg", "出勤時刻が登録されていません");
+		} else if (stampBean.getWorkOut_raw() != null) {
+			// 退勤情報が既に存在する場合
+			request.setAttribute("resultMsg", "退勤登録済みです");
 		}
 
 		request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp").forward(request, response);
