@@ -24,7 +24,7 @@
 	<br>
 
 	<% //if (社員がログインし自分の打刻修正を見る場合)treu:申請フォーム false:承認フォーム{ %>
-	<% if (true){ %>
+	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
 	<h1>申請フォーム</h1>
 	<table border=1>
 		<tr>
@@ -50,25 +50,25 @@
 			<td><fmt:formatDate value="${stampBean.stamp_date}" pattern="d" /></td>
 			<!--曜日を表示  -->
 			<c:choose>
-				<c:when test="${stampBean.week == 0}">
+				<c:when test="${stampBean.week == 1}"> <!--	月曜を表示  -->
 					<td>日</td>
 				</c:when>
-				<c:when test="${stampBean.week == 1}">
+				<c:when test="${stampBean.week == 2}">
 					<td>月</td>
 				</c:when>
-				<c:when test="${stampBean.week == 2}">
+				<c:when test="${stampBean.week == 3}">
 					<td>火</td>
 				</c:when>
-				<c:when test="${stampBean.week == 3}">
+				<c:when test="${stampBean.week == 4}">
 					<td>水</td>
 				</c:when>
-				<c:when test="${stampBean.week == 4}">
+				<c:when test="${stampBean.week == 5}">
 					<td>木</td>
 				</c:when>
-				<c:when test="${stampBean.week == 5}">
+				<c:when test="${stampBean.week == 6}">
 					<td>金</td>
 				</c:when>
-				<c:when test="${stampBean.week == 6}">
+				<c:when test="${stampBean.week == 7}">
 					<td>土</td>
 				</c:when>
 				<c:otherwise>
@@ -134,9 +134,9 @@
 			<option value="13">13：休日</option>
 			<option value="14">14：欠勤</option>
 		</select><br> 
-		開始時刻： <input type="time" name="workIn_re" value="${stampBean.workIn_re}"><br> 
+		開始時刻： <input type="time" name="workIn_rev" value="${stampBean.workIn_re}"><br> 
 			
-		終了時刻： <input type="time" name="workOut_re" value="${stampBean.workOut_re}"><br>
+		終了時刻： <input type="time" name="workOut_rev" value="${stampBean.workOut_re}"><br>
 		休憩： 
 		<input type="time" name="rest_time" value="${stampBean.rest_time}"><br>
 		備考：
@@ -146,7 +146,7 @@
 		<p>
 			<c:out value="${requestListBean.reason}" />
 		</p>
-
+			<input type="hidden" name="requestDate" value="${stampBean.stamp_date}">
 			<input type="submit" value="変更申請">
 	</form>
 			<%}else{ %>
@@ -296,5 +296,7 @@
 			<input type="submit" value="差し戻し">
 		</form>
 	<% } %>
-	<button onclick="/WEB-INF/jsp/requestList.jsp">戻る</button>
+	<form action="BackController" method="get">
+	<input type="submit" value="戻る">	
+</form>
 </html>
