@@ -57,7 +57,7 @@ public class RequestDetailController extends HttpServlet {
 		request.setAttribute("attBean", attBean);
 
 		//"attendanceStatus.jsp"へ転送する
-		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
 	}
 
 }

@@ -96,38 +96,38 @@ th {
 									<c:when test="${request.content == 0 && request.status == 0}">
 										<form action="RequestRequestController" method="get">
 											<input type="hidden" name="stamp_rev_id"
-												value="${request.stamp_rev_id}">
+												value="${request.request_id}">
 											<button type="submit">再申請</button>
 										</form>
 										<form action="RequestMonthCancelController" method="get">
 											<input type="hidden" name="month_req_id"
-												value="${request.month_req_id}">
+												value="${request.request_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 1 && request.status == 0}">
 										<form action="RequestSubmitController" method="get">
 											<input type="hidden" name="att_status_id"
-												value="${request.att_status_id}">
+												value="${request.request_id}">
 											<button type="submit">再提出</button>
 										</form>
 										<form action="RequestOneDayCancelController" method="get">
 											<input type="hidden" name="stamp_rev_req_id"
-												value="${request.stamp_rev_req_id}">
+												value="${request.reuqest_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 0 && request.status < 2}">
 										<form action="RequestOneDayCancelController" method="get">
 											<input type="hidden" name="stamp_rev_req_id"
-												value="${request.stamp_rev_req_id}">
+												value="${request.reuqest_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 1 && request.status < 2}">
 										<form action="RequestMonthCancelController" method="get">
 											<input type="hidden" name="month_req_id"
-												value="${request.month_req_id}">
+												value="${request.request_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
@@ -209,13 +209,14 @@ th {
 									<c:when test="${request.content == 0}">
 										<form action="RevDetailController" method="get">
 											<input type="hidden" name="att_status_id"
-												value="${request.att_status_id}">
+												value="${request.request_id}">
 											<button type="submit">変更詳細</button>
+										</form>
 									</c:when>
 									<c:when test="${request.content == 1}">
 										<form action="RequestDetailController" method="get">
 											<input type="hidden" name="att_status_id"
-												value="${request.att_status_id}">
+												value="${request.request_id}">
 											<button type="submit">提出詳細</button>
 										</form>
 									</c:when>

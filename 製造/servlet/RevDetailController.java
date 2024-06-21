@@ -38,23 +38,34 @@ public class RevDetailController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		//部下の変更申請（勤怠状況表ID）を取得
 		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
-		//勤怠状況表IDで部下の利用者IDを取得（年月を持つUsersBean）
+		int stamp_rev_req_id = Integer.parseInt(request.getParameter("stamp_rev_req_id"));
+		
+//		String dateString = request.getParameter("stamp_date");
+//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//	    Date stamp_date = dateFormat.parse(dateString);
+		//Date stamp_date = request.getParameter("stamp_date");
+		
+		RequestListLogic requestListLogic = new RequestListLogic();
+		StampBean stampBean = new StampBean();
+		
+		//users_idを取得する
 		UsersBean usersBean = new RequestListLogic().findMySubAttDetailUsers(att_status_id);
+		//勤怠状況表IDで部下の利用者IDを取得（年月を持つUsersBean）
 		int users_id = usersBean.getUsers_id();
-		Date year_and_month = usersBean.getYear_and_month();
+		//Date year_and_month = usersBean.getYear_and_month();
 				
 		//------------------------------------------------------------------------------------//
 		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
 		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-		RequestListLogic requestListLogic = new RequestListLogic();
-		//RequestListBean reqListBeanReason = new RequestListLogic().findAttStatusMonthReason(att_status_id);
-		StampBean attDetailBean = requestListLogic.findAttDetailStamp(users_id, year_and_month);		
+		//打刻日時を取得する
+		Date stampDate = stampBean.getStamp_date();
+		StampBean attDetailBean = requestListLogic.findAttDetailStamp(users_id, stampDate);
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
 		request.setAttribute("usersBean", usersBean);
+		request.setAttribute("stampBean",  stampBean);
 		request.setAttribute("attDetailBean", attDetailBean);
 
 
