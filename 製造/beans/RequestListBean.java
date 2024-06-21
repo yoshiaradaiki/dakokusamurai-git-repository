@@ -58,7 +58,7 @@ public class RequestListBean implements Serializable {
 		this.content = content;
 	}
 
-	public RequestListBean(Date date_and_time, int content, int status, String boss_name) {
+	public RequestListBean(Date date_and_time, int status, String boss_name, int content) {
 		this.date_and_time = date_and_time;
 		this.content = content;
 		this.status = status;
