@@ -121,6 +121,8 @@ public class MonthReqDAO {
 					+ "    m.date_req,\r\n"
 					+ "    m.status,\r\n"
 					+ "    u2.emp_name,\r\n"
+					+ "    ast.att_status_id as request_id,\r\n"
+					+ "    m.month_req_id as reuqest_foreign_id,\r\n"
 					+ "    0 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    month_req m\r\n"
@@ -137,6 +139,8 @@ public class MonthReqDAO {
 					+ "    scr.date_req,\r\n"
 					+ "    scr.status,\r\n"
 					+ "    u2.emp_name,\r\n"
+					+ "    sr.stamp_rev_id as request_id,\r\n"
+					+ "    scr.stamp_rev_req_id as reuqest_foreign_id,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
@@ -166,6 +170,9 @@ public class MonthReqDAO {
 				reqListBean.setStatus(rs.getInt("status"));
 				reqListBean.setBoss_name(rs.getString("emp_name"));
 				reqListBean.setContent(rs.getInt("content"));
+				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
+				reqListBean.setReuqest_foreign_id(rs.getInt("reuqest_foreign_id"));
+				
 				//検査結果出力
 //				System.out.print(reqListBean.getDate_and_time() + " ");
 //				System.out.print(reqListBean.getStatus() + " ");
@@ -200,6 +207,8 @@ public class MonthReqDAO {
 					+ "    m.date_req,\r\n"
 					+ "    m.status,\r\n"
 					+ "    u1.emp_name,\r\n"
+					+ "    ast.att_status_id as request_id,\r\n"
+					+ "    m.month_req_id as reuqest_foreign_id,\r\n"
 					+ "    0 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    month_req m\r\n"
@@ -216,6 +225,8 @@ public class MonthReqDAO {
 					+ "    scr.date_req,\r\n"
 					+ "    scr.status,\r\n"
 					+ "    u1.emp_name,\r\n"
+					+ "    sr.stamp_rev_id as request_id,\r\n"
+					+ "    scr.stamp_rev_req_id as reuqest_foreign_id,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
@@ -245,6 +256,9 @@ public class MonthReqDAO {
 				reqListBean.setStatus(rs.getInt("status"));
 				reqListBean.setName(rs.getString("emp_name"));//申請者
 				reqListBean.setContent(rs.getInt("content"));
+				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
+				reqListBean.setReuqest_foreign_id(rs.getInt("reuqest_foreign_id"));//外部キー
+				
 				//検査結果出力
 //				System.out.print(reqListBean.getDate_and_time() + " ");
 //				System.out.print(reqListBean.getStatus() + " ");
@@ -324,7 +338,7 @@ public class MonthReqDAO {
 
 			//UPDATE文の？に使用する値を設定
 			RequestListBean reqListBean = new RequestListBean();
-			pStmt.setInt(1, reqListBean.getAtt_status_id());
+			pStmt.setInt(1, reqListBean.getRequest_id());
 
 			//実行
 			pStmt.executeQuery();
