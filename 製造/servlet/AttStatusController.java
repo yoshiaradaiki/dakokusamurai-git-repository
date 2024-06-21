@@ -42,11 +42,15 @@ public class AttStatusController extends HttpServlet {
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
 
 		//勤怠状況表の利用者取得
-		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(users_id);
+		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(1);
 
 		//勤怠状況表の表示
 		List<StampBean> stampBeans = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
-
+		//6/20　横山追加
+		//フォーム切り替えのリクエストセット　申請フォーム：0
+		int formstatus =0;
+		request.setAttribute("formstatus",formstatus);
+	
 		//差し戻し理由を一覧から取得
 		RequestListBean requestListBean = attStatusLogic.findMyAttStatusMonthRequest(users_id, date);
 

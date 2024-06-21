@@ -10,7 +10,7 @@
 <%
 //Samplに入る
 StampBean stampBean = (StampBean) request.getAttribute("StampBean");
- //int formstatus =(Integer)request.getAttribute("formstatus"); 
+
 %>
 
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 
 	<jsp:include page="header.jsp" /><hr>
 	
-	<% if(${formstatus} == 0) { %>
+	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
 	<h1>申請フォーム</h1>
 	<!-- フォームの切り替え　JSで残すOrサーブレットで実行 -->
 		<div style="double">
