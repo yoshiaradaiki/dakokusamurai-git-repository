@@ -9,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
@@ -139,6 +138,7 @@ public class StampDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
+				stampBean.setStamp_id(rs.getInt("stamp_id"));
 				stampBean.setWorkIn_raw(changeLocalTime(rs.getTime("workIn_raw")));
 				stampBean.setWorkOut_raw(changeLocalTime(rs.getTime("workOut_raw")));
 			}
