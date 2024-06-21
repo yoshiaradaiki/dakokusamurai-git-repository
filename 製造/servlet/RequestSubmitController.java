@@ -5,6 +5,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import beans.AttStatusBean;
 import beans.RequestListBean;
 import beans.StampBean;
 import beans.UsersBean;
@@ -45,24 +48,28 @@ public class RequestSubmitController extends HttpServlet {
 		HttpSession session = request.getSession();
 		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
 		int users_id = sessionUsersBean.getUsers_id();
-		session.setAttribute("sessionUsersBean", sessionUsersBean);
+		//session.setAttribute("sessionUsersBean", sessionUsersBean);
 		
 		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
-		Date year_and_month = sessionUsersBean.getYear_and_month();
-
+		AttStatusBean attBean = new AttStatusBean();
+		
+		
+		LocalDate years = attBean.getYears();//勤怠状況表.年月 (null)
+		//Date year_and_month = sessionUsersBean.getYear_and_month();
+		Date date = Date.from(years.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		//------------------------------------------------------------------------------------//
 		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
 		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 		
 		//取得した勤怠状況表IDによって差し戻された一ヶ月分の勤怠状況表を表示する
-		List<StampBean> stampBean = new RequestListLogic().findAttStatus(users_id, year_and_month);
+		List<StampBean> stampBean = new RequestListLogic().findAttStatus(users_id, date);
 		//取得した勤怠状況表IDによって勤怠状況表に差し戻しの理由を取得し、表示する
 		RequestListBean reqListBeanReason = new RequestListLogic().findAttStatusMonthReason(att_status_id);
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
 		//request.setAttribute("usersBean", usersBean);//利用者ID
-		request.setAttribute("attStatusBean", stampBean);//勤怠状況表
+		request.setAttribute("stampBean", stampBean);//勤怠状況表
 		request.setAttribute("reqListBeanReason", reqListBeanReason);//理由
 
 		//"attendanceStatus.jsp"へ転送する
