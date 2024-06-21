@@ -49,12 +49,14 @@ public class RevDetailController extends HttpServlet {
 		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
 		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 		RequestListLogic requestListLogic = new RequestListLogic();
+		//RequestListBean reqListBeanReason = new RequestListLogic().findAttStatusMonthReason(att_status_id);
 		StampBean attDetailBean = requestListLogic.findAttDetailStamp(users_id, year_and_month);		
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
 		request.setAttribute("usersBean", usersBean);
 		request.setAttribute("attDetailBean", attDetailBean);
+
 
 		//"attendanceStatus.jsp"へ転送する
 		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatusDetail.jsp").forward(request, response);
