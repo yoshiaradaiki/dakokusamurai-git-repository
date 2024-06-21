@@ -66,7 +66,7 @@ public class WorkOutController extends HttpServlet {
 			request.setAttribute("resultMsg", "出勤時刻が登録されていません");
 		} else if (stampBean.getWorkOut_raw() != null) {
 			// 退勤情報が既に存在する場合
-			request.setAttribute("resultMsg", "退勤登録済みです");
+			request.setAttribute("resultMsg", "既に退勤登録があります");
 		}
 
 		request.getRequestDispatcher("WEB-INF/jsp/usersMain.jsp").forward(request, response);
