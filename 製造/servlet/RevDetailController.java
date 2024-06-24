@@ -5,7 +5,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import beans.RequestListBean;
 import beans.StampBean;
 import beans.UsersBean;
 import logic.RequestListLogic;
@@ -37,9 +37,10 @@ public class RevDetailController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-
-		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
+		
+		int stamp_rev_id=Integer.parseInt(request.getParameter("stamp_rev_id"));
 		int stamp_rev_req_id = Integer.parseInt(request.getParameter("stamp_rev_req_id"));
+		
 		
 //		String dateString = request.getParameter("stamp_date");
 //	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -48,9 +49,9 @@ public class RevDetailController extends HttpServlet {
 		
 		RequestListLogic requestListLogic = new RequestListLogic();
 		StampBean stampBean = new StampBean();
-		
+		RequestListBean requestListBean = new RequestListBean();
 		//users_idを取得する
-		UsersBean usersBean = new RequestListLogic().findMySubAttDetailUsers(att_status_id);
+		UsersBean usersBean = new RequestListLogic().findUsersStampRevId( stamp_rev_id);
 		//勤怠状況表IDで部下の利用者IDを取得（年月を持つUsersBean）
 		int users_id = usersBean.getUsers_id();
 		//Date year_and_month = usersBean.getYear_and_month();
@@ -59,14 +60,14 @@ public class RevDetailController extends HttpServlet {
 		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
 		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 		//打刻日時を取得する
-		Date stampDate = stampBean.getStamp_date();
-		StampBean attDetailBean = requestListLogic.findAttDetailStamp(users_id, stampDate);
+		StampBean attDetailBean = requestListLogic.findAttDetailStamp( stamp_rev_id);
 		//------------------------------------------------------------------------------------//
 
 		//JSPから取得するためにセットする
+		request.setAttribute("date", usersBean.getYear_and_month());
 		request.setAttribute("usersBean", usersBean);
-		request.setAttribute("stampBean",  stampBean);
-		request.setAttribute("attDetailBean", attDetailBean);
+		request.setAttribute("stampBean",  attDetailBean);
+		request.setAttribute("requestListBean", requestListBean);
 
 
 		//"attendanceStatus.jsp"へ転送する
