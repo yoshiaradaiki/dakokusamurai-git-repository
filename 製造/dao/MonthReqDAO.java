@@ -261,12 +261,12 @@ public class MonthReqDAO {
 				reqListBean.setRequest_foreign_id(rs.getInt("reuqest_foreign_id"));//外部キー
 				
 				//検査結果出力
-				System.out.print(reqListBean.getDate_and_time() + " ");
-				System.out.print(reqListBean.getStatus() + " ");
-				System.out.print(reqListBean.getName() + " ");
-				System.out.print(reqListBean.getContent() + " ");
-				System.out.print(reqListBean.getRequest_id() + " ");
-				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+//				System.out.print(reqListBean.getDate_and_time() + " ");
+//				System.out.print(reqListBean.getStatus() + " ");
+//				System.out.print(reqListBean.getName() + " ");
+//				System.out.print(reqListBean.getContent() + " ");
+//				System.out.print(reqListBean.getRequest_id() + " ");
+//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
 
 				subReqList.add(reqListBean);
 			}
