@@ -94,24 +94,24 @@ th {
 							<c:when test="${request.status < 3}">
 								<c:choose>
 									<c:when test="${request.content == 0 && request.status == 0}">
-										<form action="RequestRequestController" method="get">
+										<form action="RequestRequestController" method="get" style="display: inline;">
 											<input type="hidden" name="stamp_rev_id"
 												value="${request.request_id}">
 											<button type="submit">再申請</button>
 										</form>
-										<form action="RequestOneDayCancelController" method="get">
+										<form action="RequestOneDayCancelController" method="get" style="display: inline;">
 											<input type="hidden" name="stamp_rev_req_id"
 												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 1 && request.status == 0}">
-										<form action="RequestSubmitController" method="get">
+										<form action="RequestSubmitController" method="get" style="display: inline;">
 											<input type="hidden" name="att_status_id"
 												value="${request.request_id}">
 											<button type="submit">再提出</button>
 										</form>
-										<form action="RequestMonthCancelController" method="get">
+										<form action="RequestMonthCancelController" method="get" style="display: inline;">
 											<input type="hidden" name="stamp_rev_req_id"
 												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
