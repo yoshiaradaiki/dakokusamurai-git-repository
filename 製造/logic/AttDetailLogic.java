@@ -43,11 +43,11 @@ public Boolean insertStampRevReq(RequestListBean requestListBean) {
 //打刻修正テーブルに登録する
 //メソッド名：打刻修正を登録
 //引数　　　：打刻修正データ
-//戻り値　　：boolean true:成功　false:失敗
+//戻り値　　：int -1:失敗
 //処理概要　：変更申請ボタンを押すと打刻修正データを登録する
-public boolean insertStampRev(StampRevBean stampRevBean) {
+public int insertStampRev(StampRevBean stampRevBean,int users_id) {
 	StampRevDAO stampRevDAO = new StampRevDAO();
-	return stampRevDAO.insertStampRev(stampRevBean);				
+	return stampRevDAO.insertStampRev(stampRevBean,users_id);				
 
 }
 
