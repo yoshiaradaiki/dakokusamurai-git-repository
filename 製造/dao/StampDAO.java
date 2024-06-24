@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import beans.StampBean;
+import beans.UsersBean;
 
 public class StampDAO {
 	private final String JDBC_URL = "jdbc:h2:tcp://localhost/C:\\dakokuSamuraiDB\\dakokuSamuraiDB";
@@ -183,5 +184,39 @@ public class StampDAO {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	//メソッド：findUsersStampRevId
+	//引数　　：打刻修正ID
+	//戻り値　：UsersDAO
+	public UsersBean findUsersStampRevId(int stamp_rev_id) {
+		UsersBean usersBean = new UsersBean();
+		//JDBCドライバを読み込む
+		try {
+			Class.forName("org.h2.Driver");
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("JDBCドライバの読み込みに失敗しました");
+		}
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
+
+			String sql = "SELECT s.USERS_ID, s.STAMP_DATE FROM  STAMP_REVISION sr\r\n"
+					+ "					JOIN STAMP s ON sr.STAMP_ID = s.STAMP_ID\r\n"
+					+ "					WHERE sr.STAMP_REV_ID = ?;";
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			//INSERT文の？に使用する値を設定
+			ps.setInt(1, stamp_rev_id);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				usersBean.setUsers_id(rs.getInt("users_id"));
+				usersBean.setYear_and_month(rs.getDate("stamp_date"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return usersBean;
 	}
 }
