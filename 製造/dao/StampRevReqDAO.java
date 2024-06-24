@@ -38,7 +38,7 @@ public class StampRevReqDAO {
 		PreparedStatement pStmt = conn.prepareStatement(sql);
 		
 //　　　INSERT文の？に使用する値を設定
-		pStmt.setInt(1, requestListBean.getStamp_rev_id());//打刻修正ID
+		pStmt.setInt(1, requestListBean.getRequest_id());//打刻修正ID
 		pStmt.setInt(2, requestListBean.getStatus());//ステータス
 		pStmt.setInt(3, requestListBean.getCreated_users_id());//作成者
 		pStmt.setInt(4, requestListBean.getUpdated_users_id());//更新者
@@ -67,7 +67,7 @@ public class StampRevReqDAO {
 		}
 		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
 //			SQL文を準備				
-			String sql = "UPDATE stamp_correct_re,\n"
+			String sql = "UPDATE stamp_correct_req,\n"
 					+ "SET status = ?, reason = ?, updated_users_id = ?\n"
 					+ "WHERE stamp_rev_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
