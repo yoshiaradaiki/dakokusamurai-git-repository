@@ -41,7 +41,7 @@ public class StampRevDAO {
 						+ "VALUES(?,?,?,?,?,?,?,?)";
 				
 			   //SQLを実行する
-				PreparedStatement pStmt = conn.prepareStatement(sql);
+				PreparedStatement pStmt = conn.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS);
 				
 				
 				//Localtime変換 分/秒/
