@@ -1,6 +1,12 @@
+//作成者：横山
+//作成日：6/17
+
 package servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -18,7 +24,6 @@ import logic.AttStatusLogic;
 
 //部下の月末申請を承認する
 //承認ボタン押下処理
-
 @WebServlet("/AttApprovalController")
 public class AttApprovalController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -34,8 +39,26 @@ public class AttApprovalController extends HttpServlet {
 		//勤怠状況表logic生成
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
 		
-		//勤怠状況表IDを取得
-		int att_status_id =Integer.parseInt( request.getParameter("att_status_id"));
+		//
+		//フォーム情報の取得　String➡INT変換;
+		int sub_users_id = Integer.parseInt(request.getParameter("users_id")) ;
+		
+		//
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String dateString = year + "-" + month + "-1"; //1日
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    Date date = null;
+		try {
+			date = dateFormat.parse(dateString);
+		} catch (ParseException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+		
+		//
+		int att_status_id = attStatusLogic.findAttStatusId(sub_users_id, date); 
+
 		//申請一覧のステータスを2：承認済みにする
 		int status = 2; 
 		//承認時は理由は不要
@@ -68,3 +91,6 @@ public class AttApprovalController extends HttpServlet {
 	}
 
 }
+//破棄
+//勤怠状況表IDを取得
+//int att_status_id =Integer.parseInt( request.getParameter("att_status_id"));

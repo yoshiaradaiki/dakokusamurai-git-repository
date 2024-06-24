@@ -41,11 +41,11 @@ public class AttConfirmController extends HttpServlet {
 
 		
 		//-----------------------フォーム情報の取得と年月処理---------------------------------
-		//フォーム情報の取得
+		//フォーム情報の取得　String➡INT変換
 		int year =Integer.parseInt(request.getParameter("year")) ;
 		int month = Integer.parseInt(request.getParameter("month")) ;
 		
-		//パラメーターに値が入っているのか確認
+		//パラメーターに値が入っているのか確認   ★★★要確認　月1～12条件でもよいのでは？　
 		if((year != 0) && (month != 0) ) {
 			  // Calendarインスタンスの生成
 		    Calendar calendar = Calendar.getInstance();
@@ -74,11 +74,12 @@ public class AttConfirmController extends HttpServlet {
 			
 			
 			//----------------------取得した情報を次の画面に投げる処理-----------------------------
-			request.setAttribute("date",date );
-			request.setAttribute("attUsers", attUsers);
-			request.setAttribute("attStampList", attStampList);
-			request.setAttribute("attRequestList", attRequestList);
-			
+			request.setAttribute("formstatus", 0);
+			request.setAttribute("year", year);
+			request.setAttribute("month", month);
+			request.setAttribute("usersBean", attUsers);
+			request.setAttribute("stampBeans", attStampList);
+			request.setAttribute("requestListBean", attRequestList);
 			
 			request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
 
