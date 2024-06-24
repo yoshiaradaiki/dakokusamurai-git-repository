@@ -75,8 +75,9 @@ th {
 					<td style="text-align: center;"><c:out
 							value="${request.date_and_time}" /></td>
 					<td style="text-align: center;"><c:choose>
-							<c:when test="${request.content == 0}">変更申請 </c:when>
-							<c:when test="${request.content == 1}">勤怠状況表提出</c:when>
+								<!-- 6/24横山変更 -->
+							<c:when test="${request.content == 0}">勤怠状況表提出 </c:when>
+							<c:when test="${request.content == 1}">変更申請</c:when>
 							<c:otherwise>
 								<c:out value="${request.content}" />
 							</c:otherwise>
