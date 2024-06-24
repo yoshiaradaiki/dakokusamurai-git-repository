@@ -128,9 +128,9 @@ public class RequestListLogic {
 	//引数　　　：打刻修正ID
 	//戻り値　　：打刻修正データ
 	//処理概要　：変更詳細ボタン：選択された一日分の打刻修正データの詳細を取得
-	public StampBean findAttDetailStamp(int users_id, Date date) {
+	public StampBean findAttDetailStamp(int stamp_rev_id) {
 		CalendarDAO calendarDAO = new CalendarDAO();
-		return calendarDAO.findMyAttStatusDetailStamp(users_id, date);
+		return calendarDAO.findMyAttStatusDetailStampRequest(stamp_rev_id);
 	}
 
 }
