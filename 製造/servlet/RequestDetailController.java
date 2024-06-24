@@ -5,17 +5,22 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import beans.RequestListBean;
 import beans.StampBean;
 import beans.UsersBean;
+import logic.AttStatusLogic;
 import logic.RequestListLogic;
 
 /**
@@ -35,29 +40,58 @@ public class RequestDetailController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("utf-8");
+		response.setContentType("text/html; charset=utf-8");
 
-		//部下の変更申請（勤怠状況表ID）を取得
-		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
-		//勤怠状況表IDで部下の利用者IDを取得（年月を持つUsersBean）
-		UsersBean usersBean = new RequestListLogic().findMySubAttStatusUsers(att_status_id);
-		int users_id = usersBean.getUsers_id();
-		Date year_and_month = usersBean.getYear_and_month();
-				
-		//------------------------------------------------------------------------------------//
-		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
-		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-		RequestListLogic requestListLogic = new RequestListLogic();
-		List<StampBean> attBean = requestListLogic.findAttStatusMonthStamp(users_id, year_and_month);
+		// セッションから利用者IDを取得
+		HttpSession session = request.getSession();
+		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
+
+		//現在の日付を取得
+		Date date = new Date();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		// 今日の日付を1日にする
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		// 先月の日付に変更する
+		calendar.add(Calendar.MONTH, -1);
+		// 変更後の日付を取得
+		date = calendar.getTime();
+		// 年を取得
+		int year = calendar.get(Calendar.YEAR);
+		// 月を取得
+		int month = calendar.get(Calendar.MONTH) + 1;;
 		
-		//------------------------------------------------------------------------------------//
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
 
-		//JSPから取得するためにセットする
-		request.setAttribute("usersBean", usersBean);
-		request.setAttribute("attBean", attBean);
+		// AttStatusLogic のインスタンスを生成
+		AttStatusLogic attStatusLogic = new AttStatusLogic();
 
-		//"attendanceStatus.jsp"へ転送する
-		request.getRequestDispatcher("/WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
+		//勤怠状況表の利用者取得
+		UsersBean usersBean = attStatusLogic.findMyAttStatusUsers(users_id);
+		usersBean.setYear_and_month(date);
+		
+
+		//勤怠状況表の表示
+		List<StampBean> stampBeans = attStatusLogic.findMyAttStatusMonthStamp(users_id, date);
+		//6/20　横山追加
+		//フォーム切り替えのリクエストセット　申請フォーム：0
+		int formstatus =0;
+		request.setAttribute("formstatus",formstatus);
+	
+		//差し戻し理由を一覧から取得
+		RequestListBean requestListBean = attStatusLogic.findMyAttStatusMonthRequest(users_id, date);
+
+		//JSPで取得する属性を入れる
+		request.setAttribute("usersBean", usersBean);//利用者ID
+		request.setAttribute("stampBeans", stampBeans);//勤怠状況表
+		request.setAttribute("requestListBean", requestListBean); //理由
+
+		//"attendanceStatus.jsp"へ送る	
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp");
+		dispatcher.forward(request, response);
 	}
 
 }

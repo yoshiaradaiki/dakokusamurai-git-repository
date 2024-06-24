@@ -45,7 +45,7 @@ public class ReqListController extends HttpServlet {
 		HttpSession session = request.getSession();
 		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
 		int users_id = sessionUsersBean.getUsers_id();
-		session.setAttribute("sessionUsersBean", sessionUsersBean);
+		//session.setAttribute("sessionUsersBean", sessionUsersBean);
 		//--------セッション利用者ID----------//
 
 		EmpLogic empLogic = new EmpLogic();

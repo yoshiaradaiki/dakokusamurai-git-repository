@@ -112,7 +112,7 @@ th {
 											<button type="submit">再提出</button>
 										</form>
 										<form action="RequestMonthCancelController" method="get" style="display: inline;">
-											<input type="hidden" name="stamp_rev_req_id"
+											<input type="hidden" name="month_req_id"
 												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
@@ -207,9 +207,13 @@ th {
 							<c:when test="${request.status == 1 || request.status == 2}">
 								<c:choose>
 									<c:when test="${request.content == 0}">
+									<!-- 下なおしました -->
 										<form action="RevDetailController" method="get">
-											<input type="hidden" name="att_status_id"
+											<input type="hidden" name="stamp_rev_id"
 												value="${request.request_id}">
+											
+											<input type="hidden" name="stamp_rev_req_id"
+												value="${request.request_foreign_id}">
 											<button type="submit">変更詳細</button>
 										</form>
 									</c:when>
@@ -217,6 +221,8 @@ th {
 										<form action="RequestDetailController" method="get">
 											<input type="hidden" name="att_status_id"
 												value="${request.request_id}">
+											<input type="hidden" name="month_req_id"
+												value="${request.request_foreign_id}">
 											<button type="submit">提出詳細</button>
 										</form>
 									</c:when>

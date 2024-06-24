@@ -14,7 +14,7 @@ import java.util.Date;
 import beans.RequestListBean;
 //データベース接続
 public class StampRevReqDAO {
-	private final String JDBC_URL = "jdbc:h2:C:/dakokuSamuraiDB/dakokuSamuraiDB.mv";
+	private final String JDBC_URL = "jdbc:h2:tcp://localhost/C:\\dakokuSamuraiDB\\dakokuSamuraiDB";
 	private final String DB_USER = "dakokuSamurai";
 	private final String DB_PASS = "dakokusamurai";
 
@@ -66,8 +66,8 @@ public class StampRevReqDAO {
 		}
 		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
 //			SQL文を準備				
-			String sql = "UPDATE stamp_correct_req,\n"
-					+ "SET status = ?, reason = ?, updated_users_id = ?\n"
+			String sql = "UPDATE stamp_correct_req "
+					+ "SET status = ?, reason = ?, updated_users_id = ?"
 					+ "WHERE stamp_rev_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
  

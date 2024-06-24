@@ -16,7 +16,7 @@ import beans.RequestListBean;
 public class MonthReqDAO {
 
 	//H2に接続準備
-	final String JDBC_URL = "jdbc:h2:C:/dakokuSamuraiDB/dakokuSamuraiDB";
+	final String JDBC_URL = "jdbc:h2:tcp://localhost/C:\\dakokuSamuraiDB\\dakokuSamuraiDB";
 	final String DB_USER = "dakokuSamurai";
 	final String DB_PASSWORD = "dakokusamurai";
 
@@ -104,6 +104,45 @@ public class MonthReqDAO {
 		return true;
 	}
 
+	
+	//メソッド名：打刻修正申請更新
+		//引数　　　：打刻修正申請ID、承認・差し戻し、理由、更新者＝上司の利用者ID
+		//戻り値　　：boolean(true：成功、false：失敗)
+		//テスト：成功　湯
+		public Boolean updateOneDayReq(int stamp_rev_req_id, int status, String reason, int updated_users_id) {
+
+			//H2DBへ接続する
+			try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
+				System.out.println("H2データベースに接続しました。");
+
+				//UPDATE文の準備
+				String updateSql = "UPDATE stamp_correct_req "
+						+ "SET status = ?, reason = ?, updated_users_id = ?"
+						+ "WHERE stamp_rev_req_id = ?;";
+				PreparedStatement pStmt = conn.prepareStatement(updateSql);
+
+				//UPDATE文の？に使用する値を設定
+				pStmt.setInt(1, status);
+				pStmt.setString(2, reason);
+				pStmt.setInt(3, updated_users_id);
+				pStmt.setInt(4, stamp_rev_req_id);
+
+				//UPDATE文を実行
+				int result = pStmt.executeUpdate();
+
+				if (result != 1) {
+					return false;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.out.println("エラー：データを更新できませんでした。");
+				return false;
+			}
+			return true;
+		}
+	
+	
+	
 	//メソッド名：自分の申請を取得
 	//引数　　　：自分の利用者ID
 	//戻り値　　：申請一覧リスト
@@ -121,17 +160,19 @@ public class MonthReqDAO {
 					+ "    m.date_req,\r\n"
 					+ "    m.status,\r\n"
 					+ "    u2.emp_name,\r\n"
-					+ "    ast.att_status_id as request_id,\r\n"
-					+ "    m.month_req_id as reuqest_foreign_id,\r\n"
+					+ "    ast.att_status_id AS request_id,\r\n"
+					+ "    m.month_req_id AS reuqest_foreign_id,\r\n"
+					+ "    NULL AS stamp_rev_id, -- ダミーの列を追加\r\n"
+					+ "    NULL AS stamp_rev_req_id, -- ダミーの列を追加\r\n"
 					+ "    0 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    month_req m\r\n"
-					+ "    JOIN att_status as ast ON m.att_status_id = ast.att_status_id\r\n"
+					+ "    JOIN att_status ast ON m.att_status_id = ast.att_status_id\r\n"
 					+ "    JOIN users u1 ON u1.users_id = ast.users_id\r\n"
 					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
 					+ "WHERE\r\n"
 					+ "    u1.users_id = ?\r\n"
-					+ "    AND m.status IN (0, 1)\r\n"
+					+ "    AND m.status IN (0, 1, 2)\r\n"
 					+ "\r\n"
 					+ "UNION ALL\r\n"
 					+ "\r\n"
@@ -139,8 +180,10 @@ public class MonthReqDAO {
 					+ "    scr.date_req,\r\n"
 					+ "    scr.status,\r\n"
 					+ "    u2.emp_name,\r\n"
-					+ "    sr.stamp_rev_id as request_id,\r\n"
-					+ "    scr.stamp_rev_req_id as reuqest_foreign_id,\r\n"
+					+ "    NULL AS att_status_id, -- ダミーの列を追加\r\n"
+					+ "    NULL AS month_req_id, -- ダミーの列を追加\r\n"
+					+ "    sr.stamp_rev_id AS request_id,\r\n"
+					+ "    scr.stamp_rev_req_id AS reuqest_foreign_id,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
@@ -150,10 +193,12 @@ public class MonthReqDAO {
 					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
 					+ "WHERE\r\n"
 					+ "    u1.users_id = ?\r\n"
-					+ "    AND scr.status IN (0, 1)\r\n"
+					+ "    AND scr.status IN (0, 1, 2)\r\n"
 					+ "\r\n"
 					+ "ORDER BY\r\n"
-					+ "    status ASC;\r\n";
+					+ "    status ASC,\r\n"
+					+ "    date_req DESC;\r\n"
+					+ "";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
 			//UPDATE文の？に使用する値を設定
 			pStmt.setInt(1, users_id);
