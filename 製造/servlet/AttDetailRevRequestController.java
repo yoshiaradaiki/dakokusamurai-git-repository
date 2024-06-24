@@ -59,6 +59,10 @@ public class AttDetailRevRequestController extends HttpServlet {
 		
 		int users_id = sessionUsersBean.getUsers_id();//利用者IDを取得
 		
+		//	打刻情報チェック
+		//打刻チェックを行い、利用者ID,申請日,打刻情報の結果を取得
+		attDetailLogic.findStampCheck(users_id, requestDate);
+		
 		stampBean.setUsers_id(users_id);//利用者IDを取得して保持
 		
 		stampBean.setStamp_date(requestDate);//申請日を保持
@@ -78,17 +82,14 @@ public class AttDetailRevRequestController extends HttpServlet {
 
 		String note = request.getParameter("note");//備考
 		
-		String name = request.getParameter("name");//申請者
-		
-		String reason = request.getParameter("reason");//差し戻し理由
+//		String name = request.getParameter("name");//申請者
+//		
+//		String reason = request.getParameter("reason");//差し戻し理由
 		
 //		int content = 0;//内容　変更申請
 
 		int status = 1; //ステータス　承認待ち
 
-		//	打刻情報チェック
-		//打刻チェックを行い、利用者ID,申請日,打刻情報の結果を取得
-		attDetailLogic.findStampCheck(sessionUsersBean.getUsers_id(), requestDate);
 
 		//　打刻修正テーブルに登録
 		StampRevBean stampRevBean = new StampRevBean();
@@ -102,14 +103,15 @@ public class AttDetailRevRequestController extends HttpServlet {
 		stampRevBean.setNote(note);
 		
        //  打刻修正追加を行い、打刻ID、修正出勤、修正退勤、休憩、勤怠状況、備考の結果を取得		
-		attDetailLogic.insertStampRev(stampRevBean);
+		int stamp_rev_id = attDetailLogic.insertStampRev(stampRevBean,users_id);
+		
 		
 		
 		
 
 		//　打刻修正申請テーブルに登録
 		 RequestListBean requestListBean= new RequestListBean ();
-		 //requestListBean.setStamp_rev_id(attDetailLogic.findStampRevId(stamp_id));
+		 requestListBean.setStamp_rev_id(stamp_rev_id);
 		 requestListBean.setStatus(1);
 		 requestListBean.setCreated_users_id(users_id);
 		 requestListBean.setUpdated_users_id(users_id);
