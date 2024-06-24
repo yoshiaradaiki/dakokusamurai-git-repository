@@ -15,6 +15,14 @@ public class RequestListBean implements Serializable {
 	private int att_status_id;
 	//外部キー：打刻修正ID
 	private int stamp_rev_id;
+	
+	//各主キー
+	private int request_id;
+	//各外部キー
+	private int request_foreign_id;
+	
+	
+	
 	//申請日時
 	private Date date_and_time;
 	//差し戻しの理由
@@ -34,14 +42,13 @@ public class RequestListBean implements Serializable {
 	public RequestListBean() {
 	}
 
-	public RequestListBean(int month_req_id, int stamp_rev_req_id, int att_status_id, int stamp_rev_id,
-			Date date_and_time, String reason, int status, int content, String name, String boss_name,
-			int created_users_id, int updated_users_id) {
+
+
+	public RequestListBean(int request_id, int request_foreign_id, Date date_and_time, String reason, int status,
+			int content, String name, String boss_name, int created_users_id, int updated_users_id) {
 		super();
-		this.month_req_id = month_req_id;
-		this.stamp_rev_req_id = stamp_rev_req_id;
-		this.att_status_id = att_status_id;
-		this.stamp_rev_id = stamp_rev_id;
+		this.request_id = request_id;
+		this.request_foreign_id = request_foreign_id;
 		this.date_and_time = date_and_time;
 		this.reason = reason;
 		this.status = status;
@@ -51,6 +58,20 @@ public class RequestListBean implements Serializable {
 		this.created_users_id = created_users_id;
 		this.updated_users_id = updated_users_id;
 	}
+
+
+
+	RequestListBean(int request_id, int request_foreign_id, Date date_and_time, int status, int content, String name) {
+		super();
+		this.request_id = request_id;
+		this.request_foreign_id = request_foreign_id;
+		this.date_and_time = date_and_time;
+		this.status = status;
+		this.content = content;
+		this.name = name;
+	}
+
+
 
 	public RequestListBean(Date date_and_time, int status, int content) {
 		this.date_and_time = date_and_time;
@@ -64,7 +85,7 @@ public class RequestListBean implements Serializable {
 		this.status = status;
 		this.boss_name = boss_name;
 	}
-
+	
 	public int getAtt_status_id() {
 		return att_status_id;
 	}
@@ -153,4 +174,33 @@ public class RequestListBean implements Serializable {
 		return stamp_rev_req_id;
 	}
 
+	public int getRequest_id() {
+		return request_id;
+	}
+
+	public void setRequest_id(int request_id) {
+		this.request_id = request_id;
+	}
+
+	public int getRequest_foreign_id() {
+		return request_foreign_id;
+	}
+
+	public void setRequest_foreign_id(int request_foreign_id) {
+		this.request_foreign_id = request_foreign_id;
+	}
+
+
+
+	public void setMonth_req_id(int month_req_id) {
+		this.month_req_id = month_req_id;
+	}
+
+
+
+	public void setStamp_rev_req_id(int stamp_rev_req_id) {
+		this.stamp_rev_req_id = stamp_rev_req_id;
+	}
+
+	
 }

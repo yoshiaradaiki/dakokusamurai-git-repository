@@ -171,7 +171,7 @@ public class MonthReqDAO {
 				reqListBean.setBoss_name(rs.getString("emp_name"));
 				reqListBean.setContent(rs.getInt("content"));
 				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
-				reqListBean.setReuqest_foreign_id(rs.getInt("reuqest_foreign_id"));
+				reqListBean.setRequest_foreign_id(rs.getInt("reuqest_foreign_id"));
 				
 				//検査結果出力
 //				System.out.print(reqListBean.getDate_and_time() + " ");
@@ -206,13 +206,13 @@ public class MonthReqDAO {
 			String selectSql = "SELECT\r\n"
 					+ "    m.date_req,\r\n"
 					+ "    m.status,\r\n"
-					+ "    u1.emp_name,\r\n"
-					+ "    ast.att_status_id as request_id,\r\n"
-					+ "    m.month_req_id as reuqest_foreign_id,\r\n"
+					+ "    u2.emp_name,\r\n"
+					+ "    ast.att_status_id AS request_id,\r\n"
+					+ "    m.month_req_id AS reuqest_foreign_id,\r\n"
 					+ "    0 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    month_req m\r\n"
-					+ "    JOIN att_status as ast ON m.att_status_id = ast.att_status_id\r\n"
+					+ "    JOIN att_status ast ON m.att_status_id = ast.att_status_id\r\n"
 					+ "    JOIN users u1 ON u1.users_id = ast.users_id\r\n"
 					+ "    JOIN users u2 ON u2.users_id = u1.boss_users_id\r\n"
 					+ "WHERE\r\n"
@@ -224,9 +224,9 @@ public class MonthReqDAO {
 					+ "SELECT\r\n"
 					+ "    scr.date_req,\r\n"
 					+ "    scr.status,\r\n"
-					+ "    u1.emp_name,\r\n"
-					+ "    sr.stamp_rev_id as request_id,\r\n"
-					+ "    scr.stamp_rev_req_id as reuqest_foreign_id,\r\n"
+					+ "    u2.emp_name,\r\n"
+					+ "    sr.stamp_rev_id AS request_id,\r\n"
+					+ "    scr.stamp_rev_req_id AS reuqest_foreign_id,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
@@ -239,7 +239,8 @@ public class MonthReqDAO {
 					+ "    AND scr.status IN (1, 2)\r\n"
 					+ "\r\n"
 					+ "ORDER BY\r\n"
-					+ "    status ASC;";
+					+ "    status ASC,\r\n"
+					+ "    date_req DESC;\r\n";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
 			//UPDATE文の？に使用する値を設定
 			pStmt.setInt(1, users_id);
@@ -257,13 +258,15 @@ public class MonthReqDAO {
 				reqListBean.setName(rs.getString("emp_name"));//申請者
 				reqListBean.setContent(rs.getInt("content"));
 				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
-				reqListBean.setReuqest_foreign_id(rs.getInt("reuqest_foreign_id"));//外部キー
+				reqListBean.setRequest_foreign_id(rs.getInt("reuqest_foreign_id"));//外部キー
 				
 				//検査結果出力
-//				System.out.print(reqListBean.getDate_and_time() + " ");
-//				System.out.print(reqListBean.getStatus() + " ");
-//				System.out.print(reqListBean.getName() + " ");
-//				System.out.println(reqListBean.getContent() + " ");
+				System.out.print(reqListBean.getDate_and_time() + " ");
+				System.out.print(reqListBean.getStatus() + " ");
+				System.out.print(reqListBean.getName() + " ");
+				System.out.print(reqListBean.getContent() + " ");
+				System.out.print(reqListBean.getRequest_id() + " ");
+				System.out.println(reqListBean.getRequest_foreign_id() + " ");
 
 				subReqList.add(reqListBean);
 			}

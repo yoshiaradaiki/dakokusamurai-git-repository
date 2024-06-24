@@ -99,9 +99,9 @@ th {
 												value="${request.request_id}">
 											<button type="submit">再申請</button>
 										</form>
-										<form action="RequestMonthCancelController" method="get">
-											<input type="hidden" name="month_req_id"
-												value="${request.request_id}">
+										<form action="RequestOneDayCancelController" method="get">
+											<input type="hidden" name="stamp_rev_req_id"
+												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
@@ -111,23 +111,23 @@ th {
 												value="${request.request_id}">
 											<button type="submit">再提出</button>
 										</form>
-										<form action="RequestOneDayCancelController" method="get">
+										<form action="RequestMonthCancelController" method="get">
 											<input type="hidden" name="stamp_rev_req_id"
-												value="${request.reuqest_foreign_id}">
+												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 0 && request.status < 2}">
 										<form action="RequestOneDayCancelController" method="get">
 											<input type="hidden" name="stamp_rev_req_id"
-												value="${request.reuqest_foreign_id}">
+												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 1 && request.status < 2}">
 										<form action="RequestMonthCancelController" method="get">
 											<input type="hidden" name="month_req_id"
-												value="${request.request_id}">
+												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
