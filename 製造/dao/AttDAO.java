@@ -20,15 +20,22 @@ public class AttDAO {
 	
 	//テスト用
 	public static void main(String[]args) {
-//		AttDAO attDAO = new AttDAO();
-//		attDAO.insertAttStatus(null);
-//		attDAO.findUserget(1);
+		AttDAO attDAO = new AttDAO();
+		
+		@SuppressWarnings("deprecation")
+		Date requestDate = new Date(2024, 7, 1); // 例として2024年6月1日を使用します
+//		attDAO.insertAttStatus(1,requestDate);
+//		monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
+//		monthReqDAO.findAttStatusMonthRequest(1);//成功
 		
 	}
 	
 	//勤怠状況表登録--------------------------------------------------------------
-	public boolean insertAttStatus(int att_status_id, int users_id,Date date) {	
-	
+	public int insertAttStatus(int users_id,Date date) {	
+		//返却ID　連番追加確認　追加できている場合1以上
+		//-1が主キーにはなりえないため
+		int id = -1;
+		
 		//JDBCドライバを読み込む
 		try {
 			Class.forName("org.h2.Driver");
@@ -41,8 +48,14 @@ public class AttDAO {
 			
 			//★★★SQL★★★
 			//追加したい情報：勤怠状況表ID+利用者ID+年月
-			sql = "INSERT INTO Att_status_id (ATT_STATUS_ID, USERS_ID, YEARS)\n"
-					+ "VALUES (?, ?, ?);";
+			sql = "INSERT INTO att_status (USERS_ID, YEARS,created_users_id,updated_users_id)\n"
+					+ "VALUES (?, ? ,?, ?);";
+			
+			//★★★SQL★★★ StampRevDAOを参考に
+//			//追加したい情報：打刻修正ID+打刻ID+修正出勤+退勤+休憩時間+勤怠状況+備考
+//			String sql= "INSERT INTO STAMP_REVISION "
+//				+ "(STAMP_ID ,WORKIN_REV ,WORKOUT_REV ,REST_TIME ,WORK_STATUS ,NOTE, created_users_id,updated_users_id )\n"
+//					+ "VALUES(?,?,?,?,?,?,?,?)";
 			
 			
 			//DATE型変換　java.util.Dateをjava.sql.Dateに変換する　　
@@ -50,22 +63,38 @@ public class AttDAO {
 		     java.sql.Date sqlDate = new java.sql.Date(timeInMilliSeconds);
 		     
 		   //SQLを実行する
-			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setInt(1,att_status_id);
-			pStmt.setInt(2,users_id);
-			pStmt.setDate(3,sqlDate);
+			PreparedStatement pStmt = conn.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS);
+//			pStmt.setInt(1,att_status_id);
+			pStmt.setInt(1,users_id);
+			pStmt.setDate(2,sqlDate);
+			pStmt.setInt(3,users_id);
+			pStmt.setInt(4,users_id);
+			
 			
 			//Insert文を実行
 			int result =pStmt.executeUpdate();
-			if(result !=1) {
-				return false;
+//			ResultSet rs = pStmt.getGeneratedKeys();
+//			if(rs.next()) {
+//			id = rs.getInt(1);
+//			}
+//			System.out.println("result" +result);
+			if(result > 0) {
+				try(ResultSet rs = pStmt.getGeneratedKeys()) {
+					if(rs.next()) {
+					   id = rs.getInt(1);
+					   System.out.println(rs.getInt(1));
+					   //カラムの一番目？？？
+					}
+						}catch (SQLException e) {
+							e.printStackTrace();
+							System.out.println("pStmt.getGeneratedKeys()でエラー");
+							}
 			}
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return -2;
 		}
-		return true;
+		return id;
 		
 	}
 	
@@ -156,11 +185,6 @@ public class AttDAO {
 		
 	}
 	
-	
-
-
-
-
 //破棄する文章
 //		PreparedStatement ps = conn.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS);
 //if( ps.executeUpdate() > 0) {

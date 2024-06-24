@@ -49,7 +49,7 @@ public class AttStatusController extends HttpServlet {
 		// 年を取得
 		int year = calendar.get(Calendar.YEAR);
 		// 月を取得
-		int month = calendar.get(Calendar.MONTH);
+		int month = calendar.get(Calendar.MONTH) + 1;;
 		
 		request.setAttribute("year", year);
 		request.setAttribute("month", month);

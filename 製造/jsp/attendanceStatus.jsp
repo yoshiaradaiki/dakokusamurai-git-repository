@@ -25,7 +25,7 @@ textarea {
 </style>
 	<jsp:include page="header.jsp" /><hr>
 	
-	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
+	<% if((Integer)request.getAttribute("formstatus") != 0){ %>
 	<h1>申請フォーム</h1>
 	<!-- フォームの切り替え　JSで残すOrサーブレットで実行 -->
 		<div style="double">
@@ -94,8 +94,6 @@ textarea {
 				<th>氏名：${usersBean.emp_name} </th>  
 			</div><br>
 		<!----------------------------中部 　表------------------------------ -->
-		<% Integer year = (Integer) request.getAttribute("year"); %>
-		
 		<% if (year != null) { %> 
 		<table border="1">
 		    <tr>
@@ -208,20 +206,28 @@ textarea {
 					</tr>				
 			</c:forEach>		
 		</table>
+		<% } else { %>
+			    <p>年月が選択されていません。</p>
+			<% } %>
 			
-		<!-- 申請 -->
+		<!-- 申請 　hideen=勤怠状況表ID-->
 			<form action="AttRequestController" method="get" >
-				<input type="hidden" name="att_status_id" value="0"><!-- 承認まち -->
+				<input type="hidden" name="year"  value="${year}">
+				<input type="hidden" name="month"  value="${month}"> 
+				<!-- <input type="hidden" name="att_status_id" value="0">承認まち -->
 				<input type="submit" value="申請">
 			</form>
 			
 			<!----------------------------再申請がある場会の表示------------------------------ -->
 
-			 	理由: <c:out value="${requestListBean.reason}" />
-		<% }else(year = null){ %>
-				年＝NULLです
-		<% } %>
+			 	<c:if test="${not empty requestListBean.reason}">
+				    <c:out value="${requestListBean.reason}" />
+				</c:if>
+			 	
+
 	<% } else { %>
+	
+	
 	<h1>承認フォーム</h1>
 			<div style="double">
 			<h3>勤怠状況表</h3>
@@ -344,6 +350,10 @@ textarea {
 			</form>
 			<!--  -->
 			<form action="AttApprovalController" method="get" >
+			<!-- 年月と表示している申請者を送信 -->
+				<input type="hidden" name="year"  value="${year}">
+				<input type="hidden" name="month"  value="${month}"> 
+				<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
 				<input type="submit" value="承認">
 			</form>
 			
