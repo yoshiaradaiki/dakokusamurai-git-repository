@@ -32,8 +32,7 @@ public class StampRevReqDAO {
 		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
 		
 //		SQL文を準備
-		String sql="INSERT INTO  stamp_correct_req (stamp_rev_id,\n"
-				+ "status, created_users_id,updated_users)VALUE(?,?,?,?)";
+		String sql="INSERT INTO  stamp_correct_req (stamp_rev_id,status, created_users_id,updated_users)VALUES(?,?,?,?)";
 		
 		PreparedStatement pStmt = conn.prepareStatement(sql);
 		
