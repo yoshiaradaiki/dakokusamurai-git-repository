@@ -17,6 +17,25 @@
 </head>
 <body>
 <style>
+/* body {
+        text-align: center; /* bodyの要素を中央揃え */
+    }
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	border: 1px solid #1e90ff;
+	padding: 4px;
+	text-align: center;
+	background-color: #f0f8ff; /* デフォルトの背景色を設定 */
+}
+
+th {
+	background-color: #87cefa;
+} */
+
 textarea {
   resize: none;
   width:300px;
@@ -25,7 +44,8 @@ textarea {
 </style>
 	<jsp:include page="header.jsp" /><hr>
 	
-	<% if((Integer)request.getAttribute("formstatus") != 0){ %>
+	
+	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
 	<h1>申請フォーム</h1>
 	<!-- フォームの切り替え　JSで残すOrサーブレットで実行 -->
 		<div style="double">
@@ -206,7 +226,7 @@ textarea {
 					</tr>				
 			</c:forEach>		
 		</table>
-		<% } else { %>
+			<% } else { %>
 			    <p>年月が選択されていません。</p>
 			<% } %>
 			
@@ -226,7 +246,6 @@ textarea {
 			 	
 
 	<% } else { %>
-	
 	
 	<h1>承認フォーム</h1>
 			<div style="double">
@@ -262,8 +281,7 @@ textarea {
 		        <th>備考</th>
 		  
 		    </tr>
-		    <!--   -->
-		    
+		   
 	 <!-- ここにデータの表示を追加 ---------------------------------------------------------------->
 		    <c:forEach var="stampBean" items="${stampBeans}">
 		    <tr>
@@ -271,25 +289,25 @@ textarea {
 				<td><fmt:formatDate value="${stampBean.stamp_date}" pattern="d" /></td>
 				<!--曜日判定  -->
 					<c:choose>
-						<c:when test="${stampBean.week==0}">
+						<c:when test="${stampBean.week==1}">
 							<td>日</td>
 						</c:when>
-						<c:when test="${stampBean.week==1}">
+						<c:when test="${stampBean.week==2}">
 							<td>月</td>
 						</c:when>
-						<c:when test="${stampBean.week==2}">
+						<c:when test="${stampBean.week==3}">
 							<td>火</td>
 						</c:when>
-						<c:when test="${stampBean.week==3}">
+						<c:when test="${stampBean.week==4}">
 							<td>水</td>
 						</c:when>
-						<c:when test="${stampBean.week==4}">
+						<c:when test="${stampBean.week==5}">
 							<td>木</td>
 						</c:when>
-						<c:when test="${stampBean.week==5}">
+						<c:when test="${stampBean.week==6}">
 							<td>金</td>
 						</c:when>
-						<c:when test="${stampBean.week==6}">
+						<c:when test="${stampBean.week==7}">
 							<td>土</td>
 						</c:when>
 							<c:otherwise>
@@ -345,10 +363,13 @@ textarea {
 			<!-- 理由と差し戻し -->
 			<form action="AttRemandController" method="get" >
 				理由:<textarea name="reason" min="1" max="100"required></textarea>※入力必須<br>
-				<input type="hidden" name="month_req_id" value=""><!-- hidedenで -->
+				<input type="hidden" name="year"  value="${year}">
+				<input type="hidden" name="month"  value="${month}"> 
+				<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
 				<input type="submit" value="差し戻し" >
 			</form>
-			<!--  -->
+			
+			<!--承認  -->
 			<form action="AttApprovalController" method="get" >
 			<!-- 年月と表示している申請者を送信 -->
 				<input type="hidden" name="year"  value="${year}">
@@ -361,8 +382,8 @@ textarea {
 	<% } %>	
 	<!-- 申請一覧へ遷移、WEB-INFフォルダへのアクセス？ -->
 	<!-- <a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>    -->
-<form action="BackController" method="get">
-	<input type="submit" value="戻る">	
-</form>
+		<form action="BackController" method="get">
+			<input type="submit" value="戻る">	
+		</form>
 </body>
 </html>

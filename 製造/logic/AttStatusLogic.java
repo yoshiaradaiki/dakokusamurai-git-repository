@@ -91,25 +91,26 @@ public class AttStatusLogic {
 	//戻り値　　：Boolean
 	//使用DAO　：AttDAO	
 	//申請者を登録する　勤怠状況表テーブルに提出者を登録⑦
-	public boolean insertAttStatus(int att_status_id, int users_id,Date date) {
+	public int insertAttStatus(int users_id,Date date) {
 		AttDAO attDAO = new AttDAO();
-		return attDAO.insertAttStatus(att_status_id,users_id,date);
+		return attDAO.insertAttStatus(users_id,date);
 		
 	}
 	//戻り値　　：Boolean
 	//使用DAO　　：monthDAO
 	//部下の月末申請を承認する⑧
-	public Boolean updateMonthReq(int month_req_id, int status, String reason, int updated_users_id) {
+	public Boolean updateMonthReq(int att_status_id, int status, String reason, int updated_users_id) {
 		MonthReqDAO monthDao = new MonthReqDAO(); 
-		return  monthDao.updateMonthReq(month_req_id, status,reason, updated_users_id);
+		return  monthDao.updateMonthReq(att_status_id, status,reason, updated_users_id);
 	}
-	//使用DAO　　：monthDAO
-	//部下の1か月分の月末申請を差し戻す⑨
-	public List<RequestListBean> updateMonthReq(int month_req_id, int status, String reason) {
-		MonthReqDAO monthDao = new MonthReqDAO(); 
-		return  monthDao.findMySubRequest(status);
-		
-	}
+//	//使用DAO　　：monthDAO
+//	//部下の1か月分の月末申請を差し戻す⑨
+//	//6/27 横山　：戻り値引数　reason ➡　att_status_id
+//	public List<RequestListBean> updateMonthReq(int att_status_id, int status, String reason) {
+//		MonthReqDAO monthDao = new MonthReqDAO(); 
+//		return  monthDao.updateMonthReq(att_status_id,status,reason);
+//		
+//	}
 	// 2024/6/17 追加　横山
 	//メソッド名：findMyRequest
 	//引/　　　：users_id

@@ -39,32 +39,30 @@ public class AttApprovalController extends HttpServlet {
 		//勤怠状況表logic生成
 		AttStatusLogic attStatusLogic = new AttStatusLogic();
 		
-		//
-		//フォーム情報の取得　String➡INT変換;
+		//利用者ID・パラメーター年月
 		int sub_users_id = Integer.parseInt(request.getParameter("users_id")) ;
-		
-		//
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
 		String dateString = year + "-" + month + "-1"; //1日
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    Date date = null;
-		try {
+		
+	    try {
 			date = dateFormat.parse(dateString);
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		
-		//
+		//利用者IDと勤怠状況表ID紐づけ
 		int att_status_id = attStatusLogic.findAttStatusId(sub_users_id, date); 
 
 		//申請一覧のステータスを2：承認済みにする
 		int status = 2; 
 		//承認時は理由は不要
 		String reason = ""; 
-		//logicにsetする
-		attStatusLogic.updateMonthReq(att_status_id, status, reason);
+		//一覧に勤怠状況表ID・ステータス・理由を更新
+		attStatusLogic.updateMonthReq(att_status_id, status, reason, users_id);
 		
 		
 		//-------------------------申請一覧に上司部下情報を渡す---------------------------------
@@ -74,11 +72,8 @@ public class AttApprovalController extends HttpServlet {
 		request.setAttribute("myRequestListBeans", myRequestListBeans);
 
 		
-		//部下の申請一覧--------------------------------------------------------------
-		//破棄
-//		UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
-//		int users_id = sessionUsersBean1.getUsers_id();
-//		//★★上記のセッションは同じ処理のため破棄していいのでは？
+		//--------------------------部下の申請一覧----------------------------------------------
+
 		
 		//自分の申請一覧にsessionのusers_idを渡す
 		List<RequestListBean> mySubRequestListBeans = attStatusLogic.findMySubRequest(users_id);
@@ -91,6 +86,10 @@ public class AttApprovalController extends HttpServlet {
 	}
 
 }
+//破棄
+//UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
+//int users_id = sessionUsersBean1.getUsers_id();
+////★★上記のセッションは同じ処理のため破棄していいのでは？
 //破棄
 //勤怠状況表IDを取得
 //int att_status_id =Integer.parseInt( request.getParameter("att_status_id"));
