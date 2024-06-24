@@ -23,33 +23,30 @@ public class StampRevReqDAO {
 	//引数　　　：申請一覧リスト
 	//戻り値　　：boolean true:成功　false:失敗
 	public  boolean insertStampRevReq(RequestListBean requestListBean) {
-//		JDBCドライバを読み込む
+		//JDBCドライバを読み込む
 		try {
 			Class.forName("org.h2.Driver");
 		}catch(ClassNotFoundException e) {
+			e.printStackTrace();
 			throw new IllegalStateException("JDBCドライバをよみこめませんでした");
 		}
-		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
-		
-//		SQL文を準備
-		String sql="INSERT INTO  stamp_correct_req (stamp_rev_id,status, created_users_id,updated_users)VALUES(?,?,?,?)";
-		
-		PreparedStatement pStmt = conn.prepareStatement(sql);
-		
-//　　　INSERT文の？に使用する値を設定
-		pStmt.setInt(1, requestListBean.getRequest_id());//打刻修正ID
-		pStmt.setInt(2, requestListBean.getStatus());//ステータス
-		pStmt.setInt(3, requestListBean.getCreated_users_id());//作成者
-		pStmt.setInt(4, requestListBean.getUpdated_users_id());//更新者
-//		INSERT文を実行
-		     int result =pStmt.executeUpdate();
-			 if(result !=1) {
-				 return false;
-			 }
+		try(Connection conn = DriverManager.getConnection(JDBC_URL,DB_USER,DB_PASS)){
+			String sql="INSERT INTO stamp_correct_req (stamp_rev_id,status, created_users_id,updated_users_id) VALUES (?,?,?,?)";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1,requestListBean.getRequest_id());
+			pStmt.setInt(2,requestListBean.getStatus());
+			pStmt.setInt(3,requestListBean.getCreated_users_id());
+			pStmt.setInt(4,requestListBean.getUpdated_users_id());
+			
+			int result =pStmt.executeUpdate();
+			if (result != 1) {
+				return false;
+			}
 		}catch (SQLException e) {
-            e.printStackTrace();
-           return false;
-	  }
+			e.printStackTrace();
+			System.out.println("insertStampRevReq");
+			return false;
+		}
 		return true;
 	}
 
@@ -66,8 +63,8 @@ public class StampRevReqDAO {
 		}
 		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
 //			SQL文を準備				
-			String sql = "UPDATE stamp_correct_req "
-					+ "SET status = ?, reason = ?, updated_users_id = ?"
+			String sql = "UPDATE stamp_correct_req,\n"
+					+ "SET status = ?, reason = ?, updated_users_id = ?\n"
 					+ "WHERE stamp_rev_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
  
