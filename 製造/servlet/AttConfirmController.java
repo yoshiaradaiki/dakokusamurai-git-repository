@@ -3,6 +3,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -43,33 +44,48 @@ public class AttConfirmController extends HttpServlet {
 		//フォーム情報の取得
 		int year =Integer.parseInt(request.getParameter("year")) ;
 		int month = Integer.parseInt(request.getParameter("month")) ;
-		//Dateに年・月・日を渡す
-		//1月は0のため-1、1日が欲しいので1を入力している
-		Date date = new Date(year,month-1,1);
-	
-		//-------------------------AttStatuLogicのメソッド取得---------------------------------
-		//AttStatusLogi インスタンス作成 
-		AttStatusLogic attStatusLogic = new AttStatusLogic();
 		
-		//メソッドにUsersBeanへセッションUsers_idをセットしたものを再セットする
-		UsersBean attUsers = attStatusLogic.findMyAttStatusUsers(users_id);
-		//UserBeanにIdしかセットしていないので年月は別で取得する
-		attUsers.setYear_and_month(date); 
-		
-		List<StampBean> attStampList = attStatusLogic.findMyAttStatusMonthStamp(users_id,date);
-		RequestListBean attRequestList = attStatusLogic.findMyAttStatusMonthRequest(users_id, date);
-		
-		
-		//----------------------取得した情報を次の画面に投げる処理-----------------------------
-		request.setAttribute("date",date );
-		request.setAttribute("attUsers", attUsers);
-		request.setAttribute("attStampList", attStampList);
-		request.setAttribute("attRequestList", attRequestList);
-		
-		
-		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
-	
+		//パラメーターに値が入っているのか確認
+		if((year != 0) && (month != 0) ) {
+			  // Calendarインスタンスの生成
+		    Calendar calendar = Calendar.getInstance();
+		    
+		    // 年月日をセットする
+		    calendar.set(Calendar.YEAR, year);
+		    calendar.set(Calendar.MONTH, month - 1); // Calendarの月は0から始まるため、-1する
+		    calendar.set(Calendar.DAY_OF_MONTH, 1); // 1日を設定する
+		    
+		    // CalendarからDateオブジェクトを取得する
+		    Date date = calendar.getTime();
+		    
 
+			//-------------------------AttStatuLogicのメソッド取得---------------------------------
+			//AttStatusLogi インスタンス作成 
+			AttStatusLogic attStatusLogic = new AttStatusLogic();
+			
+			//メソッドにUsersBeanへセッションUsers_idをセットしたものを再セットする
+			UsersBean attUsers = attStatusLogic.findMyAttStatusUsers(users_id);
+			//UserBeanにIdしかセットしていないので年月は別で取得する
+			attUsers.setYear_and_month(date); 
+			
+			List<StampBean> attStampList = attStatusLogic.findMyAttStatusMonthStamp(users_id,date);
+			
+			RequestListBean attRequestList = attStatusLogic.findMyAttStatusMonthRequest(users_id, date);
+			
+			
+			//----------------------取得した情報を次の画面に投げる処理-----------------------------
+			request.setAttribute("date",date );
+			request.setAttribute("attUsers", attUsers);
+			request.setAttribute("attStampList", attStampList);
+			request.setAttribute("attRequestList", attRequestList);
+			
+			
+			request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
+
+		}else {
+			System.out.println("パラメーター取得なし");
+		}
+		
 	}
 
 }

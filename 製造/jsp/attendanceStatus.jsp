@@ -7,11 +7,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!-- ↑↑↑年月日を取得する 　使用方法<fmt:formatDate value="${date}" pattern="yyyy-MM-dd"/><br>-->
 
-<%
-//Samplに入る
-StampBean stampBean = (StampBean) request.getAttribute("StampBean");
-
-%>
 
 <!DOCTYPE html>
 <html>
@@ -21,7 +16,13 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 
 </head>
 <body>
-
+<style>
+textarea {
+  resize: none;
+  width:300px;
+  height:20px;
+}
+</style>
 	<jsp:include page="header.jsp" /><hr>
 	
 	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
@@ -31,41 +32,71 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 			<h3>勤怠状況表</h3>
 		</div>
 			<!----------------------------上部　年月・利用者 ------------------------------ -->
-			<!-- プルダウン -->
-			<form action="AttConfirmController" method="get"><!-- 確定ボタンで年月送信 -->
-				<select name="year">
-					<option value="2023">2023年</option>
-					<option value="2024">2024年</option>
-					<option value="2025" >2025年</option>
-					<option value="2026">2026年</option>
-					<option value="2027">2027年</option>
-					<option value="2028" >2028年</option>
-					<option value="2029">2029年</option>
-				</select>
-	
-				<select  name="month">
-					<option value="1">1月</option>
-					<option value="2">2月</option>
-					<option value="3">3月</option>
-					<option value="4">4月</option>
-					<option value="5">5月</option>
-					<option value="6">6月</option>
-					<option value="7">7月</option>
-					<option value="8">8月</option>
-					<option value="9">9月</option>
-					<option value="10">10月</option>
-					<option value="11">11月</option>
-					<option value="12">12月</option>	
-				</select>
-					<input type="submit" value="確定" ><br>
-			</form>
+			
+			<!-- Null判定 -->
+			<% Integer year = (Integer) request.getAttribute("year");
+			   Integer month = (Integer) request.getAttribute("month");
+			   boolean YearAndMonth = (year != null && month != null);
+			   	
+			%>
+			<!-- リクエストを取得した場合 -->
+			<% if (YearAndMonth) { %>
+			    <form action="AttConfirmController" method="get">
+				        <select name="year">
+				            <%  for (int i = year - 3; i <= year + 3; i++) { %>
+				            <option value="<%= i %>" <%= (i == year) ? "selected" : "" %>><%= i %>年</option>
+					        <% } %>
+				        </select>
+				        
+				        <select name="month">
+				            <% for (int i = 1; i <= 12; i++) { %>
+				            <option value="<%= i %>"<%= (i == month) ? "selected" : "" %>><%= i %>月</option>
+				            <% } %>
+				        </select>
+			        <input type="submit" value="確定"><br>
+			    </form>
+			    
+			<!-- リクエストなし　先月の年/月を表示する-->
+			<% }else{ %>
+				<!-- 確定ボタンで年月送信 -->
+				<form action="AttConfirmController" method="get">
+					<select name="year">
+						<option value="2023">2023年</option>
+						<option value="2024" selected>2024年</option>
+						<option value="2025" >2025年</option>
+						<option value="2026">2026年</option>
+						<option value="2027">2027年</option>
+						<option value="2028" >2028年</option>
+						<option value="2029">2029年</option>
+					</select>
+		
+					<select  name="month">
+						<option value="1">1月</option>
+						<option value="2">2月</option>
+						<option value="3">3月</option>
+						<option value="4">4月</option>
+						<option value="5" selected>5月</option>
+						<option value="6">6月</option>
+						<option value="7">7月</option>
+						<option value="8">8月</option>
+						<option value="9">9月</option>
+						<option value="10">10月</option>
+						<option value="11">11月</option>
+						<option value="12">12月</option>	
+					</select>
+						<input type="submit" value="確定" ><br>
+				</form>
+			<% } %>
 			<p>勤務時間：9：00～18：00</p>
 			<p>休憩時間：12：00～13：00</p>
-			<tr>
-				<th>社員番号：${UsersBean.emp_no}</th>
-				<th>氏名：${UsersBean.emp_name} </th>  
-			</tr><br>
+			<div >
+				<th>社員番号：${usersBean.emp_no}</th>
+				<th>氏名：${usersBean.emp_name} </th>  
+			</div><br>
 		<!----------------------------中部 　表------------------------------ -->
+		<% Integer year = (Integer) request.getAttribute("year"); %>
+		
+		<% if (year != null) { %> 
 		<table border="1">
 		    <tr>
 		        <th colspan="3"></th>
@@ -117,9 +148,9 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 						<c:when test="${stampBean.week==7}">
 							<td>土</td>
 						</c:when>
-						<c:otherwise>
-							<td>データなし</td>
-						</c:otherwise>
+							<c:otherwise>
+								<td>データなし</td>
+							</c:otherwise>
 						
 					</c:choose>
 					
@@ -152,9 +183,9 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 						<c:when test="${stampBean.work_status == 14}">
 							<td>14：欠勤</td>
 						</c:when>
-						<c:when test="${stampBean.work_status == null}">
-							<td>データ取得できません</td>
-						</c:when>
+							<c:otherwise>
+								<td>データなし</td>
+							</c:otherwise>
 					</c:choose>
 						<!--開始・終了時刻/就業時間/備考  -->
 						<td><c:out value="${stampBean.workIn_re}" /></td>
@@ -167,10 +198,10 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 						<!-- 編集ボタン -->
 						 <td>
 						 <form action="AttEditController">
+						 	<!--  -->
 							<input type="hidden" name="year" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="yyyy" />">
 							<input type="hidden" name="month" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="M" />">
 							<input type="hidden" name="date" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="d" />">
-							
 			               <input type="submit" value="編集"> 
 		                 </form>
 		                 </td>
@@ -178,15 +209,18 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 			</c:forEach>		
 		</table>
 			
-		<!-- 合計実労働時間 -->
-			合計実労働時間<br>
-				
-			
 		<!-- 申請 -->
 			<form action="AttRequestController" method="get" >
+				<input type="hidden" name="att_status_id" value="0"><!-- 承認まち -->
 				<input type="submit" value="申請">
 			</form>
-		
+			
+			<!----------------------------再申請がある場会の表示------------------------------ -->
+
+			 	理由: <c:out value="${requestListBean.reason}" />
+		<% }else(year = null){ %>
+				年＝NULLです
+		<% } %>
 	<% } else { %>
 	<h1>承認フォーム</h1>
 			<div style="double">
@@ -252,7 +286,9 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 						<c:when test="${stampBean.week==6}">
 							<td>土</td>
 						</c:when>
-						
+							<c:otherwise>
+								<td>データなし</td>
+							</c:otherwise>
 					</c:choose>
 					
 					<!-- 勤怠状況判定 -->
@@ -284,9 +320,9 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 						<c:when test="${stampBean.work_status == 14}">
 							<td>14：欠勤</td>
 						</c:when>
-						<c:when test="${stampBean.work_status == null}">
-							<td>データ取得できません</td>
-						</c:when>
+							<c:otherwise>
+								<td>データなし</td>
+							</c:otherwise>
 					</c:choose>
 						<!--開始・終了時刻/就業時間/備考  -->
 						<td><c:out value="${stampBean.workIn_re}" /></td>
@@ -302,8 +338,9 @@ StampBean stampBean = (StampBean) request.getAttribute("StampBean");
 		</table>
 			<!-- 理由と差し戻し -->
 			<form action="AttRemandController" method="get" >
-				理由:<textarea name="reason"></textarea><br>
-				<input type="submit" value="差し戻し">
+				理由:<textarea name="reason" min="1" max="100"required></textarea>※入力必須<br>
+				<input type="hidden" name="month_req_id" value=""><!-- hidedenで -->
+				<input type="submit" value="差し戻し" >
 			</form>
 			<!--  -->
 			<form action="AttApprovalController" method="get" >
