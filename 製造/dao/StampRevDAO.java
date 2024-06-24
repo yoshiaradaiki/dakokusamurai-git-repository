@@ -6,6 +6,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
@@ -20,8 +21,10 @@ public class StampRevDAO {
 		
 		
 		//打刻修正登録
-		public boolean insertStampRev(StampRevBean stampRevBean) {
-
+		public int insertStampRev(StampRevBean stampRevBean,int user_id) {
+			
+			int id = -1;
+			
 			//JDBCドライバを読み込む
 			try {
 				Class.forName("org.h2.Driver");
@@ -34,8 +37,8 @@ public class StampRevDAO {
 				//★★★SQL★★★
 				//追加したい情報：打刻修正ID+打刻ID+修正出勤+退勤+休憩時間+勤怠状況+備考
 				String sql= "INSERT INTO STAMP_REVISION "
-					+ "(STAMP_ID ,WORKIN_REV ,WORKOUT_REV ,REST_TIME ,WORK_STATUS ,NOTE )\n"
-						+ "VALUES(?,?,?,?,?,?)";
+					+ "(STAMP_ID ,WORKIN_REV ,WORKOUT_REV ,REST_TIME ,WORK_STATUS ,NOTE, created_users_id,updated_users_id )\n"
+						+ "VALUES(?,?,?,?,?,?,?,?)";
 				
 			   //SQLを実行する
 				PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -62,24 +65,26 @@ public class StampRevDAO {
 				pStmt.setTime(4,time3);
 				pStmt.setInt(5,stampRevBean.getWork_status());
 				pStmt.setString(6,stampRevBean.getNote());
+				pStmt.setInt(7,user_id);
+				pStmt.setInt(8,user_id);
 	
 				
 				//Insert文を実行
 				int result =pStmt.executeUpdate();
-				if(result !=1) {
-					return false;
+				if(result > 0) {
+					try(ResultSet rs = pStmt.getGeneratedKeys()) {
+						if(rs.next()) {
+						   id = rs.getInt(1);
+						}
+					}
 				}
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
-				return false;
+				return -1;
 			}
-			return true;
+			return id;
 			
 	}
 
-		
-//		public StamBean findStampRevId(){
-//			
-//		}
 }
