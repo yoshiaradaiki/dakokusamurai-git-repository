@@ -54,14 +54,16 @@ public class AttApprovalController extends HttpServlet {
 	    //勤怠状況表logic生成
 	    AttStatusLogic attStatusLogic = new AttStatusLogic();
 		
-		//利用者IDと勤怠状況表ID紐づけ
-		int att_status_id = attStatusLogic.findAttStatusId(sub_users_id, date); 
+//		//利用者IDと勤怠状況表ID紐づけ
+//		int month_req_id = attStatusLogic.findAttStatusId(sub_users_id, date); 
+	    int month_req_id = Integer.parseInt(request.getParameter("month_req_id")); 
+
 		//申請一覧のステータスを2：承認済みにする
 		int status = 2; 
 		//承認時は理由は不要
 		String reason = ""; 
 		//一覧に勤怠状況表ID・ステータス・理由を更新
-		attStatusLogic.updateMonthReq(att_status_id, status, reason, users_id);
+		attStatusLogic.updateMonthReq(month_req_id, status, reason, users_id);
 		
 		
 		//-------------------------申請一覧に上司部下情報を渡す---------------------------------

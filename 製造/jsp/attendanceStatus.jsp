@@ -20,7 +20,6 @@
  body {
         text-align: center; /* bodyの要素を中央揃え */
         background-color: ;
-     
     }
 table {
 	border-collapse: collapse;
@@ -39,16 +38,34 @@ th {
 	background-color: #ebe1a9;
 } 
 
-.button-group1  {
+/**編集ボタン**/
+.button-group1 input[type="submit"] {
+	    padding: 5px 20px; /* パディングを設定してボタンのサイズを調整 */
+        font-size: 15px; /* ボタンのテキスのフォントサイズ */ 
+        /**font-family: 'HG行書体'; /* フォントの指定 */
+        background-color: #e4dc8a; /* ボタンの背景色*/
+        color: #000; /* ボタンの文字色 */
+}
+/**申請ボタン**/
+.button-group2 input[type="submit"] {
+	    padding: 10px 30px; /* パディングを設定してボタンのサイズを調整 */
+        font-size: 20px; /* ボタンのテキストのフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
+        background-color: #1F2F0A; /* ボタンの背景色*/
+        color: #C29B36; /* ボタンの文字色 */
+}
+
+
+.button-group3  {
         margin-top: 20px; /* ボタン間の余白 */
         display: flex; /* ボタンを横並べにする */
         justify-content: center; /* ボタンを中央揃え */
     }
-     .button-group1 form {
+     .button-group3 form {
         margin: 0 10px; /* ボタン間の余白 */
     }
     /* 各ボタンのスタイル */
-    .button-group1 input[type="submit"] {
+    .button-group3 input[type="submit"] {
         padding: 10px 30px; /* パディングを設定してボタンのサイズを調整 */
         font-size: 20px; /* ボタンのテキストのフォントサイズ */
         font-family: 'HG行書体'; /* フォントの指定 */
@@ -239,22 +256,24 @@ height:20px;
 						<td><c:out value="${stampBean.real_work_time}" /></td>
 						<td><c:out value="${stampBean.note}" /></td>
 						<!-- 編集ボタン -->
-						 <td>
-						 <form action="AttEditController">
-						 	<!--  -->
-							<input type="hidden" name="year" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="yyyy" />">
-							<input type="hidden" name="month" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="M" />">
-							<input type="hidden" name="date" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="d" />">
-			               <input type="submit" value="編集"> 
-		                 </form>
-		                 </td>
+						<td>
+							<div class="button-group1">
+									 <form action="AttEditController">
+									 	<!--  -->
+										<input type="hidden" name="year" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="yyyy" />">
+										<input type="hidden" name="month" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="M" />">
+										<input type="hidden" name="date" value="<fmt:formatDate value="${stampBean.stamp_date}" pattern="d" />">
+						               <input type="submit" value="編集"> 
+					                 </form>
+					          </div>
+					    </td>
 					</tr>				
 			</c:forEach>		
 		</table>
 			<% } else { %>
 			    <p>年月が選択されていません。</p>
 			<% } %>
-			
+	<div class="button-group2">
 		<!-- 申請 　hideen=勤怠状況表ID-->
 			<form action="AttRequestController" method="get" >
 				<input type="hidden" name="year"  value="${year}">
@@ -262,7 +281,7 @@ height:20px;
 				<!-- <input type="hidden" name="att_status_id" value="0">承認まち -->
 				<input type="submit" value="申請">
 			</form>
-			
+	</div>
 			<!----------------------------再申請がある場会の表示------------------------------ -->
 
 			 	<c:if test="${not empty requestListBean.reason}">
@@ -389,11 +408,13 @@ height:20px;
 				<!-- 理由と差し戻し -->
 				<form action="AttRemandController" method="get" >
 					理由:<textarea name="reason" min="1" max="100"required></textarea>※入力必須<br>
-			<div class="button-group1">
+			<div class="button-group3">
 					<input type="hidden" name="year"  value="${year}">
 					<input type="hidden" name="month"  value="${month}"> 
 					<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
+					<input type="hidden" name="month_req_id"  value="${month_req_id}"> 
 					<input type="submit" value="差し戻し" >
+					<p style="color:red;"><c:out value="${errorMsg}"/></p>
 				</form>
 				
 				<!--承認  -->
@@ -402,6 +423,7 @@ height:20px;
 					<input type="hidden" name="year"  value="${year}">
 					<input type="hidden" name="month"  value="${month}"> 
 					<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
+					<input type="hidden" name="month_req_id"  value="${month_req_id}"> 
 					<input type="submit" value="承認">
 				</form>
 			</div>
