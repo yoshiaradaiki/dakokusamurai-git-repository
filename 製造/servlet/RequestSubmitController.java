@@ -5,6 +5,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -53,6 +54,24 @@ public class RequestSubmitController extends HttpServlet {
 		UsersBean usersBean = new RequestListLogic().findMyAttStatusUsers(att_status_id);
 		//取得した利用者IDと年月をゲット
 		Date year_and_month = (Date) usersBean.getYear_and_month();
+		//勤怠状況表年月設定
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(year_and_month);
+		// 今日の日付を1日にする
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		// 先月の日付に変更する
+		calendar.add(Calendar.MONTH, - 0);
+		// 変更後の日付を取得
+		year_and_month = calendar.getTime();
+		// 年を取得
+		int year = calendar.get(Calendar.YEAR);
+		// 月を取得
+		int month = calendar.get(Calendar.MONTH) + 1;
+
+		request.setAttribute("year", year);
+		request.setAttribute("month", month);
+		
+		
 		System.out.println("取得した利用者IDは" + users_id);
 		System.out.println("取得した勤怠状況表IDは" + att_status_id);
 		System.out.println("取得した勤怠状況表の年月は" + year_and_month);
