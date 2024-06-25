@@ -63,6 +63,7 @@
 <br>
 <br>
 <!------------------------------------- 月日表示 -------------------------------------->
+
 <script>
     // 月・日・曜日を取得
     var today = new Date();
@@ -79,8 +80,16 @@
     dateDisplay.id = "dateDisplay";
     dateDisplay.textContent = month + "月" + day + "日 (" + dayOfWeekText + ")";
     document.body.appendChild(dateDisplay);
+
+    // 1000ミリ秒ごとに月日を更新
+    window.onload = function() {
+    dateDisplay(); // 初回実行
+    setInterval(dateDisplay, 1000); // 1000ミリ秒ごとに月日を更新
+};
 </script>
+
 <!------------------------------------- 時刻表示 -------------------------------------->
+
 <script>
     // 2桁表示
     function twoDigit(num) {
@@ -95,10 +104,10 @@
         let msg = nowHour + ":" + nowMin;
         document.getElementById("clockDisplay").textContent = msg;
     }
-    // 10ミリ秒ごとに時計を更新
+    // 100ミリ秒ごとに時計を更新
     window.onload = function() {
     clockDisplay(); // 初回実行
-    setInterval(clockDisplay, 100); // 100ミリ秒ごとに時刻を更新
+    setInterval(clockDisplay, 100); // 100ミリ秒ごとに時刻を更新  
 };
 </script>
 
