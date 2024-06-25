@@ -15,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import beans.RequestListBean;
 import beans.StampBean;
@@ -45,24 +44,19 @@ public class RequestSubmitController extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 
 		//セッションスコープから利用者IDを取得
-		HttpSession session = request.getSession();
-		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-		int users_id = sessionUsersBean.getUsers_id();
+		//		HttpSession session = request.getSession();
+		//		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		//		int users_id = sessionUsersBean.getUsers_id();
 		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
 
 		//勤怠状況表IDで利用者IDと年月を取得する
 		UsersBean usersBean = new RequestListLogic().findMyAttStatusUsers(att_status_id);
 		//取得した利用者IDと年月をゲット
 		Date year_and_month = (Date) usersBean.getYear_and_month();
+		int users_id = usersBean.getUsers_id();
 		//勤怠状況表年月設定
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(year_and_month);
-		// 今日の日付を1日にする
-		calendar.set(Calendar.DAY_OF_MONTH, 1);
-		// 先月の日付に変更する
-		calendar.add(Calendar.MONTH, - 0);
-		// 変更後の日付を取得
-		year_and_month = calendar.getTime();
 		// 年を取得
 		int year = calendar.get(Calendar.YEAR);
 		// 月を取得
@@ -71,7 +65,7 @@ public class RequestSubmitController extends HttpServlet {
 		request.setAttribute("year", year);
 		request.setAttribute("month", month);
 		
-		
+
 		System.out.println("取得した利用者IDは" + users_id);
 		System.out.println("取得した勤怠状況表IDは" + att_status_id);
 		System.out.println("取得した勤怠状況表の年月は" + year_and_month);
