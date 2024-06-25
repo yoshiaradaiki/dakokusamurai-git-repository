@@ -11,24 +11,31 @@
 </head>
 <body>
 	<style>
-		body {
+		nakami {
 		    font-size: 20px;
 	        text-align: center; /* bodyの要素を中央揃え */
-	        font-family: 'HG行書体'; /* フォントの指定 */
+
 	    }
 	    
-	    h1 {
-	    	font-size: 40px;
+	    daimei {
+	    	font-size: 17px;
 	    	font-family: 'HG行書体'; /* フォントの指定 */
 	    }
 	    
-	    div {
+	    header {
 	        margin-top: 10px;
+	        font-family: 'HG行書体'; /* フォントの指定 */
 	    }
 	</style>
+<header>
+<daimei>
 <h1>打刻侍</h1>
+</daimei>
+<nakami>
 現在ログイン中：<c:out value="${sessionUsersBean.emp_name}" /><br>
-<div><a href="LogoutController">ログアウト</a></div>
+<a href="LogoutController">ログアウト</a>
+</nakami>
+</header>
 <br>
 </body>
 </html>
