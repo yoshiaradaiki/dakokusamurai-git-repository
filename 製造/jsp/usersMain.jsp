@@ -86,9 +86,19 @@
     </form>
 </div>
 
-
 <script>
-    // 月・日・曜日を取得
+//1000ミリ秒ごとに月日を更新 ＆ 時刻を更新
+window.onload = function() {
+    // 時刻を表示する関数
+    function clockDisplay() {
+        var nowTime = new Date();
+        var nowHour = twoDigit(nowTime.getHours());
+        var nowMin = twoDigit(nowTime.getMinutes());
+        var msg = nowHour + ":" + nowMin;
+        document.getElementById("clockDisplay").textContent = msg;
+    }
+
+    // 月・日・曜日を取得して表示する関数
     function dateDisplay() {
         var today = new Date();
         var month = today.getMonth() + 1; // 月が0から始まるため＋1
@@ -103,30 +113,23 @@
         document.getElementById("dateDisplay").textContent = month + "月" + day + "日 (" + dayOfWeekText + ")";
     }
 
-    // 2桁表示
-        function twoDigit(num) {
-            return (num < 10 ? "0" : "") + num;
+    // 2桁表示の補助関数
+    function twoDigit(num) {
+        return (num < 10 ? "0" : "") + num;
     }
 
-    // 時・分を取得して表示
-    function clockDisplay() {
-        let nowTime = new Date();
-        let nowHour = twoDigit(nowTime.getHours());
-        let nowMin  = twoDigit(nowTime.getMinutes());
-        let msg = nowHour + ":" + nowMin;
-        document.getElementById("clockDisplay").textContent = msg;
-    }
+    // 初回実行
+    clockDisplay();
+    dateDisplay();
 
-<!----------------------------------------実行/更新----------------------------------------->
-    window.onload = function() {
-        dateDisplay(); // 初回実行
-        setInterval(dateDisplay, 1000); // 1000ミリ秒ごとに月日を更新
+    // 1000ミリ秒ごとに時刻を更新
+    setInterval(clockDisplay, 1000);
 
-        clockDisplay(); // 初回実行
-        setInterval(clockDisplay, 100); // 100ミリ秒ごとに時刻を更新
-    };
+    // 1000ミリ秒ごとに月日を更新
+    setInterval(dateDisplay, 1000);
+};
+
 </script>
-
 
 </body>
 </html>
