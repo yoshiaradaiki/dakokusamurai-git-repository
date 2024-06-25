@@ -53,7 +53,6 @@
         font-family: 'HG行書体'; /* フォントの指定 */
         background-color: #1F2F0A; /* ボタンの背景色*/
         color: #C29B36; /* ボタンの文字色 */
-
     }
 </style>
 </head>
@@ -62,59 +61,10 @@
 <jsp:include page="header.jsp" /><hr>
 <br>
 <br>
-<!------------------------------------- 月日表示 -------------------------------------->
-
-<script>
-    // 月・日・曜日を取得
-    var today = new Date();
-    var month = today.getMonth() + 1; // 月が0から始まるため＋1
-    var day = today.getDate();
-    var dayOfWeek = today.getDay();
-
-    // 曜日表記
-    var weekdays = ["日", "月", "火", "水", "木", "金", "土"];
-    var dayOfWeekText = weekdays[dayOfWeek];
-
-    // 画面に出力
-    var dateDisplay = document.createElement("div");
-    dateDisplay.id = "dateDisplay";
-    dateDisplay.textContent = month + "月" + day + "日 (" + dayOfWeekText + ")";
-    document.body.appendChild(dateDisplay);
-
-    // 1000ミリ秒ごとに月日を更新
-    window.onload = function() {
-    dateDisplay(); // 初回実行
-    setInterval(dateDisplay, 1000); // 1000ミリ秒ごとに月日を更新
-};
-</script>
-
-<!------------------------------------- 時刻表示 -------------------------------------->
-
-<script>
-    // 2桁表示
-    function twoDigit(num) {
-        return (num < 10 ? "0" : "") + num;
-    }
-
-    // 時、分を取得して表示
-    function clockDisplay() {
-        let nowTime = new Date();
-        let nowHour = twoDigit(nowTime.getHours());
-        let nowMin  = twoDigit(nowTime.getMinutes());
-        let msg = nowHour + ":" + nowMin;
-        document.getElementById("clockDisplay").textContent = msg;
-    }
-    // 100ミリ秒ごとに時計を更新
-    window.onload = function() {
-    clockDisplay(); // 初回実行
-    setInterval(clockDisplay, 100); // 100ミリ秒ごとに時刻を更新  
-};
-</script>
-
 <!-- 月日表示 -->
 <div id="dateDisplay"></div>
 <!-- 時刻表示 -->
-<div id="clockDisplay" style="font-size: 60px;"></div>
+<div id="clockDisplay"></div>
 <!-- resultMsg表示 -->
 <p style="color:red;"><c:out value="${resultMsg}"/></p>
 <!-- ボタン表示 -->
@@ -135,6 +85,48 @@
         <input type="submit" value="勤怠状況表">
     </form>
 </div>
+
+
+<script>
+    // 月・日・曜日を取得
+    function dateDisplay() {
+        var today = new Date();
+        var month = today.getMonth() + 1; // 月が0から始まるため＋1
+        var day = today.getDate();
+        var dayOfWeek = today.getDay();
+
+        // 曜日表記
+        var weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+        var dayOfWeekText = weekdays[dayOfWeek];
+
+        // 画面に出力
+        document.getElementById("dateDisplay").textContent = month + "月" + day + "日 (" + dayOfWeekText + ")";
+    }
+
+    // 2桁表示
+        function twoDigit(num) {
+            return (num < 10 ? "0" : "") + num;
+    }
+
+    // 時・分を取得して表示
+    function clockDisplay() {
+        let nowTime = new Date();
+        let nowHour = twoDigit(nowTime.getHours());
+        let nowMin  = twoDigit(nowTime.getMinutes());
+        let msg = nowHour + ":" + nowMin;
+        document.getElementById("clockDisplay").textContent = msg;
+    }
+
+<!----------------------------------------実行/更新----------------------------------------->
+    window.onload = function() {
+        dateDisplay(); // 初回実行
+        setInterval(dateDisplay, 1000); // 1000ミリ秒ごとに月日を更新
+
+        clockDisplay(); // 初回実行
+        setInterval(clockDisplay, 100); // 100ミリ秒ごとに時刻を更新
+    };
+</script>
+
 
 </body>
 </html>
