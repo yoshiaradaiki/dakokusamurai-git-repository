@@ -72,8 +72,8 @@ public class StampRevReqDAO {
 
 			pStmt.setInt(1, status);//ステータス
 			pStmt.setString(2, reason);//理由
-			pStmt.setInt(2, updated_users_id);//更新者ID
-			pStmt.setInt(3, stamp_rev_req_id);//打刻修正申請ID
+			pStmt.setInt(3, updated_users_id);//更新者ID
+			pStmt.setInt(4, stamp_rev_req_id);//打刻修正申請ID
 
 			//UPDATE文を実行
 			int result = pStmt.executeUpdate();
