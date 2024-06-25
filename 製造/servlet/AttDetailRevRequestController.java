@@ -42,7 +42,8 @@ public class AttDetailRevRequestController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		RequestDispatcher dispatcher = null;
+		
+		RequestDispatcher dispatcher=null;
 //     セッションを取得
 		HttpSession session = request.getSession();
 //　　　取得した情報をUserBeanに渡す
@@ -92,10 +93,11 @@ public class AttDetailRevRequestController extends HttpServlet {
 			
 	       //  打刻修正追加を行い、打刻ID、修正出勤、修正退勤、休憩、勤怠状況、備考の結果を取得		
 			int stamp_rev_id = attDetailLogic.insertStampRev(stampRevBean,users_id);
+			System.out.println(stamp_rev_id);
 	
 			//　打刻修正申請テーブルに登録
 			 RequestListBean reqListBean= new RequestListBean ();
-			 reqListBean.setStamp_rev_id(stamp_rev_id);
+			 reqListBean.setRequest_id(stamp_rev_id);
 			 reqListBean.setStatus(1);
 			 reqListBean.setCreated_users_id(users_id);
 			 reqListBean.setUpdated_users_id(users_id);
@@ -188,7 +190,8 @@ public class AttDetailRevRequestController extends HttpServlet {
 			request.setAttribute("usersBean", attDetailUsers);
 			request.setAttribute("stampBean", attDetailStamp);
 			request.setAttribute("requestListBean", attDetailUsersRequestList);
-			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/attendenceStatusDetail.jsp");
+			request.setAttribute("errorMsg", "備考を入力してください");
+			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/attendanceStatusDetail.jsp");
 		}
 	
 		//	JSPからサーブレットへ転送
