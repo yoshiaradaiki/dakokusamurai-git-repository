@@ -184,11 +184,11 @@ height:20px;
 			<option value="13">13：休日</option>
 			<option value="14">14：欠勤</option>
 		</select><br> 
-		開始時刻： <input type="time" name="workIn_rev" value="${stampBean.workIn_re}"><br> 
+		開始時刻： <input type="time" name="workIn_rev" value="${stampBean.workIn_re}" required><br> 
 			
-		終了時刻： <input type="time" name="workOut_rev" value="${stampBean.workOut_re}"><br>
+		終了時刻： <input type="time" name="workOut_rev" value="${stampBean.workOut_re}"required><br>
 		休憩： 
-		<input type="time" name="rest_time" value="${stampBean.rest_time}"><br>
+		<input type="time" name="rest_time" value="${stampBean.rest_time}"required><br>
 		備考：
 		<textarea name="note" cols="" rows="" 　maxlength="20" required><c:out
 				value="${stamBean.note}" /></textarea><br>
