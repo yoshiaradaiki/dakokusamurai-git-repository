@@ -30,6 +30,7 @@ public class AttRemandController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
+		RequestDispatcher dispatcher=null;
 		
 		//--------------------------session-----------------------------------
 		HttpSession session = request.getSession();
@@ -47,70 +48,76 @@ public class AttRemandController extends HttpServlet {
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    Date date = null;
 		
+	    //dateFomatをdateに変換
 	    try {
 			date = dateFormat.parse(dateString);
+			System.out.println(date);
 		} catch (ParseException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		
-	    //インスタンス作成
-	    AttStatusLogic attStatusLogic = new AttStatusLogic();
-	    //利用者IDと勤怠状況表ID紐づけ
-	    int att_status_id = attStatusLogic.findAttStatusId(sub_users_id, date); 
-
-		//申請一覧のステータスを0：差し戻しにする
-		int status = 0; 
-		//差し戻しは理由は必要
-		//String reason = "reason"; 
-		//一覧に勤怠状況表ID・ステータス・理由を更新
-		attStatusLogic.updateMonthReq(att_status_id, status, reason, users_id);
-		
-		
-		//-------------------------申請一覧に上司部下情報を渡す---------------------------------
-		//自分の申請一覧にsessionのusers_idを渡す
-		List<RequestListBean> myRequestListBeans = attStatusLogic.findMyRequest(users_id);
-		//********************　 ページング　********************//
-		int page = 1;
-		int recordsPerPage = 5; // 申請一覧の1ページあたりの表示件数
-		int listSize = myRequestListBeans.size();
-		int start = (page - 1) * recordsPerPage;
-		int end = Math.min(start + recordsPerPage, listSize);
-		int totalPages = (int) Math.ceil((double) myRequestListBeans.size() / recordsPerPage);
-		List<RequestListBean> displayedRequests = myRequestListBeans.subList(start, end);//範囲指定
-		
-		request.setAttribute("requestList", displayedRequests);
-		request.setAttribute("currentPage", page);
-		request.setAttribute("totalPages", totalPages);
-		//********************　 ページング　********************//
-
-		
-		
-		//---------------------------部下の申請一覧に表示するため-----------------------------------
-		//自分の申請一覧にsessionのusers_idを渡す
-		List<RequestListBean> mySubRequestListBeans = attStatusLogic.findMySubRequest(users_id);
-		//********************　 ページング　********************//
-		int page2 = 1;
-		int recordsPerPage2 = 15; // 部下の申請一覧の1ページあたりの表示件数
-		if (request.getParameter("page2") != null) {
-			page2 = Integer.parseInt(request.getParameter("page2"));
-		}
-		int listSize2 = mySubRequestListBeans.size();
-		int start2 = (page2 - 1) * recordsPerPage2;
-		int end2 = Math.min(start2 + recordsPerPage2, listSize2);
-		int totalPages2 = (int) Math.ceil((double) mySubRequestListBeans.size() / recordsPerPage2);
-		List<RequestListBean> displayedRequests2 = mySubRequestListBeans.subList(start2, end2);//範囲指定
-		
-		request.setAttribute("requestList2", displayedRequests2);
-		request.setAttribute("currentPage2", page2);
-		request.setAttribute("totalPages2", totalPages2);
-		//********************　 ページング　********************//
-		
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
-		dispatcher.forward(request, response);
-	} 
-
+	    
+	    if(!reason.isEmpty()) {
+		    //インスタンス作成
+		    AttStatusLogic attStatusLogic = new AttStatusLogic();
+//		    //利用者IDと勤怠状況表ID紐づけ
+//		    int month_req_id = attStatusLogic.findAttStatusId(sub_users_id, date); 
+		    int month_req_id = Integer.parseInt(request.getParameter("month_req_id")); 
+		    
+			//申請一覧のステータスを0：差し戻しにする
+			int status = 0; 
+			//差し戻しは理由は必要
+			//String reason = "reason"; 
+			//一覧に勤怠状況表ID・ステータス・理由を更新
+			attStatusLogic.updateMonthReq(month_req_id, status, reason, users_id);
+			
+			
+			//-------------------------申請一覧に上司部下情報を渡す---------------------------------
+			//自分の申請一覧にsessionのusers_idを渡す
+			List<RequestListBean> myRequestListBeans = attStatusLogic.findMyRequest(users_id);
+			//********************　 ページング　********************//
+			int page = 1;
+			int recordsPerPage = 5; // 申請一覧の1ページあたりの表示件数
+			int listSize = myRequestListBeans.size();
+			int start = (page - 1) * recordsPerPage;
+			int end = Math.min(start + recordsPerPage, listSize);
+			int totalPages = (int) Math.ceil((double) myRequestListBeans.size() / recordsPerPage);
+			List<RequestListBean> displayedRequests = myRequestListBeans.subList(start, end);//範囲指定
+			
+			request.setAttribute("requestList", displayedRequests);
+			request.setAttribute("currentPage", page);
+			request.setAttribute("totalPages", totalPages);
+			//********************　 ページング　********************//
+	
+			
+			
+			//---------------------------部下の申請一覧に表示するため-----------------------------------
+			//自分の申請一覧にsessionのusers_idを渡す
+			List<RequestListBean> mySubRequestListBeans = attStatusLogic.findMySubRequest(users_id);
+			//********************　 ページング　********************//
+			int page2 = 1;
+			int recordsPerPage2 = 15; // 部下の申請一覧の1ページあたりの表示件数
+			if (request.getParameter("page2") != null) {
+				page2 = Integer.parseInt(request.getParameter("page2"));
+			}
+			int listSize2 = mySubRequestListBeans.size();
+			int start2 = (page2 - 1) * recordsPerPage2;
+			int end2 = Math.min(start2 + recordsPerPage2, listSize2);
+			int totalPages2 = (int) Math.ceil((double) mySubRequestListBeans.size() / recordsPerPage2);
+			List<RequestListBean> displayedRequests2 = mySubRequestListBeans.subList(start2, end2);//範囲指定
+			
+			request.setAttribute("requestList2", displayedRequests2);
+			request.setAttribute("currentPage2", page2);
+			request.setAttribute("totalPages2", totalPages2);
+			//********************　 ページング　********************//
+			dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/requestList.jsp");
+			dispatcher.forward(request, response);
+	    }
+	}
 }
+	
+	
+
 //リクエストに自分の申請一覧をセット
 //request.setAttribute("myRequestListBeans", myRequestListBeans);
 
