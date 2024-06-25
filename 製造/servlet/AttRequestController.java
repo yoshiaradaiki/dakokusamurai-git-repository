@@ -78,22 +78,51 @@ public class AttRequestController extends HttpServlet {
 			    // 変換失敗時の処理
 			} 
 		 
-		
-		//自分の申請一覧--------------------------------------------------------------
+		 
+		//申請➡一覧に遷移するときに表示するlogicとページング
+		//----------------------------------------自分の申請一覧--------------------------------------------------------------
 		//自分の申請一覧にsessionのusers_idを渡す
 		 AttStatusLogic attStatusLogic = new AttStatusLogic();
-		 
+		 //利用者IDをもとに月末申請リストBeanに情報を追加
 		List<RequestListBean> myRequestListBeans = attStatusLogic.findMyRequest(users_id);
-		//リクエストに自分の申請一覧をセット
-		request.setAttribute("myRequestListBeans", myRequestListBeans);
+
+		//********************　 ページング　********************//
+		int page = 1;
+		int recordsPerPage = 5; // 申請一覧の1ページあたりの表示件数
+		int listSize = myRequestListBeans.size();
+		int start = (page - 1) * recordsPerPage;
+		int end = Math.min(start + recordsPerPage, listSize);
+		int totalPages = (int) Math.ceil((double) myRequestListBeans.size() / recordsPerPage);
+		List<RequestListBean> displayedRequests = myRequestListBeans.subList(start, end);//範囲指定
+		
+		request.setAttribute("requestList", displayedRequests);
+		request.setAttribute("currentPage", page);
+		request.setAttribute("totalPages", totalPages);
+		//********************　 ページング　********************//
 
 		
-		//部下の申請一覧--------------------------------------------------------------
+		//--------------------------------------------------部下の申請一覧--------------------------------------------------------------
 
-		//自分の申請一覧にsessionのusers_idを渡す
+		//部下の利用者IDをもとに月末申請リストBeanに情報を追加
 		List<RequestListBean> mySubRequestListBeans = attStatusLogic.findMySubRequest(users_id);
-		//リクエストに部下の申請一覧をセット
-		request.setAttribute("mySubRequestListBeans", mySubRequestListBeans);
+
+		//********************　 ページング　********************//
+		int page2 = 1;
+		int recordsPerPage2 = 15; // 部下の申請一覧の1ページあたりの表示件数
+		if (request.getParameter("page2") != null) {
+			page2 = Integer.parseInt(request.getParameter("page2"));
+		}
+		int listSize2 = mySubRequestListBeans.size();
+		int start2 = (page2 - 1) * recordsPerPage2;
+		int end2 = Math.min(start2 + recordsPerPage2, listSize2);
+		int totalPages2 = (int) Math.ceil((double) mySubRequestListBeans.size() / recordsPerPage2);
+		List<RequestListBean> displayedRequests2 = mySubRequestListBeans.subList(start2, end2);//範囲指定
+		
+		request.setAttribute("requestList2", displayedRequests2);
+		request.setAttribute("currentPage2", page2);
+		request.setAttribute("totalPages2", totalPages2);
+		//********************　 ページング　********************//
+
 		
 		//申請一覧遷移
 		request.getRequestDispatcher("WEB-INF/jsp/requestList.jsp").forward(request, response);
@@ -101,6 +130,11 @@ public class AttRequestController extends HttpServlet {
 	}
 
 }
+////リクエストに自分の申請一覧をセット
+//request.setAttribute("myRequestListBeans", myRequestListBeans);
+//リクエストに部下の申請一覧をセット
+//request.setAttribute("mySubRequestListBeans", mySubRequestListBeans);
+
 //破棄
 //UsersBean sessionUsersBean = (UsersBean)session.getAttribute("sessionUsersBean");
 //int users_id = sessionUsersBean1.getUsers_id();

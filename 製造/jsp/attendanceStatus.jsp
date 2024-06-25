@@ -17,39 +17,64 @@
 </head>
 <body>
 <style>
-/* body {
+ body {
         text-align: center; /* bodyの要素を中央揃え */
+        background-color: ;
+     
     }
 table {
 	border-collapse: collapse;
 	width: 100%;
 }
-
+/**表　中身**/
 th, td {
-	border: 1px solid #1e90ff;
+	border: 1px solid #000 ;
 	padding: 4px;
 	text-align: center;
-	background-color: #f0f8ff; /* デフォルトの背景色を設定 */
+	background-color: #f8f4e6 ; /* デフォルトの背景色を設定　#EEE8AA */
 }
-
+/**表　中身**/
 th {
-	background-color: #87cefa;
-} */
+	/**color: #ffffff;**/
+	background-color: #ebe1a9;
+} 
 
-textarea {
-  resize: none;
-  width:300px;
-  height:20px;
+.button-group1  {
+        margin-top: 20px; /* ボタン間の余白 */
+        display: flex; /* ボタンを横並べにする */
+        justify-content: center; /* ボタンを中央揃え */
+    }
+     .button-group1 form {
+        margin: 0 10px; /* ボタン間の余白 */
+    }
+    /* 各ボタンのスタイル */
+    .button-group1 input[type="submit"] {
+        padding: 10px 30px; /* パディングを設定してボタンのサイズを調整 */
+        font-size: 20px; /* ボタンのテキストのフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
+        background-color: #1F2F0A; /* ボタンの背景色*/
+        color: #C29B36; /* ボタンの文字色 */
+    }
+/**差し戻し理由のテキストエリア拡張防止**/
+textarea { 
+padding: 20 10px; /* ボタン間の余白 */
+resize: none;
+width:300px;
+height:20px;
+}
+.button-groupBack{
+     text-align: left;
 }
 </style>
 	<jsp:include page="header.jsp" /><hr>
 	
-	
+	<!--確認用  -->
 	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
-	<h1>申請フォーム</h1>
+
+	<p>【申請フォーム】</p>
 	<!-- フォームの切り替え　JSで残すOrサーブレットで実行 -->
 		<div style="double">
-			<h3>勤怠状況表</h3>
+			<h1>勤怠状況表</h1>
 		</div>
 			<!----------------------------上部　年月・利用者 ------------------------------ -->
 			
@@ -110,8 +135,8 @@ textarea {
 			<p>勤務時間：9：00～18：00</p>
 			<p>休憩時間：12：00～13：00</p>
 			<div >
-				<th>社員番号：${usersBean.emp_no}</th>
-				<th>氏名：${usersBean.emp_name} </th>  
+				<p>社員番号：${usersBean.emp_no}</p>
+				<p>氏名：${usersBean.emp_name} </p>  
 			</div><br>
 		<!----------------------------中部 　表------------------------------ -->
 		<% if (year != null) { %> 
@@ -247,18 +272,18 @@ textarea {
 
 	<% } else { %>
 	
-	<h1>承認フォーム</h1>
+	<p>【承認フォーム】</p>
 			<div style="double">
-			<h3>勤怠状況表</h3>
+			<h1>勤怠状況表</h1>
 		</div>
 			<!----------------------------上部　年月・利用者 ------------------------------ -->
 		<fmt:formatDate value="${usersBean.year_and_month}" pattern="yyyy年　M月" />
 			<p>勤務時間：9：00～18：00</p>
 			<p>休憩時間：12：00～13：00</p>
-			<tr>
-				<th>社員番号：${usersBean.emp_no}</th>
-				<th>氏名：${usersBean.emp_name} </th>  
-			</tr><br>
+			<div>
+				<p>社員番号：${usersBean.emp_no}</p>
+				<p>氏名：${usersBean.emp_name} </p>  
+			</div><br>
 			
 		<!----------------------------中部 　表------------------------------ -->
 		<table border="1">
@@ -360,30 +385,35 @@ textarea {
 					</tr>				
 			</c:forEach>		
 		</table>
-			<!-- 理由と差し戻し -->
-			<form action="AttRemandController" method="get" >
-				理由:<textarea name="reason" min="1" max="100"required></textarea>※入力必須<br>
-				<input type="hidden" name="year"  value="${year}">
-				<input type="hidden" name="month"  value="${month}"> 
-				<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
-				<input type="submit" value="差し戻し" >
-			</form>
-			
-			<!--承認  -->
-			<form action="AttApprovalController" method="get" >
-			<!-- 年月と表示している申請者を送信 -->
-				<input type="hidden" name="year"  value="${year}">
-				<input type="hidden" name="month"  value="${month}"> 
-				<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
-				<input type="submit" value="承認">
-			</form>
-			
+	
+				<!-- 理由と差し戻し -->
+				<form action="AttRemandController" method="get" >
+					理由:<textarea name="reason" min="1" max="100"required></textarea>※入力必須<br>
+			<div class="button-group1">
+					<input type="hidden" name="year"  value="${year}">
+					<input type="hidden" name="month"  value="${month}"> 
+					<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
+					<input type="submit" value="差し戻し" >
+				</form>
+				
+				<!--承認  -->
+				<form action="AttApprovalController" method="get" >
+				<!-- 年月と表示している申請者を送信 -->
+					<input type="hidden" name="year"  value="${year}">
+					<input type="hidden" name="month"  value="${month}"> 
+					<input type="hidden" name="users_id"  value="${usersBean.users_id}"> 
+					<input type="submit" value="承認">
+				</form>
+			</div>
+		</div>	
 	
 	<% } %>	
 	<!-- 申請一覧へ遷移、WEB-INFフォルダへのアクセス？ -->
 	<!-- <a href="/WEB-INF/jsp/社員画面.jsp">戻る</a>    -->
-		<form action="BackController" method="get">
-			<input type="submit" value="戻る">	
-		</form>
+		<div class="button-groupBack"">
+			<form action="BackController" method="get">
+				<input type="submit" value="戻る">	
+			</form>
+		</div>
 </body>
 </html>
