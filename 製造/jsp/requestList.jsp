@@ -75,7 +75,7 @@ th {
 					<td style="text-align: center;"><c:out
 							value="${request.date_and_time}" /></td>
 					<td style="text-align: center;"><c:choose>
-							<c:when test="${request.content == 1}">変更申請 </c:when> <!-- ★★6/25横山変更 -->
+							<c:when test="${request.content == 1}">変更申請 </c:when>
 							<c:when test="${request.content == 0}">勤怠状況表提出 </c:when>
 							<c:otherwise>
 								<c:out value="${request.content}" />
@@ -93,7 +93,7 @@ th {
 					<td style="text-align: center;"><c:choose>
 							<c:when test="${request.status < 3}">
 								<c:choose>
-									<c:when test="${request.content == 0 && request.status == 0}">
+									<c:when test="${request.content == 1 && request.status == 0}">
 										<form action="RequestRequestController" method="get" style="display: inline;">
 											<input type="hidden" name="stamp_rev_id"
 												value="${request.request_id}">
@@ -105,7 +105,7 @@ th {
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
-									<c:when test="${request.content == 1 && request.status == 0}">
+									<c:when test="${request.content == 0 && request.status == 0}">
 										<form action="RequestSubmitController" method="get" style="display: inline;">
 											<input type="hidden" name="att_status_id"
 												value="${request.request_id}">
@@ -117,14 +117,14 @@ th {
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
-									<c:when test="${request.content == 0 && request.status < 2}">
+									<c:when test="${request.content == 1 && request.status < 2}">
 										<form action="RequestOneDayCancelController" method="get">
 											<input type="hidden" name="stamp_rev_req_id"
 												value="${request.request_foreign_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
-									<c:when test="${request.content == 1 && request.status < 2}">
+									<c:when test="${request.content == 0 && request.status < 2}">
 										<form action="RequestMonthCancelController" method="get">
 											<input type="hidden" name="month_req_id"
 												value="${request.request_foreign_id}">
@@ -181,7 +181,7 @@ th {
 					<td style="text-align: center;"><c:out
 							value="${request.date_and_time}" /></td>
 					<td style="text-align: center;"><c:choose>
-							<c:when test="${request.content == 1}"><!-- ★★6/25横山変更 -->
+							<c:when test="${request.content == 1}">
      					      変更申請
      					   </c:when>
 							<c:when test="${request.content == 0}">
@@ -206,7 +206,7 @@ th {
 					<td style="text-align: center;"><c:choose>
 							<c:when test="${request.status == 1 || request.status == 2}">
 								<c:choose>
-									<c:when test="${request.content == 1}"><!-- ★★6/25横山変更 -->
+									<c:when test="${request.content == 1}">
 									<!-- 下なおしました -->
 										<form action="RevDetailController" method="get">
 											<input type="hidden" name="stamp_rev_id"
