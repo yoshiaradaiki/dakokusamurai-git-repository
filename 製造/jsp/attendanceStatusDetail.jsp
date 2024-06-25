@@ -73,7 +73,7 @@ height:20px;
 	<c:out value="${usersBean.emp_name}" />
 	<br>
 
-	<% //if (社員がログインし自分の打刻修正を見る場合)treu:申請フォーム false:承認フォーム{ %>
+	<% //if (社員がログインし自分の打刻修正を見る場合)true:申請フォーム false:承認フォーム{ %>
 	<% if((Integer)request.getAttribute("formstatus") ==0){ %>
 	<h1>申請フォーム</h1>
 	<table border=1>
@@ -190,7 +190,7 @@ height:20px;
 		休憩： 
 		<input type="time" name="rest_time" value="${stampBean.rest_time}"required><br>
 		備考：
-		<textarea name="note" cols="" rows="" 　maxlength="20" required><c:out
+		<textarea name="note" cols="" rows="" 　maxlength="20" ><c:out
 				value="${stamBean.note}" /></textarea><br>
 		<p style="color:red"><c:out value="${errorMsg}" /></p>
 		理由
@@ -337,13 +337,16 @@ height:20px;
 
 		<form method="get" action="AttDetailApprovalController">
 			<input type="submit" value="承認">
-			<input type="hidden" name="stamp_rev_req_id" value="2">
+			<input type="hidden" name="stamp_rev_id" value="${stamp_rev_id}">
+			<input type="hidden" name="stamp_rev_req_id" value="${stamp_rev_req_id}">
 		</form>
 
 		<form method="get" action="AttDetailRemandController">
 			理由:
-			<textarea name="reason" required></textarea><br>
-			<input type="hidden" name="stamp_rev_req_id" value="2"  >
+			<textarea name="reason" cols="" rows="" 　maxlength="20" ></textarea><br>
+			<input type="hidden" name="stamp_rev_id" value="${stamp_rev_id}"   >
+			<input type="hidden" name="stamp_rev_req_id" value="${stamp_rev_req_id}">
+			<p style="color:red"><c:out value="${errorMsg}" /></p>
 			<input type="submit" value="差し戻し">
 		</form>
 	<% } %>
