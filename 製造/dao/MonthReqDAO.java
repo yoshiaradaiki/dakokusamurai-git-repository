@@ -86,8 +86,8 @@ public class MonthReqDAO {
 
 			//UPDATE文の？に使用する値を設定
 			pStmt.setInt(1, status);
-			pStmt.setString(2, reason);
-			pStmt.setInt(3, updated_users_id);
+			pStmt.setInt(2, updated_users_id);
+			pStmt.setString(3, reason);
 			pStmt.setInt(4, month_req_id);
 
 			//UPDATE文を実行
@@ -220,10 +220,10 @@ public class MonthReqDAO {
 				reqListBean.setStamp_rev_req_id(rs.getInt("stamp_rev_req_id"));
 
 				//検査結果出力
-				System.out.print(reqListBean.getDate_and_time() + " ");
-				System.out.print(reqListBean.getStatus() + " ");
-				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
-				System.out.print(reqListBean.getContent() + " ");
+				//				System.out.print(reqListBean.getDate_and_time() + " ");
+				//				System.out.print(reqListBean.getStatus() + " ");
+				//				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
+				//				System.out.print(reqListBean.getContent() + " ");
 				//				System.out.print(reqListBean.getRequest_id() + " ");
 				//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
 				//				System.out.print(reqListBean.getAtt_status_id() + " ");
@@ -320,18 +320,18 @@ public class MonthReqDAO {
 				reqListBean.setStamp_rev_id(rs.getInt("stamp_rev_id"));
 				reqListBean.setStamp_rev_req_id(rs.getInt("stamp_rev_req_id"));
 				//検査結果出力
-				System.out.print(reqListBean.getDate_and_time() + " ");
-				System.out.print(reqListBean.getStatus() + " ");
-				System.out.print(reqListBean.getName() + " ");
-				System.out.print(reqListBean.getContent() + " ");
-				System.out.print(reqListBean.getRequest_id() + " ");
-				System.out.println(reqListBean.getRequest_foreign_id() + " ");
-				System.out.print(reqListBean.getRequest_id() + " ");
-				System.out.println(reqListBean.getRequest_foreign_id() + " ");
-				System.out.print(reqListBean.getAtt_status_id() + " ");
-				System.out.print(reqListBean.getMonth_req_id() + " ");
-				System.out.print(reqListBean.getStamp_rev_id() + " ");
-				System.out.println(reqListBean.getStamp_rev_req_id() + " ");
+//				System.out.print(reqListBean.getDate_and_time() + " ");
+//				System.out.print(reqListBean.getStatus() + " ");
+//				System.out.print(reqListBean.getName() + " ");
+//				System.out.print(reqListBean.getContent() + " ");
+//				System.out.print(reqListBean.getRequest_id() + " ");
+//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+//				System.out.print(reqListBean.getRequest_id() + " ");
+//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+//				System.out.print(reqListBean.getAtt_status_id() + " ");
+//				System.out.print(reqListBean.getMonth_req_id() + " ");
+//				System.out.print(reqListBean.getStamp_rev_id() + " ");
+//				System.out.println(reqListBean.getStamp_rev_req_id() + " ");
 
 				subReqList.add(reqListBean);
 			}
