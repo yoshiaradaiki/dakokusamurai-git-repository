@@ -10,6 +10,56 @@
 <title>勤怠状況詳細画面</title>
 </head>
 <body>
+<style>
+ body {
+        text-align: center; /* bodyの要素を中央揃え */
+        background-color: ;
+     
+    }
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+/**表　中身**/
+th, td {
+	border: 1px solid #000 ;
+	padding: 4px;
+	text-align: center;
+	background-color: #f8f4e6 ; /* デフォルトの背景色を設定　#EEE8AA */
+}
+/**表　中身**/
+th {
+	/**color: #ffffff;**/
+	background-color: #ebe1a9;
+} 
+
+.button-group1  {
+        margin-top: 20px; /* ボタン間の余白 */
+        display: flex; /* ボタンを横並べにする */
+        justify-content: center; /* ボタンを中央揃え */
+    }
+     .button-group1 form {
+        margin: 0 10px; /* ボタン間の余白 */
+    }
+    /* 各ボタンのスタイル */
+    .button-group1 input[type="submit"] {
+        padding: 10px 30px; /* パディングを設定してボタンのサイズを調整 */
+        font-size: 20px; /* ボタンのテキストのフォントサイズ */
+        font-family: 'HG行書体'; /* フォントの指定 */
+        background-color: #1F2F0A; /* ボタンの背景色*/
+        color: #C29B36; /* ボタンの文字色 */
+    }
+/**差し戻し理由のテキストエリア拡張防止**/
+textarea { 
+padding: 20 10px; /* ボタン間の余白 */
+resize: none;
+width:300px;
+height:20px;
+}
+.button-groupBack{
+     text-align: left;
+}
+</style>
 <jsp:include page="header.jsp"/><hr>
 	<h1>勤怠状況詳細</h1>
 	<fmt:formatDate value="${usersBean.year_and_month}" pattern="yyyy年　M月" />
@@ -19,12 +69,12 @@
 	<br> 休憩時間:12:00～13:00
 	<br> 社員番号：
 	<c:out value="${usersBean.emp_no}" />
-	<br> 氏名：
+	 氏名：
 	<c:out value="${usersBean.emp_name}" />
 	<br>
 
 	<% //if (社員がログインし自分の打刻修正を見る場合)treu:申請フォーム false:承認フォーム{ %>
-	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
+	<% if((Integer)request.getAttribute("formstatus") ==0){ %>
 	<h1>申請フォーム</h1>
 	<table border=1>
 		<tr>
@@ -140,8 +190,9 @@
 		休憩： 
 		<input type="time" name="rest_time" value="${stampBean.rest_time}"><br>
 		備考：
-		<textarea name="note" cols="" rows="" 　maxlength="20"><c:out
+		<textarea name="note" cols="" rows="" 　maxlength="20" required><c:out
 				value="${stamBean.note}" /></textarea><br>
+		<p style="color:red"><c:out value="${errorMsg}" /></p>
 		理由
 		<p>
 			<c:out value="${requestListBean.reason}" />
@@ -291,8 +342,8 @@
 
 		<form method="get" action="AttDetailRemandController">
 			理由:
-			<textarea name="reason"></textarea><br>
-			<input type="hidden" name="stamp_rev_req_id" value="2">
+			<textarea name="reason" required></textarea><br>
+			<input type="hidden" name="stamp_rev_req_id" value="2"  >
 			<input type="submit" value="差し戻し">
 		</form>
 	<% } %>
