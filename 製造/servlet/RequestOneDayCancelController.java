@@ -56,7 +56,7 @@ public class RequestOneDayCancelController extends HttpServlet {
 
 		int status = 3;
 		// 打刻修正申請のキャンセル操作を実行し、その結果を取得
-		Boolean isCancelled = requestListLogic.updateReqCancelByOneDay(stamp_rev_req_id, status, users_id);
+		Boolean isCancelled = requestListLogic.updateReqCancelByOneDay(stamp_rev_req_id, status, null, users_id);
 		System.out.println(users_id + "さんの変更申請をキャンセルしました");
 		System.out.println(stamp_rev_req_id + "勤怠状況詳IDをキャンセルしました");
 

@@ -81,18 +81,18 @@ public class RequestListLogic {
 	//引数　　　：月末申請ID
 	//戻り値　　：boolean(true：成功、false：失敗)
 	//処理概要　：キャンセルボタン：月末申請データを更新し、申請一覧画面再描画する
-	public Boolean updateReqCancelByAttStatus(int month_req_id, int status, int updated_users_id) {
+	public Boolean updateReqCancelByAttStatus(int month_req_id, int status, String reason, int updated_users_id) {
 		MonthReqDAO monthReqDAO = new MonthReqDAO();
-		return monthReqDAO.updateMonthReq(month_req_id, status, updated_users_id);
+		return monthReqDAO.updateMonthReq(month_req_id, status, reason, updated_users_id);
 	}
 
 	//メソッド名：打刻修正申請にデータ更新
 	//引数　　　：打刻修正申請ID
 	//戻り値　　：boolean(true：成功、false：失敗)
 	//処理概要　：キャンセルボタン：打刻修正申請データを更新し、申請一覧画面再描画する
-	public Boolean updateReqCancelByOneDay(int stamp_rev_req_id, int status, int updated_users_id) {
+	public Boolean updateReqCancelByOneDay(int stamp_rev_req_id, int status, String reason, int updated_users_id) {
 		StampRevReqDAO stampRevReqDAO = new StampRevReqDAO();
-		return stampRevReqDAO.updateStampRevReq(stamp_rev_req_id, status, updated_users_id);
+		return stampRevReqDAO.updateStampRevReq(stamp_rev_req_id, status, reason, updated_users_id);
 	}
 
 	//メソッド名：部下の利用者IDと年月を取得（勤怠状況表画面のヘッダーに表示）

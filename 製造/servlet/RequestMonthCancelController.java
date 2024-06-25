@@ -57,7 +57,7 @@ public class RequestMonthCancelController extends HttpServlet {
 
 		int status = 3;
 		// 月末申請のキャンセル操作を実行し、その結果を取得
-		Boolean isCancelled = requestListLogic.updateReqCancelByAttStatus(month_req_id, status, users_id);
+		Boolean isCancelled = requestListLogic.updateReqCancelByAttStatus(month_req_id, status, null, users_id);
 
 		System.out.println(month_req_id + "勤怠状況表IDをキャンセルしました");
 
