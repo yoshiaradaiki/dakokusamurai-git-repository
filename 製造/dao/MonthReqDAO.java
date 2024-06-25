@@ -22,16 +22,16 @@ public class MonthReqDAO {
 
 	public static void main(String[] args) {
 		//テスト用
-		//		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
+//		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
 		//		monthReqDAO.insertMonthReq(1, 0, 10, 10);//成功
 		//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
 		//		monthReqDAO.findMyRequest(1);//成功
 		//		monthReqDAO.findMySubRequest(1);//成功
-
-		//		@SuppressWarnings("deprecation")
-		//		Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
-		//		monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
-		//		monthReqDAO.findAttStatusMonthRequest(1);//成功
+		//
+		//				@SuppressWarnings("deprecation")
+		//				Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
+		//				monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
+//		monthReqDAO.findAttStatusMonthRequest(29);//成功
 	}
 
 	//メソッド名：月末申請登録
@@ -320,25 +320,24 @@ public class MonthReqDAO {
 				reqListBean.setStamp_rev_id(rs.getInt("stamp_rev_id"));
 				reqListBean.setStamp_rev_req_id(rs.getInt("stamp_rev_req_id"));
 				//検査結果出力
-//				System.out.print(reqListBean.getDate_and_time() + " ");
-//				System.out.print(reqListBean.getStatus() + " ");
-//				System.out.print(reqListBean.getName() + " ");
-//				System.out.print(reqListBean.getContent() + " ");
-//				System.out.print(reqListBean.getRequest_id() + " ");
-//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
-//				System.out.print(reqListBean.getRequest_id() + " ");
-//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
-//				System.out.print(reqListBean.getAtt_status_id() + " ");
-//				System.out.print(reqListBean.getMonth_req_id() + " ");
-//				System.out.print(reqListBean.getStamp_rev_id() + " ");
-//				System.out.println(reqListBean.getStamp_rev_req_id() + " ");
+				//				System.out.print(reqListBean.getDate_and_time() + " ");
+				//				System.out.print(reqListBean.getStatus() + " ");
+				//				System.out.print(reqListBean.getName() + " ");
+				//				System.out.print(reqListBean.getContent() + " ");
+				//				System.out.print(reqListBean.getRequest_id() + " ");
+				//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+				//				System.out.print(reqListBean.getRequest_id() + " ");
+				//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+				//				System.out.print(reqListBean.getAtt_status_id() + " ");
+				//				System.out.print(reqListBean.getMonth_req_id() + " ");
+				//				System.out.print(reqListBean.getStamp_rev_id() + " ");
+				//				System.out.println(reqListBean.getStamp_rev_req_id() + " ");
 
 				subReqList.add(reqListBean);
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("検索成功しました。");
 			return null;
 		}
 
@@ -350,7 +349,8 @@ public class MonthReqDAO {
 	//戻り値　　：申請一覧リスト（打刻修正申請テーブル+月末申請テーブル）
 	//テスト：成功　湯
 	public RequestListBean findMyAttStatusMonthRequest(int users_id, Date years) {//選択された年月の一番新しい差し戻された理由を表示
-		RequestListBean requestListBean = null;
+		//		RequestListBean requestListBean = null;
+		RequestListBean requestListBean = new RequestListBean();
 
 		//H2DBへ接続する
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
@@ -374,15 +374,20 @@ public class MonthReqDAO {
 			pStmt.setDate(2, sqlDate);//選択された年月を取得
 
 			//実行
-			pStmt.executeQuery();
+			ResultSet rs = pStmt.executeQuery();
 
-			RequestListBean reqListBean = new RequestListBean();
-			System.out.println(reqListBean.getReason());
+			//RequestListBean reqListBean = new RequestListBean();
+			System.out.println(requestListBean.getReason());
+
+			if (rs.next()) {
+				String reason = rs.getString("reason");
+				requestListBean.setReason(reason);
+				System.out.println("Reason: " + reason);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("検索成功しました。");
-			return null;
+			return null; // エラー時はnullを返す
 		}
 		return requestListBean;
 	}
@@ -392,32 +397,61 @@ public class MonthReqDAO {
 	//戻り値　　：申請一覧リスト（打刻修正申請テーブル+月末申請テーブル）
 	//テスト：成功　湯
 	public RequestListBean findAttStatusMonthRequest(int att_status_id) {
-		RequestListBean requestListBean = null;
+		RequestListBean requestListBean = new RequestListBean(); // RequestListBeanを初期化
 
-		//H2DBへ接続する
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
 			System.out.println("H2データベースに接続しました。");
 
-			//SELECT文の準備
-			String selectSql = "SELECT reason\n"
-					+ "FROM month_req\n"
-					+ "WHERE att_status_id = ?";
+			// SQL文の準備と実行
+			String selectSql = "SELECT reason FROM month_req WHERE att_status_id = ?";
 			PreparedStatement pStmt = conn.prepareStatement(selectSql);
+			pStmt.setInt(1, att_status_id);
+			ResultSet rs = pStmt.executeQuery();
 
-			//UPDATE文の？に使用する値を設定
-			RequestListBean reqListBean = new RequestListBean();
-			pStmt.setInt(1, reqListBean.getRequest_id());
-
-			//実行
-			pStmt.executeQuery();
-
-			System.out.println(reqListBean.getReason());
+			// 結果があれば取得してRequestListBeanに設定する
+			if (rs.next()) {
+				String reason = rs.getString("reason");
+				requestListBean.setReason(reason);
+				System.out.println("Reason: " + reason);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("検索成功しました。");
-			return null;
+			return null; // エラー時はnullを返す
 		}
-		return requestListBean;
+
+		return requestListBean; // 取得したデータが入ったRequestListBeanを返す
 	}
+
+	//廃棄
+	//	public RequestListBean findAttStatusMonthRequest(int att_status_id) {
+	////RequestListBean requestListBean = null;
+	//RequestListBean requestListBean = new RequestListBean();
+	//
+	////H2DBへ接続する
+	//try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
+	//	System.out.println("H2データベースに接続しました。");
+	//
+	//	//SELECT文の準備
+	//	String selectSql = "SELECT reason\n"
+	//			+ "FROM month_req\n"
+	//			+ "WHERE att_status_id = ?";
+	//	PreparedStatement pStmt = conn.prepareStatement(selectSql);
+	//
+	//	//UPDATE文の？に使用する値を設定
+	////	RequestListBean reqListBean = new RequestListBean();
+	//	pStmt.setInt(1, att_status_id);
+	//
+	//	//実行
+	//	ResultSet rs = pStmt.executeQuery();
+	//
+	//	requestListBean.setReason(rs.getString("reason"));
+	//	System.out.println(requestListBean.getReason());
+	//
+	//} catch (SQLException e) {
+	//	e.printStackTrace();
+	//	return null;
+	//}
+	//return requestListBean;
+	//}
 }
