@@ -10,8 +10,24 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<style>
+		body {
+		    font-size: 20px;
+	        text-align: center; /* bodyの要素を中央揃え */
+	        font-family: 'HG行書体'; /* フォントの指定 */
+	    }
+	    
+	    h1 {
+	    	font-size: 40px;
+	    	font-family: 'HG行書体'; /* フォントの指定 */
+	    }
+	    
+	    div {
+	        margin-top: 10px;
+	    }
+	</style>
 <h1>打刻侍</h1>
 現在ログイン中：<c:out value="${sessionUsersBean.emp_name}" /><br>
-<a href="LogoutController">ログアウト</a>
+<div><a href="LogoutController">ログアウト</a></div>
 </body>
 </html>
