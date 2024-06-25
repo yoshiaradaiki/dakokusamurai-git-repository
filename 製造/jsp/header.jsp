@@ -20,11 +20,13 @@
 	    daimei {
 	    	font-size: 17px;
 	    	font-family: 'HG行書体'; /* フォントの指定 */
+	    	text-align: center; /* bodyの要素を中央揃え */
 	    }
 	    
 	    header {
 	        margin-top: 10px;
 	        font-family: 'HG行書体'; /* フォントの指定 */
+	        text-align: center; /* bodyの要素を中央揃え */
 	    }
 	</style>
 <header>
