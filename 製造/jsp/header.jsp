@@ -29,5 +29,6 @@
 <h1>打刻侍</h1>
 現在ログイン中：<c:out value="${sessionUsersBean.emp_name}" /><br>
 <div><a href="LogoutController">ログアウト</a></div>
+<br>
 </body>
 </html>
