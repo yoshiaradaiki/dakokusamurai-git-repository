@@ -5,11 +5,10 @@
 package servlet;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import beans.AttStatusBean;
 import beans.RequestListBean;
 import beans.StampBean;
 import beans.UsersBean;
@@ -46,38 +44,40 @@ public class RequestSubmitController extends HttpServlet {
 		response.setContentType("text/html; charset=utf-8");
 
 		//セッションスコープから利用者IDを取得
-				HttpSession session = request.getSession();
-				UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
-				int users_id = sessionUsersBean.getUsers_id();
-				//session.setAttribute("sessionUsersBean", sessionUsersBean);
-				
-				int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
-				AttStatusBean attBean = new AttStatusBean();
-				
-				LocalDate years = attBean.getYears();//勤怠状況表.年月 (今は入ってない)
-				//Date year_and_month = sessionUsersBean.getYear_and_month();
-				Date date = Date.from(years.atStartOfDay(ZoneId.systemDefault()).toInstant());
-				System.out.println("取得した勤怠状況表の年月は" + years);
-				
-//				//現在の日付を取得
-//				Date date = new Date();
-				//------------------------------------------------------------------------------------//
-				//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
-				//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-				
-				//取得した勤怠状況表IDによって差し戻された一ヶ月分の勤怠状況表を表示する
-				List<StampBean> stampBean = new RequestListLogic().findAttStatus(users_id, date);
-				//取得した勤怠状況表IDによって勤怠状況表に差し戻しの理由を取得し、表示する
-				RequestListBean requestListBean = new RequestListLogic().findAttStatusMonthReason(att_status_id);
-				//------------------------------------------------------------------------------------//
+		HttpSession session = request.getSession();
+		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+		int users_id = sessionUsersBean.getUsers_id();
+		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));
 
-				//JSPから取得するためにセットする
-//				request.setAttribute("usersBean", usersBean);//利用者ID
-				request.setAttribute("stampBean", stampBean);//勤怠状況表
-				request.setAttribute("requestListBean", requestListBean);//理由
+		//勤怠状況表IDで利用者IDと年月を取得する
+		UsersBean usersBean = new RequestListLogic().findMyAttStatusUsers(att_status_id);
+		//取得した利用者IDと年月をゲット
+		Date year_and_month = (Date) usersBean.getYear_and_month();
+		System.out.println("取得した利用者IDは" + users_id);
+		System.out.println("取得した勤怠状況表IDは" + att_status_id);
+		System.out.println("取得した勤怠状況表の年月は" + year_and_month);
 
-				//"attendanceStatus.jsp"へ転送する
-				request.getRequestDispatcher("/WEB-INF/jsp/attendanceStatus.jsp").forward(request, response);
+		//------------------------------------------------------------------------------------//
+		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
+		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+		//取得した勤怠状況表IDによって差し戻された一ヶ月分の勤怠状況表を表示する
+		List<StampBean> stampBean = new RequestListLogic().findAttStatus(users_id, year_and_month);
+		//取得した勤怠状況表IDによって勤怠状況表に差し戻しの理由を取得し、表示する
+		RequestListBean requestListBean = new RequestListLogic().findAttStatusMonthReason(att_status_id);
+		//------------------------------------------------------------------------------------//
+		//フォーム切り替えのリクエストセット　申請フォーム：0
+		int formstatus = 0;
+		request.setAttribute("formstatus", formstatus);
+		//JSPから取得するためにセットする
+		request.setAttribute("usersBean", usersBean);//利用者ID
+		request.setAttribute("stampBean", stampBean);//勤怠状況表
+		request.setAttribute("requestListBean", requestListBean);//理由
+
+		//"attendanceStatus.jsp"へ転送する
+		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp");
+		dispatcher.forward(request, response);
+
 	}
 
 }
