@@ -26,7 +26,7 @@
         color: #000; /* 文字色の指定 */
     }
     .button-group1 {
-        margin-top: 10px; /* ボタン間の余白 */
+        margin-top: 40px; /* ボタン間の余白 */
         display: flex; /* ボタンを横並べにする */
         justify-content: center; /* ボタンを中央揃え */
     }
@@ -98,7 +98,7 @@
     // 10ミリ秒ごとに時計を更新
     window.onload = function() {
     clockDisplay(); // 初回実行
-    setInterval(clockDisplay, 1000); // 1秒ごとに時刻を更新
+    setInterval(clockDisplay, 100); // 100ミリ秒ごとに時刻を更新
 };
 </script>
 
