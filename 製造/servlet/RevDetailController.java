@@ -66,6 +66,7 @@ public class RevDetailController extends HttpServlet {
 		//JSPから取得するためにセットする
 		request.setAttribute("formstatus", 1);
 		request.setAttribute("stamp_rev_id", stamp_rev_id);
+		request.setAttribute("stamp_rev_req_id", stamp_rev_req_id);
 		request.setAttribute("date", usersBean.getYear_and_month());
 		request.setAttribute("usersBean", usersBean);
 		request.setAttribute("stampBean",  attDetailBean);
