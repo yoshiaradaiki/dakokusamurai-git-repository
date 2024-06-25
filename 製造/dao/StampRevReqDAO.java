@@ -54,7 +54,7 @@ public class StampRevReqDAO {
 	//メソッド名：打刻修正申請
 	//引数　　　：打刻修正申請ID、ステータス、理由、更新者ID
 	//戻り値　　：boolean true:成功　false:失敗
-	public boolean updateStampRevReq(int stamp_rev_req_id, int status, String reason,int updated_users_id){
+	public boolean updateStampRevReq(int stamp_rev_req_id, int status, int updated_users_id){
 		
 		try {
 			Class.forName("org.h2.Driver");
@@ -63,17 +63,17 @@ public class StampRevReqDAO {
 		}
 		try(Connection conn=DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)){
 //			SQL文を準備				
-			String sql = "UPDATE stamp_correct_req,\n"
-					+ "SET status = ?, reason = ?, updated_users_id = ?\n"
+			String sql = "UPDATE stamp_correct_req\n"
+					+ "SET status = ?, updated_users_id = ?\n"
 					+ "WHERE stamp_rev_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
  
 			//UPDATE文の？に使用する値を設定
 			
 			pStmt.setInt(1, status);//ステータス
-			pStmt.setString(2, reason);//理由
-			pStmt.setInt(3,updated_users_id );//更新者ID
-			pStmt.setInt(4, stamp_rev_req_id);//打刻修正申請ID
+//			pStmt.setString(2, reason);//理由
+			pStmt.setInt(2,updated_users_id );//更新者ID
+			pStmt.setInt(3, stamp_rev_req_id);//打刻修正申請ID
  
 			//UPDATE文を実行
 			int result = pStmt.executeUpdate();

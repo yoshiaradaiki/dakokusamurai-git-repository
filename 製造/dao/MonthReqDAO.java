@@ -22,11 +22,11 @@ public class MonthReqDAO {
 
 	public static void main(String[] args) {
 		//テスト用
-//		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
+		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
 		//		monthReqDAO.insertMonthReq(1, 0, 10, 10);//成功
 		//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
-//		monthReqDAO.findMyRequest(1);//成功
-//		monthReqDAO.findMySubRequest(1);//成功
+		monthReqDAO.findMyRequest(1);//成功
+		//		monthReqDAO.findMySubRequest(1);//成功
 
 		//		@SuppressWarnings("deprecation")
 		//		Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
@@ -72,7 +72,7 @@ public class MonthReqDAO {
 	//引数　　　：月末申請ID、承認・差し戻し、理由、更新者＝上司の利用者ID
 	//戻り値　　：boolean(true：成功、false：失敗)
 	//テスト：成功　湯
-	public Boolean updateMonthReq(int month_req_id, int status, String reason, int updated_users_id) {
+	public Boolean updateMonthReq(int month_req_id, int status, int updated_users_id) {
 
 		//H2DBへ接続する
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
@@ -80,15 +80,15 @@ public class MonthReqDAO {
 
 			//UPDATE文の準備
 			String updateSql = "UPDATE month_req "
-					+ "SET status = ?, reason = ?, updated_users_id = ?"
+					+ "SET status = ?, updated_users_id = ?"
 					+ "WHERE month_req_id = ?;";
 			PreparedStatement pStmt = conn.prepareStatement(updateSql);
 
 			//UPDATE文の？に使用する値を設定
 			pStmt.setInt(1, status);
-			pStmt.setString(2, reason);
-			pStmt.setInt(3, updated_users_id);
-			pStmt.setInt(4, month_req_id);
+			//			pStmt.setString(2, reason);
+			pStmt.setInt(2, updated_users_id);
+			pStmt.setInt(3, month_req_id);
 
 			//UPDATE文を実行
 			int result = pStmt.executeUpdate();
@@ -104,45 +104,42 @@ public class MonthReqDAO {
 		return true;
 	}
 
-	
 	//メソッド名：打刻修正申請更新
-		//引数　　　：打刻修正申請ID、承認・差し戻し、理由、更新者＝上司の利用者ID
-		//戻り値　　：boolean(true：成功、false：失敗)
-		//テスト：成功　湯
-		public Boolean updateOneDayReq(int stamp_rev_req_id, int status, String reason, int updated_users_id) {
+	//引数　　　：打刻修正申請ID、承認・差し戻し、理由、更新者＝上司の利用者ID
+	//戻り値　　：boolean(true：成功、false：失敗)
+	//テスト：成功　湯
+	public Boolean updateOneDayReq(int stamp_rev_req_id, int status, String reason, int updated_users_id) {
 
-			//H2DBへ接続する
-			try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
-				System.out.println("H2データベースに接続しました。");
+		//H2DBへ接続する
+		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASSWORD)) {
+			System.out.println("H2データベースに接続しました。");
 
-				//UPDATE文の準備
-				String updateSql = "UPDATE stamp_correct_req "
-						+ "SET status = ?, reason = ?, updated_users_id = ?"
-						+ "WHERE stamp_rev_req_id = ?;";
-				PreparedStatement pStmt = conn.prepareStatement(updateSql);
+			//UPDATE文の準備
+			String updateSql = "UPDATE stamp_correct_req "
+					+ "SET status = ?, reason = ?, updated_users_id = ?"
+					+ "WHERE stamp_rev_req_id = ?;";
+			PreparedStatement pStmt = conn.prepareStatement(updateSql);
 
-				//UPDATE文の？に使用する値を設定
-				pStmt.setInt(1, status);
-				pStmt.setString(2, reason);
-				pStmt.setInt(3, updated_users_id);
-				pStmt.setInt(4, stamp_rev_req_id);
+			//UPDATE文の？に使用する値を設定
+			pStmt.setInt(1, status);
+			pStmt.setString(2, reason);
+			pStmt.setInt(3, updated_users_id);
+			pStmt.setInt(4, stamp_rev_req_id);
 
-				//UPDATE文を実行
-				int result = pStmt.executeUpdate();
+			//UPDATE文を実行
+			int result = pStmt.executeUpdate();
 
-				if (result != 1) {
-					return false;
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("エラー：データを更新できませんでした。");
+			if (result != 1) {
 				return false;
 			}
-			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("エラー：データを更新できませんでした。");
+			return false;
 		}
-	
-	
-	
+		return true;
+	}
+
 	//メソッド名：自分の申請を取得
 	//引数　　　：自分の利用者ID
 	//戻り値　　：申請一覧リスト
@@ -160,8 +157,8 @@ public class MonthReqDAO {
 					+ "    m.date_req,\r\n"
 					+ "    m.status,\r\n"
 					+ "    u2.emp_name,\r\n"
-					+ "    ast.att_status_id AS request_id,\r\n"
-					+ "    m.month_req_id AS reuqest_foreign_id,\r\n"
+					+ "    ast.att_status_id AS att_status_id,\r\n"
+					+ "    m.month_req_id AS month_req_id,\r\n"
 					+ "    NULL AS stamp_rev_id, -- ダミーの列を追加\r\n"
 					+ "    NULL AS stamp_rev_req_id, -- ダミーの列を追加\r\n"
 					+ "    0 AS content\r\n"
@@ -182,8 +179,8 @@ public class MonthReqDAO {
 					+ "    u2.emp_name,\r\n"
 					+ "    NULL AS att_status_id, -- ダミーの列を追加\r\n"
 					+ "    NULL AS month_req_id, -- ダミーの列を追加\r\n"
-					+ "    sr.stamp_rev_id AS request_id,\r\n"
-					+ "    scr.stamp_rev_req_id AS reuqest_foreign_id,\r\n"
+					+ "    sr.stamp_rev_id AS stamp_rev_id,\r\n"
+					+ "    scr.stamp_rev_req_id AS stamp_rev_req_id,\r\n"
 					+ "    1 AS content\r\n"
 					+ "FROM\r\n"
 					+ "    stamp_correct_req scr\r\n"
@@ -215,14 +212,24 @@ public class MonthReqDAO {
 				reqListBean.setStatus(rs.getInt("status"));
 				reqListBean.setBoss_name(rs.getString("emp_name"));
 				reqListBean.setContent(rs.getInt("content"));
-				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
-				reqListBean.setRequest_foreign_id(rs.getInt("reuqest_foreign_id"));
-				
+//				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
+//				reqListBean.setRequest_foreign_id(rs.getInt("request_foreign_id"));
+				reqListBean.setAtt_status_id(rs.getInt("att_status_id"));
+				reqListBean.setMonth_req_id(rs.getInt("month_req_id"));
+				reqListBean.setStamp_rev_id(rs.getInt("stamp_rev_id"));
+				reqListBean.setStamp_rev_req_id(rs.getInt("stamp_rev_req_id"));
+
 				//検査結果出力
-//				System.out.print(reqListBean.getDate_and_time() + " ");
-//				System.out.print(reqListBean.getStatus() + " ");
-//				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
-//				System.out.println(reqListBean.getContent() + " ");
+				System.out.print(reqListBean.getDate_and_time() + " ");
+				System.out.print(reqListBean.getStatus() + " ");
+				System.out.print(reqListBean.getBoss_name() + " ");//承認者上司名
+				System.out.print(reqListBean.getContent() + " ");
+//				System.out.print(reqListBean.getRequest_id() + " ");
+//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+				System.out.print(reqListBean.getAtt_status_id() + " ");
+				System.out.print(reqListBean.getMonth_req_id() + " ");
+				System.out.print(reqListBean.getStamp_rev_id() + " ");
+				System.out.println(reqListBean.getStamp_rev_req_id() + " ");
 
 				myReqList.add(reqListBean);
 			}
@@ -304,14 +311,14 @@ public class MonthReqDAO {
 				reqListBean.setContent(rs.getInt("content"));
 				reqListBean.setRequest_id(rs.getInt("request_id"));//月末申請ID打刻修正申請ID
 				reqListBean.setRequest_foreign_id(rs.getInt("reuqest_foreign_id"));//外部キー
-				
+
 				//検査結果出力
-//				System.out.print(reqListBean.getDate_and_time() + " ");
-//				System.out.print(reqListBean.getStatus() + " ");
-//				System.out.print(reqListBean.getName() + " ");
-//				System.out.print(reqListBean.getContent() + " ");
-//				System.out.print(reqListBean.getRequest_id() + " ");
-//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
+				//				System.out.print(reqListBean.getDate_and_time() + " ");
+				//				System.out.print(reqListBean.getStatus() + " ");
+				//				System.out.print(reqListBean.getName() + " ");
+				//				System.out.print(reqListBean.getContent() + " ");
+				//				System.out.print(reqListBean.getRequest_id() + " ");
+				//				System.out.println(reqListBean.getRequest_foreign_id() + " ");
 
 				subReqList.add(reqListBean);
 			}

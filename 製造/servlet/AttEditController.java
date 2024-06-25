@@ -3,6 +3,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -40,9 +41,20 @@ public class AttEditController extends HttpServlet {
 		
 		//-----------------------フォーム情報の取得と年月処理---------------------------------
 		//フォーム情報の取得
-		int year =Integer.parseInt(request.getParameter("year")) ;
-		int month = Integer.parseInt(request.getParameter("month")) ;
-		int formdate = Integer.parseInt(request.getParameter("date")) ;
+		
+		LocalDate currentDate = LocalDate.now();
+		
+		int year=currentDate.getYear();
+		int month=currentDate.getMonthValue();
+		int formdate=currentDate.getDayOfMonth();
+		try {
+			year = Integer.parseInt(request.getParameter("year"));
+			month = Integer.parseInt(request.getParameter("month"));
+			formdate = Integer.parseInt(request.getParameter("date"));
+		} catch (NumberFormatException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 		//Dateに年・月・日を渡す
 		//1月は0のため-1、1日が欲しいので1を入力している
 //		Date date = new Date(year,month,formdate);
