@@ -17,14 +17,14 @@ table {
 }
 
 th, td {
-	border: 1px solid #1e90ff;
+	border: 1px solid #000;
 	padding: 4px;
 	text-align: center;
-	background-color: #f0f8ff; /* デフォルトの背景色を設定 */
+	background-color: #f8f4e6; /* デフォルトの背景色を設定 */
 }
 
 th {
-	background-color: #87cefa;
+	background-color:  #ebe1a9;
 }
 
 .pagination {
