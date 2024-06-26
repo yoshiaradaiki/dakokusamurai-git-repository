@@ -51,7 +51,7 @@ public class AttDetailRemandController extends HttpServlet {
 		int status = 0;//差し戻し
 		String reason = request.getParameter("reason");//差し戻し時は差し戻し理由が必要
 		
-		if (reason.isEmpty()) {
+		if (!reason.isEmpty()) {
 			
 	//		打刻修正申請更新を実行し、打刻修正申請ID,ステータス、理由の結果を取得
 			attDetailLogic.updateStampRevReq(stamp_rev_req_id, status, reason,users_id);

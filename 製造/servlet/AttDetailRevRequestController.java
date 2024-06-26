@@ -105,6 +105,14 @@ public class AttDetailRevRequestController extends HttpServlet {
 			 
 			 //打刻修正申請追加を行い、理由、ステータス、申請者の結果を取得
 			attDetailLogic.insertStampRevReq(reqListBean);
+			int stamp_rev_req_id=-1;
+			try {
+				stamp_rev_req_id = Integer.parseInt(request.getParameter("stamp_rev_req_id"));
+			} catch (NumberFormatException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			attDetailLogic.updateReqCancelByOneDay(stamp_rev_req_id,3,"",users_id);
 		
 
 		//********************　 ページング　********************//
