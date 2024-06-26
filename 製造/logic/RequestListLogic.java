@@ -11,6 +11,7 @@ import beans.UsersBean;
 import dao.AttDAO;
 import dao.CalendarDAO;
 import dao.MonthReqDAO;
+import dao.StampDAO;
 import dao.StampRevReqDAO;
 
 public class RequestListLogic {
@@ -27,10 +28,10 @@ public class RequestListLogic {
 	//メソッド名：自分の利用者IDを取得（勤怠状況詳細画面のヘッダーに表示）
 	//引数　　　：打刻修正ID
 	//戻り値　　：UsersBean
-//	public UsersBean findUsersStampRevId(int stamp_rev_id) {
-//		StampDAO stampDAO = new StampDAO();
-//		return stampDAO.findUsersStampRevId(stamp_rev_id);
-//	}
+	public UsersBean findUsersStampRevId(int stamp_rev_id) {
+		StampDAO stampDAO = new StampDAO();
+		return stampDAO.findUsersStampRevId(stamp_rev_id);
+	}
 
 	//メソッド名：差し戻された月末申請（勤怠状況表）を取得
 	//引数　　　：勤怠状況表ID
