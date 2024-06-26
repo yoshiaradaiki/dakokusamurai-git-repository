@@ -84,6 +84,10 @@ public StampBean attCheck(int users_id, Date stamp_date) {
 	StampDAO stampDAO = new StampDAO();
 	return stampDAO.attCheck(users_id, stamp_date);
 }
+public boolean updateReqCancelByOneDay(int stamp_rev_req_id, int status, String reason, int updated_users_id) {
+	StampRevReqDAO stampRevReqDAO = new StampRevReqDAO();
+	return stampRevReqDAO.updateStampRevReq(stamp_rev_req_id, status, reason, updated_users_id);
+}
 
 //メソッド名：findMySubRequest
 //引数　　　：stamp_id

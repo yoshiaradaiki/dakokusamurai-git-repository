@@ -199,6 +199,7 @@ height:20px;
 		</p>
 			<input type="hidden" name="requestDate" value="${stampBean.stamp_date}">
 			<input type="submit" value="変更申請">
+			<input type="hidden" name="stamp_rev_req_id" value="${stamp_rev_req_id}">
 	</form>
 			<%}else{ %>
 <% //if (上司がログインし部下の打刻修正を見る場合){ %>		
@@ -327,13 +328,13 @@ height:20px;
 		    </c:otherwise>
 		</c:choose><br>
 		開始時刻：
-		<c:out value="${stamBean.workIn_re}" /><br>
+		<c:out value="${stampBean.workIn_re}" /><br>
 		終了時刻：
-		<c:out value="${stamBean.workOut_re}" /><br>
+		<c:out value="${stampBean.workOut_re}" /><br>
 		休憩：
-		<c:out value="${stamBean.rest_time}" /><br>
+		<c:out value="${stampBean.rest_time}" /><br>
 		備考：
-		<c:out value="${stamBean.note}" /><br>
+		<c:out value="${stampBean.note}" /><br>
 
 		<form method="get" action="AttDetailApprovalController">
 			<input type="submit" value="承認">
