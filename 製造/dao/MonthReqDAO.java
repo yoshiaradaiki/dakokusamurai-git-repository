@@ -22,16 +22,16 @@ public class MonthReqDAO {
 
 	public static void main(String[] args) {
 		//テスト用
-//		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
+		MonthReqDAO monthReqDAO = new MonthReqDAO();//インスタンス
 		//		monthReqDAO.insertMonthReq(1, 0, 10, 10);//成功
 		//		monthReqDAO.updateMonthReq(9, 8, "理由うう", 3);//成功
-		//		monthReqDAO.findMyRequest(1);//成功
+		//				monthReqDAO.findMyRequest(1);//成功
 		//		monthReqDAO.findMySubRequest(1);//成功
 		//
 		//				@SuppressWarnings("deprecation")
 		//				Date requestDate = new Date(2024, 6, 1); // 例として2024年6月1日を使用します
 		//				monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
-//		monthReqDAO.findAttStatusMonthRequest(29);//成功
+		//		monthReqDAO.findAttStatusMonthRequest(1);//成功
 	}
 
 	//メソッド名：月末申請登録

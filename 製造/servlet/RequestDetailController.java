@@ -101,23 +101,3 @@ public class RequestDetailController extends HttpServlet {
 	}
 
 }
-//破棄
-// 渡すデータは選択した申請した年月
-// 勤怠状況表IDから
-//現在の日付を取得
-//		Date date = new Date();
-//		Calendar calendar = Calendar.getInstance();
-//		calendar.setTime(date);
-//		// 今日の日付を1日にする
-//		calendar.set(Calendar.DAY_OF_MONTH, 1);
-//		// 先月の日付に変更する
-//		calendar.add(Calendar.MONTH, -1);
-//		// 変更後の日付を取得
-//		date = calendar.getTime();
-//		// 年を取得
-//		int year = calendar.get(Calendar.YEAR);
-//		// 月を取得
-//		int month = calendar.get(Calendar.MONTH) + 1;;
-//		
-//		request.setAttribute("year", year);
-//		request.setAttribute("month", month);
