@@ -51,6 +51,7 @@ public class RequestSubmitController extends HttpServlet {
 
 		//勤怠状況表IDで利用者IDと年月を取得する
 		UsersBean usersBean = new RequestListLogic().findMyAttStatusUsers(att_status_id);
+		System.out.println("取得した利用者IDは" + usersBean.getUsers_id());
 		//取得した利用者IDと年月をゲット
 		Date year_and_month = (Date) usersBean.getYear_and_month();
 		int users_id = usersBean.getUsers_id();
