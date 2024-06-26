@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import beans.RequestListBean;
 import beans.StampBean;
@@ -23,55 +24,43 @@ import logic.RequestListLogic;
 @WebServlet("/RevDetailController")
 public class RevDetailController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RevDetailController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public RevDetailController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		
-		int stamp_rev_id=Integer.parseInt(request.getParameter("stamp_rev_id"));
-		int stamp_rev_req_id = Integer.parseInt(request.getParameter("stamp_rev_req_id"));
-		
-		
-//		String dateString = request.getParameter("stamp_date");
-//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//	    Date stamp_date = dateFormat.parse(dateString);
-		//Date stamp_date = request.getParameter("stamp_date");
-		
-		RequestListLogic requestListLogic = new RequestListLogic();
-		StampBean stampBean = new StampBean();
-		RequestListBean requestListBean = new RequestListBean();
-		//users_idを取得する
-		UsersBean usersBean = new RequestListLogic().findUsersStampRevId( stamp_rev_id);
-		//勤怠状況表IDで部下の利用者IDを取得（年月を持つUsersBean）
-		int users_id = usersBean.getUsers_id();
-		//Date year_and_month = usersBean.getYear_and_month();
-				
-		//------------------------------------------------------------------------------------//
-		//DBから再提出ボタンを押下時の勤怠状況表を取得する処理
-		//↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
-		//打刻日時を取得する
-		StampBean attDetailBean = requestListLogic.findAttDetailStamp( stamp_rev_id);
-		//------------------------------------------------------------------------------------//
+		response.setContentType("text/html; charset=utf-8");
+
+		//セッション取得
+		HttpSession session = request.getSession();
+		//取得したsession情報をUserBeanに渡す
+		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+
+		//リクエストから情報取得
+		int stamp_rev_id = Integer.parseInt(request.getParameter("stamp_rev_id"));
+
+		//インスタンス
+		RequestListLogic reqLogic = new RequestListLogic();
+		//打刻修正データを取得
+		StampBean stampBean = reqLogic.findStampRev(stamp_rev_id);
+		//差し戻しの理由を取得
+		RequestListBean reqBean = reqLogic.findAttDetailReason(stamp_rev_id);
 
 		//JSPから取得するためにセットする
-		request.setAttribute("formstatus", 1);
-		request.setAttribute("stamp_rev_id", stamp_rev_id);
-		request.setAttribute("stamp_rev_req_id", stamp_rev_req_id);
-		request.setAttribute("date", usersBean.getYear_and_month());
-		request.setAttribute("usersBean", usersBean);
-		request.setAttribute("stampBean",  attDetailBean);
-		request.setAttribute("requestListBean", requestListBean);
-
+		request.setAttribute("formstatus", 1);//0：申請フォーム
+		request.setAttribute("sessionUsersBean", sessionUsersBean);//利用者ID
+		request.setAttribute("stampBean", stampBean);//勤怠状況詳細
+		request.setAttribute("reqestListBean", reqBean);//理由
 
 		//"attendanceStatus.jsp"へ転送する
 		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatusDetail.jsp").forward(request, response);
