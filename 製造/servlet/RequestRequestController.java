@@ -63,7 +63,7 @@ public class RequestRequestController extends HttpServlet {
 		request.setAttribute("formstatus", 0);//0：申請フォーム
 		request.setAttribute("usersBean", usersBean);//利用者ID
 		request.setAttribute("stampBean", stampBean);//勤怠状況詳細
-		request.setAttribute("reqestListBean", reqBean);//理由
+		request.setAttribute("requestListBean", reqBean);//理由
 
 		//"attendanceStatusDetail.jsp"へ転送する
 		request.getRequestDispatcher("WEB-INF/jsp/attendanceStatusDetail.jsp").forward(request, response);

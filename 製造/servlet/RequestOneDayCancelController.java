@@ -54,9 +54,17 @@ public class RequestOneDayCancelController extends HttpServlet {
 		// 打刻修正申請をキャンセルする操作を行うためのロジッククラスのインスタンスを作成
 		RequestListLogic requestListLogic = new RequestListLogic();
 
+		//差し戻しの理由を取得
+		//勤怠状況表IDを取得
+		int stamp_rev_id = Integer.parseInt(request.getParameter("stamp_rev_id"));//理由を取得するため
+		RequestListBean reqBean = requestListLogic.findAttDetailReason(stamp_rev_id);//理由を取得するメソッド
+		String reason = reqBean.getReason();
+		System.out.println("取得した理由は" + reason);
+		//差し戻しの理由を取得
+
 		int status = 3;
 		// 打刻修正申請のキャンセル操作を実行し、その結果を取得
-		Boolean isCancelled = requestListLogic.updateReqCancelByOneDay(stamp_rev_req_id, status, null, users_id);
+		Boolean isCancelled = requestListLogic.updateReqCancelByOneDay(stamp_rev_req_id, status, reason, users_id);
 		System.out.println(users_id + "さんの変更申請をキャンセルしました");
 		System.out.println(stamp_rev_req_id + "勤怠状況詳IDをキャンセルしました");
 

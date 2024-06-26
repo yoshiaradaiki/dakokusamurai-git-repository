@@ -50,14 +50,26 @@ public class RequestMonthCancelController extends HttpServlet {
 
 		//月末申請IDを取得
 		int month_req_id = Integer.parseInt(request.getParameter("month_req_id"));
+
 		System.out.println("月末申請IDは" + month_req_id);
 		//取得した月末申請IDによって、月末申請をキャンセルする（月末申請.ステータスを3に更新、更新者を利用者IDに更新する）
 		// 月末申請をキャンセルする操作を行うためのロジッククラスのインスタンスを作成
 		RequestListLogic requestListLogic = new RequestListLogic();
 
+		
+		//差し戻しの理由を取得
+		//勤怠状況表IDを取得
+		int att_status_id = Integer.parseInt(request.getParameter("att_status_id"));//理由を取得するため
+		RequestListBean reqBean = requestListLogic.findAttStatusMonthReason(att_status_id);//理由を取得するメソッド
+		String reason = reqBean.getReason();
+		System.out.println("取得した理由は" + reason);
+		//差し戻しの理由を取得
+		
+		
+
 		int status = 3;
 		// 月末申請のキャンセル操作を実行し、その結果を取得
-		Boolean isCancelled = requestListLogic.updateReqCancelByAttStatus(month_req_id, status, null, users_id);
+		Boolean isCancelled = requestListLogic.updateReqCancelByAttStatus(month_req_id, status, reason, users_id);
 
 		System.out.println(month_req_id + "勤怠状況表IDをキャンセルしました");
 
