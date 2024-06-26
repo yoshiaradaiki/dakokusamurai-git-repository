@@ -27,7 +27,7 @@ public class AttDAO {
 //		attDAO.insertAttStatus(1,requestDate);
 //		monthReqDAO.findMyAttStatusMonthRequest(1, requestDate);
 //		monthReqDAO.findAttStatusMonthRequest(1);//成功
-		
+//		attDAO.findUsers(1);
 	}
 	
 	//勤怠状況表登録--------------------------------------------------------------
@@ -115,7 +115,10 @@ public class AttDAO {
 			
 			//★★★SQL★★★
 			//利用者IDを取得したい➡勤怠状況表の勤怠状況表IDは？
-			String sql= "SELECT users_id, years FROM att_status where att_status_id = ? ";
+			String sql= "SELECT a.users_id, a.years, u.emp_name, u.emp_no\r\n"
+					+ "FROM att_status a\r\n"
+					+ "JOIN users u ON a.users_id = u.users_id\r\n"
+					+ "WHERE a.att_status_id = ?;";
 			
 			//SQLを実行する
 			PreparedStatement pStmt = conn.prepareStatement(sql);
@@ -128,6 +131,12 @@ public class AttDAO {
             while (rs.next()) {
                  usersBean.setUsers_id(rs.getInt("users_id")); 
                  usersBean.setYear_and_month(rs.getDate("years"));
+                 usersBean.setEmp_name(rs.getString("emp_name"));
+                 usersBean.setEmp_no(rs.getString("emp_no"));
+                 
+                 System.out.println("取得した利用者IDは" + usersBean.getUsers_id());
+//                 System.out.println("取得した氏名は" + usersBean.getEmp_name());
+                 System.out.println("取得した氏名は" + usersBean.getEmp_name());
             } 
             
 		} catch (SQLException e) {

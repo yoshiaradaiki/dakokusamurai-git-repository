@@ -209,7 +209,7 @@ public class CalendarDAO {
 		return stampBeans;
 	}
 	
-	// 1日分取得するメソッド
+	// 1日分取得するメソッド(古いデータ)
 	public StampBean findMyAttStatusDetailStamp(int users_id, Date date) {
 		
 		Connection con = null;
@@ -358,7 +358,7 @@ public class CalendarDAO {
 		return stampBean;
 	}
 	
-	// 1日分取得するメソッド
+	// 1日分取得するメソッド(申請データ)
 	public StampBean findMyAttStatusDetailStampRequest(int stamp_rev_id) {
 		
 		Connection con = null;
