@@ -77,16 +77,18 @@ public class RequestSubmitController extends HttpServlet {
 
 		//取得した勤怠状況表IDによって差し戻された一ヶ月分の勤怠状況表を表示する
 		List<StampBean> stampBean = new RequestListLogic().findAttStatus(users_id, year_and_month);
+		System.out.println("stampBean"+stampBean.get(0).getStamp_id());
 		//取得した勤怠状況表IDによって勤怠状況表に差し戻しの理由を取得し、表示する
 		RequestListBean requestListBean = new RequestListLogic().findAttStatusMonthReason(att_status_id);
 		//------------------------------------------------------------------------------------//
 		//フォーム切り替えのリクエストセット　申請フォーム：0
-		int formstatus = 0;
+		int formstatus = 3;
 		request.setAttribute("formstatus", formstatus);
 		//JSPから取得するためにセットする
 		request.setAttribute("usersBean", usersBean);//利用者ID
 		request.setAttribute("stampBean", stampBean);//勤怠状況表
 		request.setAttribute("requestListBean", requestListBean);//理由
+		request.setAttribute("att_status_id", att_status_id);//理由
 
 		//"attendanceStatus.jsp"へ転送する
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/attendanceStatus.jsp");

@@ -17,13 +17,14 @@
 </head>
 <body>
 <style>
- body {
+body {
         text-align: center; /* bodyの要素を中央揃え */
-        background-color: ;
+        background-color: 
     }
 table {
-	border-collapse: collapse;
-	width: 100%;
+    border-collapse: collapse;
+    width: 80%;
+    margin: 0 auto; /*横幅自動調整*/
 }
 /**表　中身**/
 th, td {
@@ -87,7 +88,7 @@ height:20px;
 	
 	<!--確認用  -->
 	<% if((Integer)request.getAttribute("formstatus") == 0){ %>
-
+	
 	<p>【申請フォーム】</p>
 	<!-- フォームの切り替え　JSで残すOrサーブレットで実行 -->
 		<div style="double">
@@ -273,6 +274,7 @@ height:20px;
 			<% } else { %>
 			    <p>年月が選択されていません。</p>
 			<% } %>
+
 	<div class="button-group2">
 		<!-- 申請 　hideen=勤怠状況表ID-->
 			<form action="AttRequestController" method="get" >
@@ -282,11 +284,138 @@ height:20px;
 				<input type="submit" value="申請">
 			</form>
 	</div>
-			<!----------------------------再申請がある場会の表示------------------------------ -->
-
+	
+	
+	<!----------------------------再申請がある場会の表示------------------------------ -->
+	<% }else if((Integer)request.getAttribute("formstatus") == 3){ %>
+	
+	<p>【申請フォーム】</p>
+			<div style="double">
+			<h1>勤怠状況表</h1>
+		</div>
+			<!----------------------------上部　年月・利用者 ------------------------------ -->
+		<fmt:formatDate value="${usersBean.year_and_month}" pattern="yyyy年　M月" />
+			<p>勤務時間：9：00～18：00</p>
+			<p>休憩時間：12：00～13：00</p>
+			<div>
+				<p>社員番号：${usersBean.emp_no}</p>
+				<p>氏名：${usersBean.emp_name} </p>  
+			</div><br>
+			
+		<!----------------------------中部 　表------------------------------ -->
+		<table border="1">
+		    <tr>
+		        <th colspan="3"></th>
+		        <th colspan="2">就業時間</th>
+		        <th colspan="2">就業詳細時間</th>
+		        <th colspan="3"></th>
+		    </tr>
+		    <tr>
+		        <th>日付</th>
+		        <th>曜日</th>
+		        <th>勤怠状況</th>
+		        <th>開始時刻</th>
+		        <th>終了時刻</th>
+		        <th>開始時刻</th>
+		        <th>終了時刻</th>
+		        <th>休憩</th>
+		        <th>実労働時間</th>
+		        <th>備考</th>
+		  
+		    </tr>
+		   
+	 <!-- ここにデータの表示を追加 ---------------------------------------------------------------->
+		    <c:forEach var="stampBean" items="${stampBean}">
+		    <tr>
+		    	<!--日付  -->
+				<td><fmt:formatDate value="${stampBean.stamp_date}" pattern="d" /></td>
+				<!--曜日判定  -->
+					<c:choose>
+						<c:when test="${stampBean.week==1}">
+							<td>日</td>
+						</c:when>
+						<c:when test="${stampBean.week==2}">
+							<td>月</td>
+						</c:when>
+						<c:when test="${stampBean.week==3}">
+							<td>火</td>
+						</c:when>
+						<c:when test="${stampBean.week==4}">
+							<td>水</td>
+						</c:when>
+						<c:when test="${stampBean.week==5}">
+							<td>木</td>
+						</c:when>
+						<c:when test="${stampBean.week==6}">
+							<td>金</td>
+						</c:when>
+						<c:when test="${stampBean.week==7}">
+							<td>土</td>
+						</c:when>
+							<c:otherwise>
+								<td>データなし</td>
+							</c:otherwise>
+					</c:choose>
+					
+					<!-- 勤怠状況判定 -->
+					<c:choose>
+						<c:when test="${stampBean.work_status == 1}">
+							<td>1：出勤</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 6}">
+							<td>6：遅刻</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 7}">
+							<td>7：早退</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 8}">
+							<td>8：土祝出勤</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 10}">
+							<td>10：1日有給休暇</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 11}">
+							<td>11：半日有給休暇</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 12}">
+							<td>12：特別休暇</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 13}">
+							<td>13：休日</td>
+						</c:when>
+						<c:when test="${stampBean.work_status == 14}">
+							<td>14：欠勤</td>
+						</c:when>
+							<c:otherwise>
+								<td>データなし</td>
+							</c:otherwise>
+					</c:choose>
+						<!--開始・終了時刻/就業時間/備考  -->
+						<td><c:out value="${stampBean.workIn_re}" /></td>
+						<td><c:out value="${stampBean.workOut_re}" /></td>
+						<td><c:out value="${stampBean.workIn_raw}" /></td>
+						<td><c:out value="${stampBean.workOut_raw}" /></td>
+						<td><c:out value="${stampBean.rest_time}" /></td>
+						<td><c:out value="${stampBean.real_work_time}" /></td>
+						<td><c:out value="${stampBean.note}" /></td>
+					</tr>				
+			</c:forEach>		
+		</table>
+	
 			 	<c:if test="${not empty requestListBean.reason}">
-				    <c:out value="${requestListBean.reason}" />
+				    理由:<input type="textarea" value="${requestListBean.reason}" >
 				</c:if>
+		<div class="button-group2">
+		<!-- 申請 　hideen=勤怠状況表ID-->
+			<form action="AttRequestController" method="get" >
+				<input type="hidden" name="year"  value="${year}">
+				<input type="hidden" name="month"  value="${month}"> 
+				<input type="hidden" name="att_status_id" value="${att_status_id}">
+				<input type="submit" value="申請">
+			</form>
+		</div>
+	
+	<!---------------------------申請フォームがある場会の表示------------------------------ -->
 			 	
 
 	<% } else { %>
@@ -303,7 +432,7 @@ height:20px;
 				<p>社員番号：${usersBean.emp_no}</p>
 				<p>氏名：${usersBean.emp_name} </p>  
 			</div><br>
-			
+
 		<!----------------------------中部 　表------------------------------ -->
 		<table border="1">
 		    <tr>
@@ -407,7 +536,9 @@ height:20px;
 	
 				<!-- 理由と差し戻し -->
 				<form action="AttRemandController" method="get" >
-					理由:<textarea name="reason" min="1" max="100"required></textarea>※入力必須<br>
+						<c:if test="${not empty requestListBean.reason}">
+							理由:<textarea name="reason" min="1" max="100"required  value="${requestListBean.reason}" ></textarea>※入力必須<br>
+						</c:if>
 			<div class="button-group3">
 					<input type="hidden" name="year"  value="${year}">
 					<input type="hidden" name="month"  value="${month}"> 
