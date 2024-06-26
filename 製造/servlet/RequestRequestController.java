@@ -11,7 +11,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import beans.RequestListBean;
 import beans.StampBean;
@@ -41,16 +40,20 @@ public class RequestRequestController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html; charset=utf-8");
 
-		//セッション取得
-		HttpSession session = request.getSession();
-		//取得したsession情報をUserBeanに渡す
-		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
+//		//セッション取得
+//		HttpSession session = request.getSession();
+//		//取得したsession情報をUserBeanに渡す
+//		UsersBean sessionUsersBean = (UsersBean) session.getAttribute("sessionUsersBean");
 
 		//リクエストから情報取得
 		int stamp_rev_id = Integer.parseInt(request.getParameter("stamp_rev_id"));
-		
+
 		//インスタンス
 		RequestListLogic reqLogic = new RequestListLogic();
+		//部下の利用者ID、氏名を取得
+		UsersBean usersBean = reqLogic.findUsersStampRevId(stamp_rev_id);
+		System.out.println("取得した部下の利用者IDは" + usersBean.getUsers_id());
+		System.out.println("取得した部下の氏名は" + usersBean.getEmp_name());
 		//打刻修正データを取得
 		StampBean stampBean = reqLogic.findStampRev(stamp_rev_id);
 		//差し戻しの理由を取得
@@ -58,7 +61,7 @@ public class RequestRequestController extends HttpServlet {
 
 		//JSPから取得するためにセットする
 		request.setAttribute("formstatus", 0);//0：申請フォーム
-		request.setAttribute("sessionUsersBean", sessionUsersBean);//利用者ID
+		request.setAttribute("usersBean", usersBean);//利用者ID
 		request.setAttribute("stampBean", stampBean);//勤怠状況詳細
 		request.setAttribute("reqestListBean", reqBean);//理由
 

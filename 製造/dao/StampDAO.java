@@ -21,6 +21,13 @@ public class StampDAO {
 	private final String DB_USER = "dakokuSamurai";
 	private final String DB_PASS = "dakokusamurai";
 
+	public static void main(String[] args) {
+		StampDAO stampDAO = new StampDAO();
+		stampDAO.findUsersStampRevId(1);
+		
+	}
+	
+	
 	// util.Date型をsql.Date型に変換する
 	private java.sql.Date changeDate(Date date) {
 		if (date != null) {
@@ -199,9 +206,11 @@ public class StampDAO {
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
 
-			String sql = "SELECT s.USERS_ID, s.STAMP_DATE FROM  STAMP_REVISION sr\r\n"
-					+ "					JOIN STAMP s ON sr.STAMP_ID = s.STAMP_ID\r\n"
-					+ "					WHERE sr.STAMP_REV_ID = ?;";
+			String sql = "SELECT s.USERS_ID, s.STAMP_DATE, u.EMP_NAME\r\n"
+					+ "FROM STAMP_REVISION sr\r\n"
+					+ "JOIN STAMP s ON sr.STAMP_ID = s.STAMP_ID\r\n"
+					+ "JOIN USERS u ON s.USERS_ID = u.USERS_ID\r\n"
+					+ "WHERE sr.STAMP_REV_ID = ?;";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			//INSERT文の？に使用する値を設定
@@ -211,6 +220,10 @@ public class StampDAO {
 			if (rs.next()) {
 				usersBean.setUsers_id(rs.getInt("users_id"));
 				usersBean.setYear_and_month(rs.getDate("stamp_date"));
+				usersBean.setEmp_name(rs.getString("emp_name"));
+				
+				System.out.println("取得した部下の利用者IDは" + usersBean.getUsers_id());
+				System.out.println("取得した部下の氏名は" + usersBean.getEmp_name());
 			}
 
 		} catch (SQLException e) {
