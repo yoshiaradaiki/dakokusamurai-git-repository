@@ -206,7 +206,7 @@ public class StampDAO {
 		}
 		try (Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
 
-			String sql = "SELECT s.USERS_ID, s.STAMP_DATE, u.EMP_NAME\r\n"
+			String sql = "SELECT s.USERS_ID, s.STAMP_DATE, u.EMP_NAME, u.EMP_NO\r\n"
 					+ "FROM STAMP_REVISION sr\r\n"
 					+ "JOIN STAMP s ON sr.STAMP_ID = s.STAMP_ID\r\n"
 					+ "JOIN USERS u ON s.USERS_ID = u.USERS_ID\r\n"
@@ -221,6 +221,7 @@ public class StampDAO {
 				usersBean.setUsers_id(rs.getInt("users_id"));
 				usersBean.setYear_and_month(rs.getDate("stamp_date"));
 				usersBean.setEmp_name(rs.getString("emp_name"));
+				usersBean.setEmp_no(rs.getString("emp_no"));
 				
 				System.out.println("取得した部下の利用者IDは" + usersBean.getUsers_id());
 				System.out.println("取得した部下の氏名は" + usersBean.getEmp_name());
