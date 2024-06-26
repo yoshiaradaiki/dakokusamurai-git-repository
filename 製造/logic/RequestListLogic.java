@@ -59,13 +59,22 @@ public class RequestListLogic {
 		return attDAO.findUsers(att_status_id);
 	}
 
-	//メソッド名：差し戻された変更申請（勤怠状況詳細）を取得
+	//メソッド名：差し戻された変更申請（勤怠状況詳細）の変更修正前のデータを取得
 	//引数　　　：打刻修正ID
 	//戻り値　　：打刻修正データ
 	//処理概要　：再申請ボタン：選択された差し戻された一日分の打刻修正データ（勤怠状況詳細画面）を取得する
 	public StampBean findAttStatusDetail(int users_id, Date date) {
 		CalendarDAO calendarDAO = new CalendarDAO();
 		return calendarDAO.findMyAttStatusDetailStamp(users_id, date);
+	}
+	
+	//メソッド名：差し戻された変更申請（勤怠状況詳細）の変更修正データを取得
+	//引数　　　：打刻修正ID
+	//戻り値　　：打刻修正データ
+	//処理概要　：再申請ボタン：選択された差し戻された一日分の打刻修正データ（勤怠状況詳細画面）を取得する
+	public StampBean findStampRev(int stamp_rev_id) {
+		CalendarDAO calendarDAO = new CalendarDAO();
+		return calendarDAO.findMyAttStatusDetailStampRequest(stamp_rev_id);
 	}
 
 	//メソッド名：勤怠状況詳細に差し戻された理由を取得
