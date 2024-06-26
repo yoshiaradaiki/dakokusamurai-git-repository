@@ -24,7 +24,7 @@ th, td {
 }
 
 th {
-	background-color:  #ebe1a9;
+	background-color: #ebe1a9;
 }
 
 .pagination {
@@ -103,7 +103,9 @@ th {
 										<form action="RequestOneDayCancelController" method="get"
 											style="display: inline;">
 											<input type="hidden" name="stamp_rev_req_id"
-												value="${request.stamp_rev_req_id}">
+												value="${request.stamp_rev_req_id}"><input
+												type="hidden" name="stamp_rev_id"
+												value="${request.stamp_rev_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
@@ -117,21 +119,25 @@ th {
 										<form action="RequestMonthCancelController" method="get"
 											style="display: inline;">
 											<input type="hidden" name="month_req_id"
-												value="${request.month_req_id}">
+												value="${request.month_req_id}"><input type="hidden"
+												name="att_status_id" value="${request.att_status_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 1 && request.status < 2}">
 										<form action="RequestOneDayCancelController" method="get">
 											<input type="hidden" name="stamp_rev_req_id"
-												value="${request.stamp_rev_req_id}">
+												value="${request.stamp_rev_req_id}"><input
+												type="hidden" name="stamp_rev_id"
+												value="${request.stamp_rev_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
 									<c:when test="${request.content == 0 && request.status < 2}">
 										<form action="RequestMonthCancelController" method="get">
 											<input type="hidden" name="month_req_id"
-												value="${request.month_req_id}">
+												value="${request.month_req_id}"><input type="hidden"
+												name="att_status_id" value="${request.att_status_id}">
 											<button type="submit">キャンセル</button>
 										</form>
 									</c:when>
@@ -214,8 +220,8 @@ th {
 										<!-- 下なおしました -->
 										<form action="RevDetailController" method="get">
 											<input type="hidden" name="stamp_rev_id"
-												value="${request.stamp_rev_id}"> <input type="hidden"
-												name="stamp_rev_req_id"
+												value="${request.stamp_rev_id}"> <input
+												type="hidden" name="stamp_rev_req_id"
 												value="${request.stamp_rev_req_id}">
 											<button type="submit">変更詳細</button>
 										</form>
@@ -223,8 +229,9 @@ th {
 									<c:when test="${request.content == 0}">
 										<form action="RequestDetailController" method="get">
 											<input type="hidden" name="att_status_id"
-												value="${request.att_status_id}"> <input type="hidden"
-												name="month_req_id" value="${request.month_req_id}">
+												value="${request.att_status_id}"> <input
+												type="hidden" name="month_req_id"
+												value="${request.month_req_id}">
 											<button type="submit">提出詳細</button>
 										</form>
 									</c:when>
