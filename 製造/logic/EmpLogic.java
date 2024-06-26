@@ -30,13 +30,13 @@ public class EmpLogic {
 		LocalTime workIn_re;
 
 		//丸め処理
-		if (0 <= m && m <= 15) {
+		if (1 <= m && m <= 15) {
 			m = 15;
 		} else if (16 <= m && m <= 30) {
 			m = 30;
 		} else if (31 <= m && m <= 45) {
 			m = 45;
-		} else {
+		} else if (46 <= m && m <= 59) {
 			m = 0;
 			h += 1;
 		}
